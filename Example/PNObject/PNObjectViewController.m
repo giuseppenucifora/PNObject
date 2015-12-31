@@ -7,6 +7,7 @@
 //
 
 #import "PNObjectViewController.h"
+//#import "PNObject.h"
 
 @interface PNObjectViewController ()
 

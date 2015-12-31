@@ -1,0 +1,6 @@
+framework module NSDate_Utils {
+  umbrella header "NSDate_Utils-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,11 +1,17 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-target 'PNObject_Example', :exclusive => true do
+
+
+target 'PNObject_Example' do
   pod "PNObject", :path => "../"
+  pod 'PEAR-FileManager-iOS'
+  pod 'NSDate_Utils'
+  pod 'UIDevice-Utils'
+  pod 'AFNetworking'
 end
 
-target 'PNObject_Tests', :exclusive => true do
+target 'PNObject_Tests' do
   pod "PNObject", :path => "../"
 
   pod 'Specta'
