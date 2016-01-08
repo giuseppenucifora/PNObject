@@ -9,6 +9,7 @@
 #import "PNObject.h"
 #import <PNObjectProperty.h>
 #import <NSDate_Utils/NSDate+NSDate_Util.h>
+#import <AFNetworking/AFNetworking.h>
 
 @interface PNObject()
 
@@ -24,8 +25,8 @@
     self = [super init];
     
     if (self) {
-        NSAssert(_objectMapping, @"You must create objectMapping");
-
+        
+        
     }
     return self;
 }
@@ -33,6 +34,7 @@
 - (instancetype) initWithJSON:(NSDictionary*) JSON {
     self = [self init];
     if (self) {
+        NSAssert(_objectMapping, @"You must create objectMapping");
         _JSON = [[NSDictionary alloc] initWithDictionary:JSON];
         
         [self populateObjectFromJSON:JSON];
@@ -247,88 +249,20 @@
                                NSLog(@"%@",errorStr);
                            }
                        })();
-        /*// char
-        if([propertyType isEqualToString:@"c"]) {
-            char val = [value charValue];
-            [self setValue:@(val) forKey:propertyName];
-        }
-        // double
-        else if([propertyType isEqualToString:@"d"]) {
-            double val = [value doubleValue];
-            [self setValue:@(val) forKey:propertyName];
-        }
-        // float
-        else if([propertyType isEqualToString:@"f"]) {
-            float val = [value floatValue];
-            [self setValue:@(val) forKey:propertyName];
-        }
-        // integer
-        else if([propertyType isEqualToString:@"i"]) {
-            int val = [value intValue];
-            [self setValue:@(val) forKey:propertyName];
-        }
-        // long
-        else if([propertyType isEqualToString:@"l"]) {
-            long val = [value longValue];
-            [self setValue:@(val) forKey:propertyName];
-        }
-        // short
-        else if([propertyType isEqualToString:@"s"]) {
-            short val = [value shortValue];
-            [self setValue:@(val) forKey:propertyName];
-        }
-        // NSString
-        else if([propertyType isEqualToString:@"NSString"]) {
-            NSString *val = [NSString stringWithFormat:@"%@", value];
-            [self setValue:val forKey:propertyName];
-        }
-        // NSNumber
-        else if([propertyType isEqualToString:@"NSNumber"]) {
-            NSInteger val = [value integerValue];
-            [self setValue:@(val) forKey:propertyName];
-        }
-        // NSDate
-        else if([propertyType isEqualToString:@"NSDate"]) {
-            
-            
-            NSString *str = [NSString stringWithFormat:@"%@", value];
-            NSDate *val = [NSDate dateFromString:str];
-            [self setValue:val forKey:propertyName];
-        }
-        // NSURL
-        else if([propertyType isEqualToString:@"NSURL"]) {
-            NSString *str = [NSString stringWithFormat:@"%@", value];
-            NSURL *val = [NSURL URLWithString:str];
-            [self setValue:val forKey:propertyName];
-        }
-        // NSArray, NSMutableArray
-        else if([propertyType isEqualToString:@"NSArray"] ||
-                [propertyType isEqualToString:@"NSMutableArray"]) {
-            
-            NSMutableArray *arr = [NSMutableArray array];
-            for(id JSONObject in value) {
-                PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject];
-                [arr addObject:val];
-            }
-            
-            [self setValue:arr forKey:propertyName];
-            
-        }
-        // Other LLModel or an unidentified value
-        else {
-            BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
-            if(isPNObjectSubclass) {
-                PNObject *val = [[NSClassFromString(propertyType) alloc] initWithJSON:value];
-                [self setValue:val forKey:propertyName];
-            }
-            else {
-                NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName];
-                NSLog(@"%@",errorStr);
-            }
-        }*/
-        
     }
     
 }
+
+#pragma mark PNObjectSubclassing
+
++ (NSString *) objectClassName {
+    
+}
+
++ (NSDictionary *) objcetMapping {
+    
+}
+
+#pragma mark -
 
 @end

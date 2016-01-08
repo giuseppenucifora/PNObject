@@ -7,12 +7,17 @@
 //
 
 #import "PNObjectAppDelegate.h"
+#import "PNObject.h"
 
 @implementation PNObjectAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [PNObjectConfig sharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
+                                                       EnvironmentStage : @"https://stage.it/api/v1",
+                                                       //EnvironmentProduction : @"https://production.it/api/v1"
+                                                       }];
     return YES;
 }
 

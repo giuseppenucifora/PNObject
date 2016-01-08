@@ -8,7 +8,7 @@ target 'PNObject_Example' do
   pod 'PEAR-FileManager-iOS'
   pod 'NSDate_Utils'
   pod 'UIDevice-Utils'
-  pod 'AFNetworking'
+  pod 'AFNetworking', 
 end
 
 target 'PNObject_Tests' do
