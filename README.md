@@ -20,6 +20,49 @@ it, simply add the following line to your Podfile:
 pod "PNObject"
 ```
 
+##Usage Example
+
+PNObject Subclass
+
+```ruby
+Customer.h
+
+#import <PNObject/PNObject.h>
+
+@interface Customer : PNObject <PNObjectSubclassing>
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *lastName;
+@property (nonatomic, strong) NSString *email;
+@property (nonatomic, strong) NSDate *birthDate;
+@property (nonatomic, strong) PNAddress *address;
+
+@end
+```
+
+```ruby
+#import "Customer.h"
+
+@implementation Customer
+
++ (NSString *) objectClassName {
+return @"Customer";
+}
+
+
++ (NSDictionary *) objcetMapping {
+NSDictionary *mapping = @{
+@"name":@"first_name",
+@"surname":@"last_name",
+@"email":@"email",
+@"birthDate":@"birth_date",
+@"address":@{@"key":@"address",@"type":@"PNAddress"},
+};
+return mapping;
+}
+```
+
+
 ## Author
 
 Giuseppe Nucifora, me@giuseppenucifora.com

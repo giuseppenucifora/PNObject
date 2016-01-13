@@ -10,7 +10,8 @@
 #import "PNObjectSubclassing.h"
 #import "PNObjectConfig.h"
 
-@interface PNObject : NSObject <PNObjectSubclassing>
+
+@interface PNObject : NSObject
 
 @property (nonatomic, strong) NSString *objID;
 @property (nonatomic, strong) NSDate *createdDate;
@@ -18,6 +19,5 @@
 
 - (instancetype) initWithJSON:(NSDictionary*) JSON;
 
-
-
++ (void) get;
 @end
