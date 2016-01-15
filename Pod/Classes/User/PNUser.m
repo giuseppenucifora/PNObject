@@ -16,7 +16,7 @@ static bool isFirstAccess = YES;
 
 #pragma mark - Public Method
 
-+ (id)sharedInstance
++ (instancetype)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -27,29 +27,33 @@ static bool isFirstAccess = YES;
     return SINGLETON;
 }
 
++ (instancetype) currentUser {
+    return [self sharedInstance];
+}
+
 #pragma mark - Life Cycle
 
-+ (id) allocWithZone:(NSZone *)zone
++ (instancetype) allocWithZone:(NSZone *)zone
 {
     return [self sharedInstance];
 }
 
-+ (id)copyWithZone:(struct _NSZone *)zone
++ (instancetype)copyWithZone:(struct _NSZone *)zone
 {
     return [self sharedInstance];
 }
 
-+ (id)mutableCopyWithZone:(struct _NSZone *)zone
++ (instancetype)mutableCopyWithZone:(struct _NSZone *)zone
 {
     return [self sharedInstance];
 }
 
-- (id)copy
+- (instancetype)copy
 {
     return [[PNUser alloc] init];
 }
 
-- (id)mutableCopy
+- (instancetype)mutableCopy
 {
     return [[PNUser alloc] init];
 }
@@ -65,6 +69,35 @@ static bool isFirstAccess = YES;
     self = [super init];
     return self;
 }
+
++ (NSDictionary *)objcetMapping {
+    NSDictionary *mapping = @{@"userId":@"id",
+                              @"firstName":@"firstName",
+                              @"lastName":@"lastName",
+                              @"profileImage":@"profileImage",
+                              @"sex":@"sex",
+                              @"birthDate":@"birthDate",
+                              @"phone":@"phone",
+                              @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
+                              @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
+                              @"hasVerifiedEmail":@"hasVerifiedEmail",
+                              @"emailVerifiedDate":@"emailVerifiedDate",
+                              @"email":@"email",
+                              @"username":@"username",
+                              @"publicProfile":@"public_profile",
+                              @"loginCount":@"login_count",
+                              @"createdAt":@"created_at",
+                              @"facebookId":@"facebookId",
+                              @"facebookAccessToken":@"facebookAccessToken",
+                              @"address":@{@"key":@"address",@"type":@"PNAddress"}
+                              };
+    return mapping;
+}
+
++ (NSString *)objectClassName {
+    return  @"User";
+}
+
 
 
 @end

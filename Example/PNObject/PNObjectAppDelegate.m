@@ -25,12 +25,12 @@
      
      [PNObject get];*/
     
-    /*PNUser *user = [PNUser sharedInstance];
-     [user setFirstName:@"peppe"];
-     [user setLastName:@"nucifora"];
-     
-     NSLog(@"user : %@",[user getObject]);
-     */
+    PNUser *user = [PNUser sharedInstance];
+    [user setFirstName:@"peppe"];
+    [user setLastName:@"nucifora"];
+    
+    NSLog(@"user : %@",[user getObject]);
+    
     return YES;
 }
 

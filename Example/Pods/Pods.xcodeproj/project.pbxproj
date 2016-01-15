@@ -105,6 +105,9 @@
 		66A27898E989A3FA5C15AA671C4536F0 /* EXPMatchers+beIdenticalTo.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC2BD19C88FB68928A4ACDD68A9A724 /* EXPMatchers+beIdenticalTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		67459AD239EF669A365519E06B45DCFE /* EXPExpect.h in Headers */ = {isa = PBXBuildFile; fileRef = A9C30C86ADD90253F9625EE97E677992 /* EXPExpect.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68152D921ABF6A423C192C04FDF94F0F /* AFNetworkReachabilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D147D9B92257C3B94B576C35DC424BF /* AFNetworkReachabilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6846FE011C496CB400FD46A7 /* NSDate_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BCF0B57CC5FE7DB7261CE7C60EAE6C1 /* NSDate_Utils.framework */; };
+		6846FE021C496CB400FD46A7 /* PEAR_FileManager_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27053B717A2E6C890A9A5567BE892759 /* PEAR_FileManager_iOS.framework */; };
+		6846FE031C496CB400FD46A7 /* UIDevice_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB327A2C4264D8D750739600AF58AB3C /* UIDevice_Utils.framework */; };
 		68A38977EBAE334DC3C22386D00D2622 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C0656AD6CD15FA1E1CD0B12E72DBAC /* AFNetworkReachabilityManager.m */; };
 		6E1D978790705E137FDE439AA68DD3AA /* EXPFloatTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = 61F3C1DB6F4E00473063EACFC5515CC3 /* EXPFloatTuple.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EBB812C79C5E73FF5263EAB649CEEBC /* SPTTestSuite.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7319124E858F652E78EEE78BFCD99A /* SPTTestSuite.m */; };
@@ -639,6 +642,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6846FE011C496CB400FD46A7 /* NSDate_Utils.framework in Frameworks */,
+				6846FE021C496CB400FD46A7 /* PEAR_FileManager_iOS.framework in Frameworks */,
+				6846FE031C496CB400FD46A7 /* UIDevice_Utils.framework in Frameworks */,
 				16A9A6CCC4F249BFD94D85BEE83DCF72 /* AFNetworking.framework in Frameworks */,
 				CE254752A8C232EBE37D84810F7724E5 /* Foundation.framework in Frameworks */,
 			);

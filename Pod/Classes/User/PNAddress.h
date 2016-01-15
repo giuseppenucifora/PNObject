@@ -6,8 +6,8 @@
 //
 //
 
-#import <PNObject/PNObject.h>
-#import <PNObject/PNLocation.h>
+#import "PNObject.h"
+#import "PNLocation.h"
 
 @interface PNAddress : PNObject <PNObjectSubclassing>
 
