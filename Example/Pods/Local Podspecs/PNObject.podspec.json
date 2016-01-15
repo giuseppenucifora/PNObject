@@ -1,15 +1,15 @@
 {
   "name": "PNObject",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "summary": "A short description of PNObject.",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/PNObject",
+  "homepage": "https://github.com/giuseppenucifora/PNObject",
   "license": "MIT",
   "authors": {
     "Giuseppe Nucifora": "me@giuseppenucifora.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/PNObject.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/giuseppenucifora/PNObject.git",
+    "tag": "0.3.0"
   },
   "platforms": {
     "ios": "7.0"
@@ -19,6 +19,11 @@
   "resource_bundles": {
     "PNObject": [
       "Pod/Assets/*.png"
+    ]
+  },
+  "dependencies": {
+    "AFNetworking": [
+
     ]
   }
 }

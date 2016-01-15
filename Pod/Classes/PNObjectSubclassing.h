@@ -17,4 +17,5 @@
 
 + (NSDictionary *) objcetMapping;
 
+
 @end

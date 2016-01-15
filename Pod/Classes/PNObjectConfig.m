@@ -16,9 +16,11 @@ NSString* const EnvironmentDevelopment = @"PNObjectConfigDevelopment";
 @interface PNObjectConfig()
 
 @property (nonatomic, strong) NSMutableDictionary *configuration;
+@property (nonatomic, strong) NSString *currentEnvironment;
 @property (nonatomic) BOOL devEnabled;
 @property (nonatomic) BOOL stageEnabled;
 @property (nonatomic) BOOL productionEnabled;
+
 
 @end
 
@@ -32,7 +34,7 @@ static bool isFirstAccess = YES;
 
 #pragma mark - Public Method
 
-+ (id)sharedInstance
++ (instancetype)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -45,7 +47,7 @@ static bool isFirstAccess = YES;
 
 #pragma mark - Life Cycle
 
-+ (instancetype) sharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments {
++ (instancetype) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments {
     SINGLETON = [self sharedInstance];
     
     if (SINGLETON) {
@@ -55,7 +57,7 @@ static bool isFirstAccess = YES;
                            EnvironmentDevelopment : ^{
                 NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
                 if (endpointUrl) {
-                    [SINGLETON.configuration setValue:endpointUrl forKey:key];
+                    [SINGLETON.configuration setValue:[endpointUrl absoluteString] forKey:key];
                     SINGLETON.devEnabled = YES;
                 }
                 
@@ -63,14 +65,14 @@ static bool isFirstAccess = YES;
                            EnvironmentStage : ^{
                 NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
                 if (endpointUrl) {
-                    [SINGLETON.configuration setValue:endpointUrl forKey:key];
+                    [SINGLETON.configuration setValue:[endpointUrl absoluteString] forKey:key];
                     SINGLETON.stageEnabled = YES;
                 }
             },
                            EnvironmentProduction : ^{
                 NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
                 if (endpointUrl) {
-                    [SINGLETON.configuration setValue:endpointUrl forKey:key];
+                    [SINGLETON.configuration setValue:[endpointUrl absoluteString] forKey:key];
                     SINGLETON.productionEnabled = YES;
                 }
             }
@@ -79,8 +81,8 @@ static bool isFirstAccess = YES;
                            })();
         }
         NSAssert(SINGLETON.productionEnabled, @"EnvironmentProduction must be valid endpoint url");
+        SINGLETON.currentEnvironment = [[SINGLETON configuration] objectForKey:EnvironmentProduction];
         
-        NSLog(@"Config : %@",SINGLETON.configuration);
     }
     return SINGLETON;
 }
@@ -126,21 +128,37 @@ static bool isFirstAccess = YES;
     return self;
 }
 
-- (void) enableEnvironment:(Environment) env {
+- (void) setEnvironment:(Environment) env {
+    
+    _currentEnvironment = nil;
     
     switch (env) {
         case Development:{
-            
+            if (_devEnabled) {
+                _currentEnvironment = [_configuration objectForKey:EnvironmentDevelopment];
+            }
         }
             break;
         case Stage:{
-            
+            if (_stageEnabled) {
+                _currentEnvironment = [_configuration objectForKey:EnvironmentStage];
+            }
         }
             break;
         case Production:
         default:
+            if (_productionEnabled) {
+                _currentEnvironment = [_configuration objectForKey:EnvironmentProduction];
+            }
             break;
     }
+    
+    NSAssert(_currentEnvironment,@"Selected environment generate error. Please check configuration");
+    
+}
+
+- (NSString *) PNObjEndpoint {
+    return _currentEnvironment;
 }
 
 @end

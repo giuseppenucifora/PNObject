@@ -10,6 +10,7 @@
 #import <PNObjectProperty.h>
 #import <NSDate_Utils/NSDate+NSDate_Util.h>
 #import <AFNetworking/AFNetworking.h>
+#import "User/PNUser.h"
 
 @interface PNObject()
 
@@ -25,8 +26,13 @@
     self = [super init];
     
     if (self) {
-        
-        
+        if ([[self class] isSubclassOfClass:[PNObject class]]) {
+            NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing");
+            
+            _objectMapping = [[self class] objcetMapping];
+            
+            NSAssert(_objectMapping, @"You must create objectMapping");
+        }
     }
     return self;
 }
@@ -34,6 +40,7 @@
 - (instancetype) initWithJSON:(NSDictionary*) JSON {
     self = [self init];
     if (self) {
+        
         NSAssert(_objectMapping, @"You must create objectMapping");
         _JSON = [[NSDictionary alloc] initWithDictionary:JSON];
         
@@ -179,8 +186,6 @@
             continue;
         }
         
-        //NSLog(@"Looking for : %@ -- %@ -- %@", propertyType, mappedJSONKey, value);
-        
         
         ((void (^)())@{
                        @"c" : ^{
@@ -217,7 +222,7 @@
         },
                        @"NSDate" : ^{
             NSString *str = [NSString stringWithFormat:@"%@", value];
-            NSDate *val = [NSDate dateFromString:str];
+            NSDate *val = [[NSDate dateFromString:str withFormat:kNSDateHelperFormatSQLDateWithTime] toLocalTime];
             [self setValue:val forKey:propertyName];
         },
                        @"NSArray" : ^{
@@ -253,16 +258,8 @@
     
 }
 
-#pragma mark PNObjectSubclassing
-
-+ (NSString *) objectClassName {
-    
+- (NSString*) description {
+    return [_JSON description];
 }
-
-+ (NSDictionary *) objcetMapping {
-    
-}
-
-#pragma mark -
 
 @end

@@ -26,6 +26,8 @@ extern NSString* const EnvironmentDevelopment;
  * gets singleton object.
  * @return singleton
  */
++ (instancetype) sharedInstance;
+
 /**
  *
  *
@@ -38,10 +40,10 @@ extern NSString* const EnvironmentDevelopment;
  *
  *  @return singleton
  */
-+ (instancetype) sharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments;
++ (instancetype) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments;
 
-- (void) enableEnvironment:(Environment) env;
+- (void) setEnvironment:(Environment) env;
 
-
+- (NSString *) PNObjEndpoint;
 
 @end
