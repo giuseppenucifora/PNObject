@@ -14,7 +14,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
+    /*[PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
                                                            EnvironmentStage : @"https://stage.it/api/v1",
                                                            EnvironmentProduction : @"http://pnobjectdemo.giuseppenucifora.com/"
                                                            }];
@@ -22,7 +22,7 @@
     [[PNObjectConfig sharedInstance] setEnvironment:Production];
     
     
-    [PNObject get];
+    [PNObject get];*/
     
     return YES;
 }

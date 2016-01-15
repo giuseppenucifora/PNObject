@@ -31,6 +31,4 @@
 @property (nonatomic, strong) NSString *facebookAccessToken;
 @property (nonatomic, strong) PNAddress *address;
 
-
-
 @end

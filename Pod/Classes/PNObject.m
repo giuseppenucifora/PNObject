@@ -22,32 +22,6 @@
 
 @implementation PNObject
 
-
-+ (void) get {
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
-    manager.securityPolicy.allowInvalidCertificates = YES;
-    
-    [manager GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",@"User"]  parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        
-        NSLog(@"JSON: %@", responseObject);
-        NSLog(@"JSON: %@", [responseObject class]);
-        
-        PNUser *user = [[PNUser alloc] initWithJSON:responseObject];
-        
-        NSLog(@"%@",user);
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        NSLog(@"Error: %@", error);
-        
-    }];
-}
-
-
 - (instancetype) init {
     self = [super init];
     

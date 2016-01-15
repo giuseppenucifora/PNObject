@@ -19,5 +19,4 @@
 
 - (instancetype) initWithJSON:(NSDictionary*) JSON;
 
-+ (void) get;
 @end
