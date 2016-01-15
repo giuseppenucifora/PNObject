@@ -1475,14 +1475,14 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAC4420D53FB5288CEBCE296412C16CB /* PNAddress.h in Headers */,
-				EA8E630DD2C78A4A5DC0F8DEF3484D62 /* PNLocation.h in Headers */,
 				941354E1B678B9221BD1C15EE37BA55E /* PNObject-umbrella.h in Headers */,
 				295C2B75DF7492F4AF35CDF93891E816 /* PNObject.h in Headers */,
-				CE706AD64F95B815E15F7154C20C9B8C /* PNObjectConfig.h in Headers */,
-				0149AF8689F2AAE11A2E689E6EE912DD /* PNObjectProperty.h in Headers */,
 				5D8BB0A730FC0A0AE17B84459F953E5F /* PNObjectSubclassing.h in Headers */,
+				CE706AD64F95B815E15F7154C20C9B8C /* PNObjectConfig.h in Headers */,
 				F6BB55A8386E361E9D22492FB3C2E868 /* PNUser.h in Headers */,
+				CAC4420D53FB5288CEBCE296412C16CB /* PNAddress.h in Headers */,
+				EA8E630DD2C78A4A5DC0F8DEF3484D62 /* PNLocation.h in Headers */,
+				0149AF8689F2AAE11A2E689E6EE912DD /* PNObjectProperty.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

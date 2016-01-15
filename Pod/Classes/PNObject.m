@@ -10,7 +10,7 @@
 #import <PNObjectProperty.h>
 #import <NSDate_Utils/NSDate+NSDate_Util.h>
 #import <AFNetworking/AFNetworking.h>
-#import "User/PNUser.h"
+#import "PNObject/PNUser.h"
 
 @interface PNObject()
 
@@ -21,6 +21,32 @@
 @end
 
 @implementation PNObject
+
+
++ (void) get {
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    [manager GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",@"User"]  parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        
+        
+        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"JSON: %@", [responseObject class]);
+        
+        PNUser *user = [[PNUser alloc] initWithJSON:responseObject];
+        
+        NSLog(@"%@",user);
+        
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        
+        NSLog(@"Error: %@", error);
+        
+    }];
+}
+
 
 - (instancetype) init {
     self = [super init];
@@ -123,7 +149,7 @@
         else {
             BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
             if(isPNObjectSubclass) {
-                SEL selector = NSSelectorFromString(@"reverseMapping");
+                SEL selector = NSSelectorFromString(@"getObject");
                 NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
                                             [[PNObject class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
@@ -147,6 +173,10 @@
     _JSON = JSON;
     
     return _JSON;
+}
+
+- (NSDictionary*) getObject {
+    return [self reverseMapping];
 }
 
 - (void)populateObjectFromJSON:(id)JSON

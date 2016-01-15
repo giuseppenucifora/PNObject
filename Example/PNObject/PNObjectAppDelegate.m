@@ -8,6 +8,7 @@
 
 #import "PNObjectAppDelegate.h"
 #import "PNObject.h"
+#import "PNUser.h"
 
 @implementation PNObjectAppDelegate
 
@@ -15,15 +16,21 @@
 {
     // Override point for customization after application launch.
     /*[PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
-                                                           EnvironmentStage : @"https://stage.it/api/v1",
-                                                           EnvironmentProduction : @"http://pnobjectdemo.giuseppenucifora.com/"
-                                                           }];
+     EnvironmentStage : @"https://stage.it/api/v1",
+     EnvironmentProduction : @"http://pnobjectdemo.giuseppenucifora.com/"
+     }];
+     
+     [[PNObjectConfig sharedInstance] setEnvironment:Production];
+     
+     
+     [PNObject get];*/
     
-    [[PNObjectConfig sharedInstance] setEnvironment:Production];
-    
-    
-    [PNObject get];*/
-    
+    /*PNUser *user = [PNUser sharedInstance];
+     [user setFirstName:@"peppe"];
+     [user setLastName:@"nucifora"];
+     
+     NSLog(@"user : %@",[user getObject]);
+     */
     return YES;
 }
 
