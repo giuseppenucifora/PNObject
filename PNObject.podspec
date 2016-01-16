@@ -40,5 +40,7 @@ s.dependency 'PEAR-FileManager-iOS'
 s.dependency 'NSDate_Utils'
 s.dependency 'UIDevice-Utils'
 s.dependency 'nv-ios-http-status'
+s.dependency 'NSString-Helper'
+s.dependency 'CodFis-Helper'
 
 end

@@ -37,16 +37,29 @@ static bool isFirstAccess = YES;
 }
 
 - (NSString * _Nullable) objectName:(id _Nonnull) object {
-    NSString *className;
     
     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
     
     if(isPNObjectSubclass) {
         
-        if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)] && [(PNObject*)[object subClassDelegate] respondsToSelector:@selector(objectClassName)]) {
+        if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
-            return className = (NSString *)[[(PNObject*)object class] performSelector:@selector(objectClassName)];
+            NSLogDebug(@"%@",[object subClassDelegate]);
             
+            //if ([[object subClassDelegate] respondsToSelector:@selector(objectClassName)]) {
+            
+            @try {
+                return (NSString *)[[object class] performSelector:@selector(objectClassName)];
+            }
+            @catch (NSException *exception) {
+                return nil;
+            }
+            @finally {
+                
+            }
+            
+            
+            //}
         }
     }
     return nil;
@@ -117,12 +130,10 @@ static bool isFirstAccess = YES;
         
         if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
-            id value;
-            
             SEL selector = NSSelectorFromString(@"getObject");
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
             [invocation setSelector:selector];
-            [invocation setTarget:value];
+            [invocation setTarget:object];
             [invocation invoke];
             
             NSDictionary *objectDict;

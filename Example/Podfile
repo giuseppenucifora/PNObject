@@ -10,6 +10,8 @@ target 'PNObject_Example' do
     pod 'UIDevice-Utils'
     pod 'AFNetworking'
     pod 'nv-ios-http-status'
+    pod 'NSString-Helper'
+    pod 'CodFis-Helper'
 end
 
 target 'PNObject_Tests' do

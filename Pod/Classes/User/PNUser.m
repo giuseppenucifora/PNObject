@@ -71,7 +71,14 @@ static bool isFirstAccess = YES;
         [self doesNotRecognizeSelector:_cmd];
     }
     self = [super init];
+    if (self) {
+        [self setSubClassDelegate:self];
+    }
     return self;
+}
+
+- (void) setEmail:(NSString *)email {
+    
 }
 
 #pragma mark PNObjectSubclassing Protocol 

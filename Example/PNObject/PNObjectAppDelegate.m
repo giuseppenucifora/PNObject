@@ -29,8 +29,12 @@
     PNUser *user = [PNUser currentUser];
     [user setFirstName:@"peppe"];
     [user setLastName:@"nucifora"];
+    [user setUsername:@"giuseppe.nucifora"];
     
-    NSLog(@"user : %@",[user getObject]);
+    
+    PNUser *object = [user saveLocally];
+    
+    NSLog(@"User : %@",[object getObject]);
     
     return YES;
 }
