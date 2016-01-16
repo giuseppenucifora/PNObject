@@ -7,17 +7,35 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PNObjectSubclassing.h"
 #import "PNObjectConfig.h"
+#import "PNObjectModel.h"
 
+@protocol PNObjectSubclassing <NSObject>
+
+@required
+
++ (NSString * _Nonnull ) objectClassName;
+
++ (NSDictionary * _Nonnull) objcetMapping;
+
++ (BOOL) singleInstance;
+
+
+@end
 
 @interface PNObject : NSObject
 
-@property (nonatomic, strong) NSString *objID;
-@property (nonatomic, strong) NSDate *createdDate;
-@property (nonatomic, strong, getter=getObject) NSDictionary *objectMapping;
+@property (nonatomic, strong) NSString * _Nonnull objID;
+@property (nonatomic, strong) NSDate * _Nonnull createdDate;
+@property (nonatomic, strong, getter=getObject) NSDictionary * _Nonnull objectMapping;
+@property (nonatomic, assign) id<PNObjectSubclassing> _Nonnull subClassDelegate;
 
-- (instancetype) initWithJSON:(NSDictionary*) JSON;
+- (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON;
+
+- (id _Nonnull) saveLocally;
+
+- (void) saveLocallyInBackGroundWithBlock:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
 
 + (void) get;
+
 @end

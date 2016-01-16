@@ -1,0 +1,6 @@
+framework module nv_ios_http_status {
+  umbrella header "nv-ios-http-status-umbrella.h"
+
+  export *
+  module * { export * }
+}

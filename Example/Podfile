@@ -9,6 +9,7 @@ target 'PNObject_Example' do
     pod 'NSDate_Utils'
     pod 'UIDevice-Utils'
     pod 'AFNetworking'
+    pod 'nv-ios-http-status'
 end
 
 target 'PNObject_Tests' do

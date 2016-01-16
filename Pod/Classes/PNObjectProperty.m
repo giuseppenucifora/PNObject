@@ -13,18 +13,18 @@
 
 static BOOL property_getTypeString( objc_property_t property, char *buffer )
 {
-	const char * attrs = property_getAttributes( property );
-	if ( attrs == NULL )
-		return NO;
-
-	const char * e = strchr( attrs, ',' );
-	if ( e == NULL )
-		return NO;
-
-	int len = (int)(e - attrs);
-	memcpy( buffer, attrs, len );
-	buffer[len] = '\0';
-
+    const char * attrs = property_getAttributes( property );
+    if ( attrs == NULL )
+        return NO;
+    
+    const char * e = strchr( attrs, ',' );
+    if ( e == NULL )
+        return NO;
+    
+    int len = (int)(e - attrs);
+    memcpy( buffer, attrs, len );
+    buffer[len] = '\0';
+    
     return YES;
 }
 
@@ -63,7 +63,7 @@ static BOOL property_getTypeString( objc_property_t property, char *buffer )
                 propertyType = [propertyType substringWithRange:subStrRange];
             }
             
-            //NSLog(@"Prop type & name: %@ -- %@", propertyType, propertyName);
+            NSLogDebug(@"Prop type & name: %@ -- %@", propertyType, propertyName);
             
             [results setObject:propertyType forKey:propertyName];
         }

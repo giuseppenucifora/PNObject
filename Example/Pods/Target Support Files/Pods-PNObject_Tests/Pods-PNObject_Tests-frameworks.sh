@@ -85,7 +85,11 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-PNObject_Tests/AFNetworking.framework"
+  install_framework "Pods-PNObject_Tests/NSDate_Utils.framework"
+  install_framework "Pods-PNObject_Tests/PEAR_FileManager_iOS.framework"
   install_framework "Pods-PNObject_Tests/PNObject.framework"
+  install_framework "Pods-PNObject_Tests/UIDevice_Utils.framework"
+  install_framework "Pods-PNObject_Tests/nv_ios_http_status.framework"
   install_framework "Pods-PNObject_Tests/Expecta.framework"
   install_framework "Pods-PNObject_Tests/Expecta_Snapshots.framework"
   install_framework "Pods-PNObject_Tests/FBSnapshotTestCase.framework"
@@ -93,7 +97,11 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-PNObject_Tests/AFNetworking.framework"
+  install_framework "Pods-PNObject_Tests/NSDate_Utils.framework"
+  install_framework "Pods-PNObject_Tests/PEAR_FileManager_iOS.framework"
   install_framework "Pods-PNObject_Tests/PNObject.framework"
+  install_framework "Pods-PNObject_Tests/UIDevice_Utils.framework"
+  install_framework "Pods-PNObject_Tests/nv_ios_http_status.framework"
   install_framework "Pods-PNObject_Tests/Expecta.framework"
   install_framework "Pods-PNObject_Tests/Expecta_Snapshots.framework"
   install_framework "Pods-PNObject_Tests/FBSnapshotTestCase.framework"

@@ -15,17 +15,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    /*[PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
-     EnvironmentStage : @"https://stage.it/api/v1",
-     EnvironmentProduction : @"http://pnobjectdemo.giuseppenucifora.com/"
-     }];
-     
-     [[PNObjectConfig sharedInstance] setEnvironment:Production];
-     
-     
-     [PNObject get];*/
+    [PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
+                                                           EnvironmentStage : @"https://stage.it/api/v1",
+                                                           EnvironmentProduction : @"http://pnobjectdemo.giuseppenucifora.com/"
+                                                           }];
     
-    PNUser *user = [PNUser sharedInstance];
+    [[PNObjectConfig sharedInstance] setEnvironment:Production];
+    [[[PNObjectConfig sharedInstance] manager] setSecurityPolicy:[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate]];
+    [[PNObjectConfig sharedInstance] manager].securityPolicy.allowInvalidCertificates = YES;
+    
+    //[PNObject get];*/
+    
+    PNUser *user = [PNUser currentUser];
     [user setFirstName:@"peppe"];
     [user setLastName:@"nucifora"];
     

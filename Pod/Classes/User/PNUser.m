@@ -8,6 +8,10 @@
 
 #import "PNUser.h"
 
+@interface PNUser() <PNObjectSubclassing>
+
+@end
+
 @implementation PNUser
 
 static PNUser *SINGLETON = nil;
@@ -70,7 +74,10 @@ static bool isFirstAccess = YES;
     return self;
 }
 
+#pragma mark PNObjectSubclassing Protocol 
+
 + (NSDictionary *)objcetMapping {
+    
     NSDictionary *mapping = @{@"userId":@"id",
                               @"firstName":@"firstName",
                               @"lastName":@"lastName",
@@ -98,6 +105,11 @@ static bool isFirstAccess = YES;
     return  @"User";
 }
 
++ (BOOL) singleInstance {
+    return YES;
+}
+
+#pragma mark -
 
 
 @end

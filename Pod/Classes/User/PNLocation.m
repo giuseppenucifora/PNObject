@@ -22,4 +22,8 @@
     return mapping;
 }
 
++ (BOOL)singleInstance {
+    return NO;
+}
+
 @end

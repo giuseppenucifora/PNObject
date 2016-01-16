@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
 s.name             = "PNObject"
-s.version          = "0.3.0"
-s.summary          = "A short description of PNObject."
+s.version          = "0.1.0"
+s.summary          = "PNObject."
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -36,4 +36,9 @@ s.resource_bundles = {
 # s.public_header_files = 'Pod/Classes/**/*.h'
 # s.frameworks = 'UIKit', 'MapKit'
 s.dependency 'AFNetworking'
+s.dependency 'PEAR-FileManager-iOS'
+s.dependency 'NSDate_Utils'
+s.dependency 'UIDevice-Utils'
+s.dependency 'nv-ios-http-status'
+
 end

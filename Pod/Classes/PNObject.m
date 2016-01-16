@@ -12,37 +12,39 @@
 #import <AFNetworking/AFNetworking.h>
 #import "PNObject/PNUser.h"
 
-@interface PNObject()
+#define PNOBJECT_DIR @"PNObjects"
+
+
+@interface PNObject() <PNObjectPersistency>
+
+@property (nonatomic, strong) PNObjectModel *objectModel;
 
 @property (nonatomic, strong) NSDictionary *JSON;
 
 @property (nonatomic, strong) NSString *endPoint;
 
+@property (nonatomic) BOOL singleInstance;
+
 @end
 
 @implementation PNObject
 
-
 + (void) get {
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
-    manager.securityPolicy.allowInvalidCertificates = YES;
-    
-    [manager GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",@"User"]  parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",@"User"]  parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
         
-        NSLog(@"JSON: %@", responseObject);
-        NSLog(@"JSON: %@", [responseObject class]);
+        NSLogDebug(@"JSON: %@", responseObject);
+        NSLogDebug(@"JSON: %@", [responseObject class]);
         
         PNUser *user = [[PNUser alloc] initWithJSON:responseObject];
         
-        NSLog(@"%@",user);
+        NSLogDebug(@"%@",user);
         
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         
-        NSLog(@"Error: %@", error);
+        NSLogDebug(@"Error: %@", error);
         
     }];
 }
@@ -58,6 +60,11 @@
             _objectMapping = [[self class] objcetMapping];
             
             NSAssert(_objectMapping, @"You must create objectMapping");
+            
+            _singleInstance = [[self class] singleInstance];
+            
+            _objectModel = [PNObjectModel sharedInstance];
+            [_objectModel setPersistencyDelegate:self];
         }
     }
     return self;
@@ -129,12 +136,11 @@
                 [propertyType isEqualToString:@"NSMutableArray"]) {
             
             NSMutableArray *arr = [NSMutableArray array];
-            for(id LLObject in value) {
-                SEL selector = NSSelectorFromString(@"reverseMapping");
-                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
-                                            [[PNObject class] instanceMethodSignatureForSelector:selector]];
+            for(id PNObject in value) {
+                SEL selector = NSSelectorFromString(@"getObject");
+                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature: [[PNObject class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
-                [invocation setTarget:LLObject];
+                [invocation setTarget:PNObject];
                 [invocation invoke];
                 NSDictionary *returnValue;
                 [invocation getReturnValue:&returnValue];
@@ -145,13 +151,12 @@
             value = arr;
             
         }
-        // Other LLModel or an unidentified value
+        // Other PNObject or an unidentified value
         else {
             BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
             if(isPNObjectSubclass) {
                 SEL selector = NSSelectorFromString(@"getObject");
-                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
-                                            [[PNObject class] instanceMethodSignatureForSelector:selector]];
+                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
                 [invocation setTarget:value];
                 [invocation invoke];
@@ -281,7 +286,7 @@
                            }
                            else {
                                NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName];
-                               NSLog(@"%@",errorStr);
+                               NSLogDebug(@"%@",errorStr);
                            }
                        })();
     }
@@ -291,5 +296,53 @@
 - (NSString*) description {
     return [_JSON description];
 }
+
+#pragma mark PNObjectPersistency protocol
+
+- (BOOL) initObjectPersistency {
+    
+    BOOL isDir=YES;
+    NSError *error;
+    
+    NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSFileManager *fileManager= [NSFileManager defaultManager];
+    
+    if(![fileManager fileExistsAtPath:[docDir stringByAppendingFormat:@"/%@",PNOBJECT_DIR] isDirectory:&isDir]) {
+        
+        if (![[NSFileManager defaultManager] createDirectoryAtPath:[docDir stringByAppendingFormat:@"/%@",PNOBJECT_DIR] withIntermediateDirectories:NO attributes:nil error:&error]) {
+#ifdef DEBUG
+            NSLogDebug(@"Create directory error: %@", error);
+#endif
+            return NO;
+        }
+    }
+#ifdef DEBUG
+    NSLogDebug(@"%@",[docDir stringByAppendingFormat:@"/%@",PNOBJECT_DIR]);
+#endif
+    return YES;
+}
+
+- (id _Nonnull) saveLocally {
+    
+    if (_singleInstance) {
+        return [_objectModel saveLocally:self];
+    }
+    else {
+        return [_objectModel pushObjectAndSaveLocally:self];
+    }
+}
+
+- (void) saveLocallyInBackGroundWithBlock:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock; {
+    
+    if (_singleInstance) {
+        return [_objectModel saveLocally:self inBackGroundWithBlock:responseBlock];
+    }
+    else {
+        return [_objectModel pushObjectAndSaveLocally:self inBackGroundWithBlock:responseBlock];
+    }
+}
+
+#pragma mark -
 
 @end

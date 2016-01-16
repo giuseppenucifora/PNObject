@@ -2,8 +2,8 @@
 
 #import "PNObject.h"
 #import "PNObjectConfig.h"
+#import "PNObjectModel.h"
 #import "PNObjectProperty.h"
-#import "PNObjectSubclassing.h"
 #import "PNAddress.h"
 #import "PNLocation.h"
 #import "PNUser.h"

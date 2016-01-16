@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking/AFNetworking.h>
 
 typedef NS_ENUM(NSInteger, Environment) {
     Development,
@@ -20,7 +21,7 @@ extern NSString* const EnvironmentDevelopment;
 
 @interface PNObjectConfig : NSObject
 
-
+@property (nonatomic, strong) AFHTTPSessionManager *manager;
 
 /**
  * gets singleton object.

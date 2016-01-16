@@ -9,7 +9,7 @@
 #import "PNObject.h"
 #import "PNAddress.h"
 
-@interface PNUser : PNObject <PNObjectSubclassing>
+@interface PNUser : PNObject
 
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *firstName;
@@ -30,14 +30,6 @@
 @property (nonatomic, strong) NSString *facebookId;
 @property (nonatomic, strong) NSString *facebookAccessToken;
 @property (nonatomic, strong) PNAddress *address;
-
-/**
- * gets singleton object.
- *
- * @return singleton
- */
-+ (instancetype)sharedInstance;
-
 
 /**
  *  gets singleton object of current user session.

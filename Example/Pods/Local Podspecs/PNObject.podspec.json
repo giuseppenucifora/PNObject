@@ -1,7 +1,7 @@
 {
   "name": "PNObject",
-  "version": "0.3.0",
-  "summary": "A short description of PNObject.",
+  "version": "0.1.0",
+  "summary": "PNObject.",
   "homepage": "https://github.com/giuseppenucifora/PNObject",
   "license": "MIT",
   "authors": {
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/giuseppenucifora/PNObject.git",
-    "tag": "0.3.0"
+    "tag": "0.1.0"
   },
   "platforms": {
     "ios": "7.0"
@@ -23,6 +23,18 @@
   },
   "dependencies": {
     "AFNetworking": [
+
+    ],
+    "PEAR-FileManager-iOS": [
+
+    ],
+    "NSDate_Utils": [
+
+    ],
+    "UIDevice-Utils": [
+
+    ],
+    "nv-ios-http-status": [
 
     ]
   }

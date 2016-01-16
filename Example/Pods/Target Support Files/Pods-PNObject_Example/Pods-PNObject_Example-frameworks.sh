@@ -89,6 +89,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-PNObject_Example/PEAR_FileManager_iOS.framework"
   install_framework "Pods-PNObject_Example/PNObject.framework"
   install_framework "Pods-PNObject_Example/UIDevice_Utils.framework"
+  install_framework "Pods-PNObject_Example/nv_ios_http_status.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-PNObject_Example/AFNetworking.framework"
@@ -96,4 +97,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-PNObject_Example/PEAR_FileManager_iOS.framework"
   install_framework "Pods-PNObject_Example/PNObject.framework"
   install_framework "Pods-PNObject_Example/UIDevice_Utils.framework"
+  install_framework "Pods-PNObject_Example/nv_ios_http_status.framework"
 fi
