@@ -9,8 +9,7 @@
 #import "PNObjectModel.h"
 #import "PNObject.h"
 #import "PEARFileManager.h"
-
-#define DEF_DOCUMENT_ROOT @"Documents"
+#import "PNObjectConstants.h"
 
 @interface PNObjectModel()
 
@@ -118,30 +117,44 @@ static bool isFirstAccess = YES;
         
         if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
+            id value;
+            
+            SEL selector = NSSelectorFromString(@"getObject");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:value];
+            [invocation invoke];
+            
+            NSDictionary *objectDict;
+            [invocation getReturnValue:&objectDict];
+            
+            NSLogDebug(@"%@",objectDict);
+            
+            NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objectDict];
+            
             if ([self issetPNObjectModelForObject:object]) {
-                
-                
-                id value;
-                
-                SEL selector = NSSelectorFromString(@"getObject");
-                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
-                [invocation setSelector:selector];
-                [invocation setTarget:value];
-                [invocation invoke];
-                
-                NSDictionary *objectDict;
-                [invocation getReturnValue:&objectDict];
-                
-                NSLogDebug(@"%@",objectDict);
-                
-                NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objectDict];
-                
-                [_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)];
+                if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
+                    return object;
+                }
+                else {
+                    return [NSError errorWithDomain:NSLocalizedString(@"Object cannot be updated", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                }
             }
+            else {
+                if ([_fileManager createFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
+                    return object;
+                }
+                else {
+                    return [NSError errorWithDomain:NSLocalizedString(@"Object cannot be created", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                }
+            }
+        }
+        else {
+            return [NSError errorWithDomain:NSLocalizedString(@"passed object is not conform to protocol PNObjectSubclassing", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
         }
     }
     else {
-        return [NSError errorWithDomain:NSLocalizedString(@"", @"") code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary *)#>]
+        return [NSError errorWithDomain:NSLocalizedString(@"passed object is not PNObject Subclass", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
     }
 }
 

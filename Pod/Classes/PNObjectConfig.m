@@ -7,6 +7,7 @@
 //
 
 #import "PNObjectConfig.h"
+#import "PNObjectConstants.h"
 
 NSString* const EnvironmentProduction = @"PNObjectConfigEnvProduction";
 NSString* const EnvironmentStage = @"PNObjectConfigEnvStage";

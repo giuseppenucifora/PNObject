@@ -106,6 +106,7 @@
 		66A27898E989A3FA5C15AA671C4536F0 /* EXPMatchers+beIdenticalTo.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CB47106AF4B40907E0AC403B71A12D /* EXPMatchers+beIdenticalTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		67459AD239EF669A365519E06B45DCFE /* EXPExpect.h in Headers */ = {isa = PBXBuildFile; fileRef = EDA6ADC12D0F7F372DAC9AA34A385C83 /* EXPExpect.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68152D921ABF6A423C192C04FDF94F0F /* AFNetworkReachabilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = A9018295309C54342B542AF7EF6F6AD3 /* AFNetworkReachabilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6846FE0B1C4A724600FD46A7 /* PNObjectConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6846FE0A1C4A724600FD46A7 /* PNObjectConstants.h */; };
 		68A38977EBAE334DC3C22386D00D2622 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6BF369FA7CF0E57D30200E38DD31FE /* AFNetworkReachabilityManager.m */; };
 		6C6683061BF6E6BFABB75E4CE8D0C5EA /* PNObject-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D21BA597DC54DA5B79874658C865E54 /* PNObject-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DAD2AD4B15B5665B1F434A1EDB9C5C5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAF17A9413D14E8EBEA17A44DF4A4E1F /* Foundation.framework */; };
@@ -532,6 +533,7 @@
 		64F181C4266B43CBF7F66042F6B4EF46 /* Expecta+Snapshots.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Expecta+Snapshots.modulemap"; sourceTree = "<group>"; };
 		65A8FF91F982A99C2CC3DC728DDCDDA5 /* Specta.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Specta.modulemap; sourceTree = "<group>"; };
 		66590AAD995CB7EE2733821FE60E2C5F /* FBSnapshotTestCase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FBSnapshotTestCase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6846FE0A1C4A724600FD46A7 /* PNObjectConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNObjectConstants.h; sourceTree = "<group>"; };
 		6B05EF3E8CCDE4C8342C989CA6DE8820 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLResponseSerialization.m; path = AFNetworking/AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		6CBABE38C1F703FF64221A82A7BB552B /* nv-ios-http-status-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "nv-ios-http-status-dummy.m"; sourceTree = "<group>"; };
 		6F9A9085A2C4E4521E9014094D0BE101 /* EXPMatchers+postNotification.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+postNotification.m"; path = "Expecta/Matchers/EXPMatchers+postNotification.m"; sourceTree = "<group>"; };
@@ -1256,6 +1258,7 @@
 				9704B49B5CDDDC3EFE793A7E464FBAA6 /* PNObjectModel.m */,
 				00C1D1960D5C260186086329FF4D122C /* PNObjectProperty.h */,
 				735DCF449255661E1EABF73A78597DD4 /* PNObjectProperty.m */,
+				6846FE0A1C4A724600FD46A7 /* PNObjectConstants.h */,
 				F6CCAD15E2935EF6DA7FD0230FEA9FD4 /* User */,
 			);
 			path = Classes;
@@ -1583,6 +1586,7 @@
 			files = (
 				E08E4821C7EA5423B194BA3D6D8F5A08 /* PNAddress.h in Headers */,
 				60FD026D88EBBC2928E1EC08B6047225 /* PNLocation.h in Headers */,
+				6846FE0B1C4A724600FD46A7 /* PNObjectConstants.h in Headers */,
 				6C6683061BF6E6BFABB75E4CE8D0C5EA /* PNObject-umbrella.h in Headers */,
 				D209A2832E3A33F1A12EB9BDC5F17C61 /* PNObject.h in Headers */,
 				4FCC820B8951AFC4E77854084F3DBF39 /* PNObjectConfig.h in Headers */,

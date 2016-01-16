@@ -10,6 +10,7 @@
 #import "PNObjectConfig.h"
 #import "PNObjectModel.h"
 
+
 @protocol PNObjectSubclassing <NSObject>
 
 @required

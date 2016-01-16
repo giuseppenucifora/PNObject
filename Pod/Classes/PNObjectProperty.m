@@ -8,6 +8,7 @@
 
 #import "PNObjectProperty.h"
 #import "objc/runtime.h"
+#import "PNObjectConstants.h"
 
 @implementation PNObjectProperty
 

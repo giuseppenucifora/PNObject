@@ -11,6 +11,7 @@
 #import <NSDate_Utils/NSDate+NSDate_Util.h>
 #import <AFNetworking/AFNetworking.h>
 #import "PNObject/PNUser.h"
+#import "PNObjectConstants.h"
 
 #define PNOBJECT_DIR @"PNObjects"
 
