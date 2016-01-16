@@ -23,7 +23,8 @@
 @property (nonatomic) BOOL hasVerifiedEmail;
 @property (nonatomic, strong) NSDate *emailVerifiedDate;
 @property (nonatomic, strong) NSString *email;
-@property (strong, nonatomic) NSString *username;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
 @property (nonatomic) BOOL publicProfile;
 @property (nonatomic) NSInteger loginCount;
 @property (strong, nonatomic) NSDate *createdAt;
@@ -37,5 +38,9 @@
  *  @return singleton
  */
 + (instancetype) currentUser;
+
+- (BOOL) isValidPassword:(NSString* _Nonnull) password;
+
+- (void) setPassword:(NSString * _Nonnull)password withBlock:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
 
 @end

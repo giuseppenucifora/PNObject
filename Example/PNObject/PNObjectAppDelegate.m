@@ -30,7 +30,7 @@
     [user setFirstName:@"peppe"];
     [user setLastName:@"nucifora"];
     [user setUsername:@"giuseppe.nucifora"];
-    
+    [user setPassword:@"giuseppe.nucifora.password"];
     
     PNUser *object = [user saveLocally];
     

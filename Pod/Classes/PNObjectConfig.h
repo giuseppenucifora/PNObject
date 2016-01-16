@@ -22,6 +22,7 @@ extern NSString* const EnvironmentDevelopment;
 @interface PNObjectConfig : NSObject
 
 @property (nonatomic, strong) AFHTTPSessionManager *manager;
+@property (nonatomic) NSInteger minPasswordLenght;
 
 /**
  * gets singleton object.
@@ -46,5 +47,7 @@ extern NSString* const EnvironmentDevelopment;
 - (void) setEnvironment:(Environment) env;
 
 - (NSString *) PNObjEndpoint;
+
+- (NSString *) minPasswordLenght:(NSUInteger) passLenght;
 
 @end

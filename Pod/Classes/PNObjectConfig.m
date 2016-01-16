@@ -9,6 +9,8 @@
 #import "PNObjectConfig.h"
 #import "PNObjectConstants.h"
 
+NSInteger const minPassLenght = 4;
+
 NSString* const EnvironmentProduction = @"PNObjectConfigEnvProduction";
 NSString* const EnvironmentStage = @"PNObjectConfigEnvStage";
 NSString* const EnvironmentDevelopment = @"PNObjectConfigDevelopment";
@@ -125,6 +127,7 @@ static bool isFirstAccess = YES;
     
     if (self) {
         _configuration = [[NSMutableDictionary alloc] init];
+        _minPasswordLenght = minPassLenght;
     }
     return self;
 }

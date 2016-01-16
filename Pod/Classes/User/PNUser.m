@@ -7,6 +7,9 @@
 //
 
 #import "PNUser.h"
+#import "NSString+Helper.h"
+#import "PNObjectConstants.h"
+
 
 @interface PNUser() <PNObjectSubclassing>
 
@@ -78,7 +81,30 @@ static bool isFirstAccess = YES;
 }
 
 - (void) setEmail:(NSString *)email {
-    
+    if ([email isValidEmail]) {
+        _email = email;
+    }
+    NSLogDebug(@"insertedEmail is not valid.");
+}
+
+- (void) setPassword:(NSString *)password {
+    if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
+        self.password = password;
+    }
+    NSLogDebug(@"Inserted Passord is not valid.Lenght must be >= %ld",(long)[[PNObjectConfig sharedInstance] minPasswordLenght]);
+}
+
+
+- (BOOL) isValidPassword:(NSString* _Nonnull) password {
+    if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
+        return YES;
+    }
+    return NO;
+}
+
+
+- (NSString *) password {
+    return @"password is not readble";
 }
 
 #pragma mark PNObjectSubclassing Protocol 
@@ -92,6 +118,7 @@ static bool isFirstAccess = YES;
                               @"sex":@"sex",
                               @"birthDate":@"birthDate",
                               @"phone":@"phone",
+                              @"password":@"password",
                               @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
                               @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
                               @"hasVerifiedEmail":@"hasVerifiedEmail",

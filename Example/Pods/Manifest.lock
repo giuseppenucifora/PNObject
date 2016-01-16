@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.0.4)
   - AFNetworking/UIKit (3.0.4):
     - AFNetworking/NSURLSession
+  - CodFis-Helper (0.1.2)
   - Expecta (1.0.5)
   - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
@@ -24,11 +25,14 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.0.7):
     - FBSnapshotTestCase/Core
   - NSDate_Utils (0.1.0)
+  - NSString-Helper (1.0.1)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
   - PNObject (0.1.0):
     - AFNetworking
+    - CodFis-Helper
     - NSDate_Utils
+    - NSString-Helper
     - nv-ios-http-status
     - PEAR-FileManager-iOS
     - UIDevice-Utils
@@ -37,10 +41,12 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - CodFis-Helper
   - Expecta
   - Expecta+Snapshots
   - FBSnapshotTestCase
   - NSDate_Utils
+  - NSString-Helper
   - nv-ios-http-status
   - PEAR-FileManager-iOS
   - PNObject (from `../`)
@@ -53,16 +59,18 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
+  CodFis-Helper: f303810699f22dbcba8fb8c600545ac91fc3ec42
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
   NSDate_Utils: 4a57f91094123d5b7600c7de8c9ad9e1d43306a3
+  NSString-Helper: e26909c87694add9be022ca24e856e3b6148fe89
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: 4e3c977e357abf81fe9c4b5e8f51e9fb56974a41
+  PNObject: b71ba455c15aedd1233cdf02bcf65d348d96da72
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIDevice-Utils: 14362004e88f8cc05d8ec68369724a5972faadec
 
-PODFILE CHECKSUM: 9b08273822dafee56801949d92d6fad59e954459
+PODFILE CHECKSUM: 0d7631fa9630897cdcd1e75178adc74239fcf568
 
 COCOAPODS: 1.0.0.beta.2

@@ -85,7 +85,9 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-PNObject_Tests/AFNetworking.framework"
+  install_framework "Pods-PNObject_Tests/CodFis_Helper.framework"
   install_framework "Pods-PNObject_Tests/NSDate_Utils.framework"
+  install_framework "Pods-PNObject_Tests/NSString_Helper.framework"
   install_framework "Pods-PNObject_Tests/PEAR_FileManager_iOS.framework"
   install_framework "Pods-PNObject_Tests/PNObject.framework"
   install_framework "Pods-PNObject_Tests/UIDevice_Utils.framework"
@@ -97,7 +99,9 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-PNObject_Tests/AFNetworking.framework"
+  install_framework "Pods-PNObject_Tests/CodFis_Helper.framework"
   install_framework "Pods-PNObject_Tests/NSDate_Utils.framework"
+  install_framework "Pods-PNObject_Tests/NSString_Helper.framework"
   install_framework "Pods-PNObject_Tests/PEAR_FileManager_iOS.framework"
   install_framework "Pods-PNObject_Tests/PNObject.framework"
   install_framework "Pods-PNObject_Tests/UIDevice_Utils.framework"

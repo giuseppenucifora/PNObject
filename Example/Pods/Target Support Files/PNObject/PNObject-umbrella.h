@@ -2,6 +2,7 @@
 
 #import "PNObject.h"
 #import "PNObjectConfig.h"
+#import "PNObjectConstants.h"
 #import "PNObjectModel.h"
 #import "PNObjectProperty.h"
 #import "PNAddress.h"
