@@ -12,6 +12,7 @@ target 'PNObject_Example' do
     pod 'nv-ios-http-status'
     pod 'NSString-Helper'
     pod 'CodFis-Helper'
+    pod 'StrongestPasswordValidator'
 end
 
 target 'PNObject_Tests' do
