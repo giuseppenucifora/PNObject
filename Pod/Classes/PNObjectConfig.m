@@ -165,4 +165,8 @@ static bool isFirstAccess = YES;
     return _currentEnvironment;
 }
 
+- (void) setAcceptablePasswordLenght:(NSUInteger) passLenght {
+    _minPasswordLenght = passLenght;
+}
+
 @end

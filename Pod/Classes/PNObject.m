@@ -13,6 +13,7 @@
 #import "PNObject/PNUser.h"
 #import "PNObjectConstants.h"
 
+
 #define PNOBJECT_DIR @"PNObjects"
 
 
@@ -29,26 +30,6 @@
 @end
 
 @implementation PNObject
-
-+ (void) get {
-    
-    [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",@"User"]  parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        
-        NSLogDebug(@"JSON: %@", responseObject);
-        NSLogDebug(@"JSON: %@", [responseObject class]);
-        
-        PNUser *user = [[PNUser alloc] initWithJSON:responseObject];
-        
-        NSLogDebug(@"%@",user);
-        
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        NSLogDebug(@"Error: %@", error);
-        
-    }];
-}
 
 
 - (instancetype) init {

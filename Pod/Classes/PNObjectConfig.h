@@ -48,6 +48,6 @@ extern NSString* const EnvironmentDevelopment;
 
 - (NSString *) PNObjEndpoint;
 
-- (NSString *) minPasswordLenght:(NSUInteger) passLenght;
+- (void) setAcceptablePasswordLenght:(NSUInteger) passLenght;
 
 @end

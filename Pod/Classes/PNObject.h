@@ -37,6 +37,4 @@
 
 - (void) saveLocallyInBackGroundWithBlock:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
 
-+ (void) get;
-
 @end

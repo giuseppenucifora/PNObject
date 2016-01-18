@@ -120,6 +120,8 @@
 		67459AD239EF669A365519E06B45DCFE /* EXPExpect.h in Headers */ = {isa = PBXBuildFile; fileRef = DC6CFAF47DD5EAA5D62AA2F4660BF69B /* EXPExpect.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68152D921ABF6A423C192C04FDF94F0F /* AFNetworkReachabilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C311DF9B86CD8FC191B34A8700A4A8B1 /* AFNetworkReachabilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6846FE181C4AB07F00FD46A7 /* StrongestPasswordValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49943A31C882E74BEEC30F6068C1CB3B /* StrongestPasswordValidator.framework */; };
+		684A5F371C4D350F0035D354 /* PNObject+PNObjectConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 684A5F351C4D350F0035D354 /* PNObject+PNObjectConnection.h */; };
+		684A5F381C4D350F0035D354 /* PNObject+PNObjectConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 684A5F361C4D350F0035D354 /* PNObject+PNObjectConnection.m */; };
 		68A38977EBAE334DC3C22386D00D2622 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45970A12B4B6EADF2C4F30D8DD555942 /* AFNetworkReachabilityManager.m */; };
 		6E1D978790705E137FDE439AA68DD3AA /* EXPFloatTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C7F7D98F2EBB8A63EC1D00F426373D6 /* EXPFloatTuple.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6ED4ABEE8A5F51F5ECB59FA1781D29C6 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB2C9B0DA395FD916D3B395CBA7CED7 /* UIActivityIndicatorView+AFNetworking.m */; };
@@ -643,6 +645,8 @@
 		66C8B02C4B4D7F89FDFD569187797016 /* SPTTestSuite.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SPTTestSuite.m; path = Specta/Specta/SPTTestSuite.m; sourceTree = "<group>"; };
 		66EF034BB9EC4B36DA83F1F484FC0780 /* EXPMatchers+beInTheRangeOf.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beInTheRangeOf.m"; path = "Expecta/Matchers/EXPMatchers+beInTheRangeOf.m"; sourceTree = "<group>"; };
 		681E7ACB247E65B384C7F6F20A16C3BB /* SPTExampleGroup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SPTExampleGroup.m; path = Specta/Specta/SPTExampleGroup.m; sourceTree = "<group>"; };
+		684A5F351C4D350F0035D354 /* PNObject+PNObjectConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PNObject+PNObjectConnection.h"; sourceTree = "<group>"; };
+		684A5F361C4D350F0035D354 /* PNObject+PNObjectConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PNObject+PNObjectConnection.m"; sourceTree = "<group>"; };
 		6922AB8ABF38E31420E0AD20364FA8F1 /* UIImage+Compare.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+Compare.h"; path = "FBSnapshotTestCase/Categories/UIImage+Compare.h"; sourceTree = "<group>"; };
 		6B3DFAF22932E7E8494A97A36DC2FC68 /* ResponseConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ResponseConstants.h; path = "CodFis-Helper/ResponseConstants.h"; sourceTree = "<group>"; };
 		6BABE32DD14BA4EADAAFB828CB0956A2 /* PEARFileManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PEARFileManager.m; path = "PEAR-FileManager-iOS/PEARFileManager.m"; sourceTree = "<group>"; };
@@ -1168,6 +1172,8 @@
 				FD4E57DB13C5672E15EB7F469BDB9DFD /* PNObjectModel.m */,
 				CE5C1965380CF58C74C49FE3E5075401 /* PNObjectProperty.h */,
 				6297F47751BF4100D3E64F1075BB4203 /* PNObjectProperty.m */,
+				684A5F351C4D350F0035D354 /* PNObject+PNObjectConnection.h */,
+				684A5F361C4D350F0035D354 /* PNObject+PNObjectConnection.m */,
 				4009CEE68682448A34EE75AEACD49007 /* User */,
 			);
 			path = Classes;
@@ -1757,6 +1763,7 @@
 				0831C0CB976355B0E74A993C04F493E8 /* PNObjectModel.h in Headers */,
 				1864DC2900E321CE616E26077F743039 /* PNObjectProperty.h in Headers */,
 				DC5EBE9BD7C435BBEA8C904795FA7836 /* PNUser.h in Headers */,
+				684A5F371C4D350F0035D354 /* PNObject+PNObjectConnection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2573,6 +2580,7 @@
 				C0245B133AF1089E0ACB376A3332BE10 /* PNObject-dummy.m in Sources */,
 				F298445E53A11D3328468937273A3140 /* PNObject.m in Sources */,
 				8E968A78142375A5388B57ACE0FF7B26 /* PNObjectConfig.m in Sources */,
+				684A5F381C4D350F0035D354 /* PNObject+PNObjectConnection.m in Sources */,
 				305963E67941479B42F316AE8680E52A /* PNObjectModel.m in Sources */,
 				46490DD49E86060184B0F31BA8734528 /* PNObjectProperty.m in Sources */,
 				50FBDCA27970E16B1AAE2352B631BEA1 /* PNUser.m in Sources */,

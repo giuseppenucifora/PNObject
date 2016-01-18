@@ -14,7 +14,7 @@
 @property (strong, nonatomic) NSString * _Nonnull userId;
 @property (strong, nonatomic) NSString * _Nonnull firstName;
 @property (strong, nonatomic) NSString * _Nonnull lastName;
-@property (nonatomic, strong) NSString * _Nullable profileImage;
+@property (nonatomic, strong) UIImage * _Nullable profileImage;
 @property (nonatomic, strong) NSString * _Nullable sex;
 @property (nonatomic, strong) NSDate * _Nullable birthDate;
 @property (nonatomic, strong) NSString * _Nullable phone;
