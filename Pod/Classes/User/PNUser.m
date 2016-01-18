@@ -130,7 +130,6 @@ static bool isFirstAccess = YES;
                               @"createdAt":@"created_at",
                               @"facebookId":@"facebookId",
                               @"facebookAccessToken":@"facebookAccessToken",
-                              @"address":@{@"key":@"address",@"type":@"PNAddress"}
                               };
     return mapping;
 }

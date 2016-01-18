@@ -170,7 +170,20 @@ static bool isFirstAccess = YES;
 }
 
 - (void) saveLocally:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock {
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        __weak id responseObject = [self saveLocally:object];
+        if ([responseObject isKindOfClass:[NSError class]]) {
+            if (responseBlock) {
+                responseBlock(NO, nil, responseObject);
+            }
+        }
+        else if ([[responseObject class] isSubclassOfClass:[PNObject class]]){
+            if (responseBlock) {
+                responseBlock(YES,responseObject, nil);
+            }
+        }
+    });
 }
 
 - (id _Nonnull) pushObjectAndSaveLocally:(id _Nonnull) object {
