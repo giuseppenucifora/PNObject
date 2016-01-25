@@ -9,6 +9,7 @@
 #import "PNUser.h"
 #import "NSString+Helper.h"
 #import "PNObjectConstants.h"
+#import "PNObject+Protected.h"
 
 
 @interface PNUser() <PNObjectSubclassing>
@@ -16,6 +17,8 @@
 @end
 
 @implementation PNUser
+
+@synthesize password = _password;
 
 static PNUser *SINGLETON = nil;
 
@@ -25,17 +28,18 @@ static bool isFirstAccess = YES;
 
 + (instancetype)sharedInstance
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        isFirstAccess = NO;
-        SINGLETON = [[super allocWithZone:NULL] init];    
-    });
-    
-    return SINGLETON;
+    return [self currentUser];
 }
 
 + (instancetype) currentUser {
-    return [self sharedInstance];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        isFirstAccess = NO;
+        
+        SINGLETON = [[super allocWithZone:NULL] init];
+    });
+    
+    return SINGLETON;
 }
 
 #pragma mark - Life Cycle
@@ -76,6 +80,12 @@ static bool isFirstAccess = YES;
     self = [super init];
     if (self) {
         [self setSubClassDelegate:self];
+        
+        super.JSON = [super.objectModel fetchObjectsWithClass:[self class]];
+        
+        if(super.JSON){
+            [super populateObjectFromJSON:super.JSON];
+        }
     }
     return self;
 }
@@ -89,11 +99,12 @@ static bool isFirstAccess = YES;
 
 - (void) setPassword:(NSString *)password {
     if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
-        self.password = password;
+        _password = password;
     }
-    NSLogDebug(@"Inserted Passord is not valid.Lenght must be >= %ld",(long)[[PNObjectConfig sharedInstance] minPasswordLenght]);
+    else {
+        NSLogDebug(@"Inserted Passord is not valid.Lenght must be >= %ld",(long)[[PNObjectConfig sharedInstance] minPasswordLenght]);
+    }
 }
-
 
 - (BOOL) isValidPassword:(NSString* _Nonnull) password {
     if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
@@ -111,7 +122,8 @@ static bool isFirstAccess = YES;
 
 + (NSDictionary *)objcetMapping {
     
-    NSDictionary *mapping = @{@"userId":@"id",
+    NSDictionary *mapping = @{
+                              @"userId":@"id",
                               @"firstName":@"firstName",
                               @"lastName":@"lastName",
                               @"profileImage":@"profileImage",
@@ -127,7 +139,6 @@ static bool isFirstAccess = YES;
                               @"username":@"username",
                               @"publicProfile":@"public_profile",
                               @"loginCount":@"login_count",
-                              @"createdAt":@"created_at",
                               @"facebookId":@"facebookId",
                               @"facebookAccessToken":@"facebookAccessToken",
                               };

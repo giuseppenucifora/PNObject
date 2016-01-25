@@ -9,6 +9,7 @@
 #import "PNObjectProperty.h"
 #import "objc/runtime.h"
 #import "PNObjectConstants.h"
+#import "PNObject+Protected.h"
 
 @implementation PNObjectProperty
 
@@ -38,6 +39,9 @@ static BOOL property_getTypeString( objc_property_t property, char *buffer )
     }
     
     NSMutableDictionary *results = [NSMutableDictionary dictionary];
+    if ([PNObjClass isSubclassOfClass:[PNObject class]] &&  PNObjClass != [PNObject class]) {
+        [results addEntriesFromDictionary:[self propertiesForClass:[PNObject class]]];
+    }
     
     unsigned int outCount, i;
     objc_property_t *properties = class_copyPropertyList(PNObjClass, &outCount);
@@ -64,9 +68,11 @@ static BOOL property_getTypeString( objc_property_t property, char *buffer )
                 propertyType = [propertyType substringWithRange:subStrRange];
             }
             
-            NSLogDebug(@"Prop type & name: %@ -- %@", propertyType, propertyName);
+            //NSLogDebug(@"Prop type & name: %@ -- %@", propertyType, propertyName);
             
-            [results setObject:propertyType forKey:propertyName];
+            if (![[PNObject protectedProperties] containsObject:propertyName]) {
+                [results setObject:propertyType forKey:propertyName];
+            }
         }
     }
     free(properties);

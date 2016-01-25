@@ -14,6 +14,8 @@
 
 - (BOOL) isNumeric;
 
+- (BOOL) isValidPhoneNumber;
+
 - (BOOL) isValidUrl;
 
 - (BOOL) isValidTaxCode;

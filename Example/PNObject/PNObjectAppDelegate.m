@@ -9,6 +9,7 @@
 #import "PNObjectAppDelegate.h"
 #import "PNObject.h"
 #import "PNUser.h"
+#import "PNAddress.h"
 
 @implementation PNObjectAppDelegate
 
@@ -27,14 +28,40 @@
     //[PNObject get];*/
     
     PNUser *user = [PNUser currentUser];
-    [user setFirstName:@"peppe"];
-    [user setLastName:@"nucifora"];
-    [user setUsername:@"giuseppe.nucifora"];
-    [user setPassword:@"giuseppe.nucifora.password"];
     
-    PNUser *object = [user saveLocally];
     
-    NSLog(@"User : %@",[object getObject]);
+    NSLog(@"asd");
+    /*[user setFirstName:@"Giuseppe"];
+     [user setLastName:@"Nucifora"];
+     [user setHasAcceptedNewsletter:YES];
+     [user setHasAcceptedPrivacy:YES];
+     [user setUsername:@"giuseppe.nucifora"];
+     [user setPassword:@"giuseppe.nucifora.password"];
+     [user setPhone:@"+393485904995"];
+     [user saveLocally];
+     */
+    //NSLog(@"%@",[user getObject]);
+    
+    /*
+     
+     
+     PNAddress *address1 = [[PNAddress alloc] init];
+     [address1 setZip:@"95014"];
+     [address1 setCountry:@"Italy"];
+     [address1 setCity:@"Giarre"];
+     [address1 setProvince:@"Catania"];
+     
+     NSLog(@"%@",[address1 saveLocally]);
+     
+     
+     PNAddress *address2 = [[PNAddress alloc] init];
+     [address2 setZip:@"95014"];
+     [address2 setCountry:@"Italy"];
+     [address2 setCity:@"Giarre"];
+     [address2 setProvince:@"Catania"];
+     
+     NSLog(@"%@",[address2 saveLocally]);*/
+    
     
     return YES;
 }

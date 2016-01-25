@@ -26,8 +26,7 @@
 @property (nonatomic, strong) NSString * _Nonnull username;
 @property (nonatomic, strong) NSString * _Nonnull password;
 @property (nonatomic) BOOL publicProfile;
-@property (nonatomic) NSInteger loginCount;
-@property (strong, nonatomic) NSDate * _Nonnull createdAt;
+@property (nonatomic, strong) NSNumber * _Nonnull loginCount;
 @property (nonatomic, strong) NSString * _Nullable facebookId;
 @property (nonatomic, strong) NSString * _Nullable facebookAccessToken;
 
@@ -41,6 +40,6 @@
 
 - (BOOL) isValidPassword:(NSString* _Nonnull) password;
 
-- (void) setPassword:(NSString * _Nonnull)password withBlock:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
+//- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
 
 @end

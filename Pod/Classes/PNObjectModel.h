@@ -35,26 +35,12 @@
 /**
  *  <#Description#>
  *
- *  @param object        <#object description#>
- *  @param responseBlock <#responseBlock description#>
- */
-- (void) saveLocally:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
-
-/**
- *  <#Description#>
- *
  *  @param object PNObject Subclass add list objects and save the list
  *
  *  @return <#return value description#>
  */
-- (id _Nonnull) pushObjectAndSaveLocally:(id _Nonnull) object;
+- (id _Nonnull) removeObjectAndSaveLocally:(id _Nonnull) object;
 
-/**
- *  <#Description#>
- *
- *  @param object        <#object description#>
- *  @param responseBlock <#responseBlock description#>
- */
-- (void) pushObjectAndSaveLocally:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
+- (id _Nonnull) fetchObjectsWithClass:(Class _Nonnull) class;
 
 @end

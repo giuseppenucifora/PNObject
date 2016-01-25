@@ -7,7 +7,7 @@
 //
 
 #import "PNObjectModel.h"
-#import "PNObject.h"
+#import "PNObject+Protected.h"
 #import "PEARFileManager.h"
 #import "PNObjectConstants.h"
 
@@ -45,17 +45,19 @@ static bool isFirstAccess = YES;
         if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
             NSLogDebug(@"%@",[object subClassDelegate]);
-            
+            NSString *className;
             //if ([[object subClassDelegate] respondsToSelector:@selector(objectClassName)]) {
             
             @try {
-                return (NSString *)[[object class] performSelector:@selector(objectClassName)];
+                
+                className = (NSString *)[[object class] performSelector:@selector(objectClassName)];
+                
             }
             @catch (NSException *exception) {
                 return nil;
             }
             @finally {
-                
+                return className;
             }
             
             
@@ -121,6 +123,32 @@ static bool isFirstAccess = YES;
     return self;
 }
 
+- (id _Nonnull) fetchObjectsWithClass:(Class _Nonnull) class {
+    BOOL isPNObjectSubclass = [class isSubclassOfClass:[PNObject class]];
+    
+    if(isPNObjectSubclass) {
+        
+        NSString *className;
+        
+        @try {
+            
+            className = (NSString *)[class performSelector:@selector(objectClassName)];
+            
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+            if ([_fileManager checkPath:className]) {
+                return [NSKeyedUnarchiver unarchiveObjectWithData:[_fileManager fetchFileDataWithPath:className]];
+            }
+            else
+                return nil;
+        }
+    }
+}
+
 
 - (id _Nonnull) saveLocally:(id _Nonnull) object {
     
@@ -130,33 +158,95 @@ static bool isFirstAccess = YES;
         
         if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
-            SEL selector = NSSelectorFromString(@"getObject");
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
-            [invocation setSelector:selector];
-            [invocation setTarget:object];
-            [invocation invoke];
-            
-            NSDictionary *objectDict;
-            [invocation getReturnValue:&objectDict];
-            
-            NSLogDebug(@"%@",objectDict);
-            
-            NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objectDict];
-            
-            if ([self issetPNObjectModelForObject:object]) {
-                if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
-                    return object;
+            if ([(PNObject*) object singleInstance]) {
+                
+                SEL selector = NSSelectorFromString(@"getObject");
+                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
+                [invocation setSelector:selector];
+                [invocation setTarget:object];
+                [invocation invoke];
+                
+                NSDictionary *objectDict;
+                [invocation getReturnValue:&objectDict];
+                
+                NSLogDebug(@"%@",objectDict);
+                
+                NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objectDict];
+                
+                if ([self issetPNObjectModelForObject:object]) {
+                    if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
+                        return object;
+                    }
+                    else {
+                        return [NSError errorWithDomain:NSLocalizedString(@"Object cannot be updated", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                    }
                 }
                 else {
-                    return [NSError errorWithDomain:NSLocalizedString(@"Object cannot be updated", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                    if ([_fileManager createFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
+                        return object;
+                    }
+                    else {
+                        return [NSError errorWithDomain:NSLocalizedString(@"Object cannot be created", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                    }
                 }
             }
             else {
-                if ([_fileManager createFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
-                    return object;
+                if ([self issetPNObjectModelForObject:object]) {
+                    
+                    NSData * data = [_fileManager fetchFileDataWithPath:[self objectName:object]];
+                    
+                    NSMutableArray *objects = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+                    
+                    
+                    SEL selector = NSSelectorFromString(@"getObject");
+                    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
+                    [invocation setSelector:selector];
+                    [invocation setTarget:object];
+                    [invocation invoke];
+                    
+                    NSDictionary *objectDict;
+                    [invocation getReturnValue:&objectDict];
+                    
+                    NSLogDebug(@"%@",objectDict);
+                    
+                    [objects addObject:objectDict];
+                    
+                    NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objects];
+                    
+                    if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
+                        
+                        return objects;
+                    }
+                    else {
+                        return [NSError errorWithDomain:NSLocalizedString(@"Objects list cannot be updated", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                    }
                 }
                 else {
-                    return [NSError errorWithDomain:NSLocalizedString(@"Object cannot be created", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                    
+                    NSMutableArray *objects = [[NSMutableArray alloc] init];
+                    
+                    
+                    SEL selector = NSSelectorFromString(@"getObject");
+                    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
+                    [invocation setSelector:selector];
+                    [invocation setTarget:object];
+                    [invocation invoke];
+                    
+                    NSDictionary *objectDict;
+                    [invocation getReturnValue:&objectDict];
+                    
+                    NSLogDebug(@"%@",objectDict);
+                    
+                    [objects addObject:objectDict];
+                    
+                    NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objects];
+                    
+                    if ([_fileManager createFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
+                        return object;
+                    }
+                    else {
+                        return [NSError errorWithDomain:NSLocalizedString(@"Objects list cannot be created", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+                    }
                 }
             }
         }
@@ -169,31 +259,19 @@ static bool isFirstAccess = YES;
     }
 }
 
-- (void) saveLocally:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+- (id _Nonnull) removeObjectAndSaveLocally:(id _Nonnull) object {
+    BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
+    
+    if(isPNObjectSubclass) {
         
-        __weak id responseObject = [self saveLocally:object];
-        if ([responseObject isKindOfClass:[NSError class]]) {
-            if (responseBlock) {
-                responseBlock(NO, nil, responseObject);
+        if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
+            
+            if ([(PNObject*) object singleInstance]) {
+                
+                
             }
         }
-        else if ([[responseObject class] isSubclassOfClass:[PNObject class]]){
-            if (responseBlock) {
-                responseBlock(YES,responseObject, nil);
-            }
-        }
-    });
-}
-
-- (id _Nonnull) pushObjectAndSaveLocally:(id _Nonnull) object {
-    
-}
-
-- (void) pushObjectAndSaveLocally:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock {
-    
-    
-    
+    }
 }
 
 @end

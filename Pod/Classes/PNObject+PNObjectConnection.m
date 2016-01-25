@@ -12,7 +12,7 @@
 #import "PNObjectConfig.h"
 #import "PNObjectModel.h"
 #import <AFNetworking/AFNetworking.h>
-#import "PNObject.m"
+#import "PNObject+Protected.h"
 
 @implementation PNObject (PNObjectConnection)
 
@@ -28,7 +28,7 @@
         NSLogDebug(@"JSON: %@", responseObject);
         NSLogDebug(@"JSON: %@", [responseObject class]);
         
-        _JSON = [[NSDictionary alloc] initWithDictionary:responseObject];
+        self.JSON = [[NSDictionary alloc] initWithDictionary:responseObject];
         
         [self populateObjectFromJSON:responseObject];
         
@@ -38,10 +38,6 @@
         NSLogDebug(@"Error: %@", error);
         
     }];
-    
-    
-    
-    
 }
 
 

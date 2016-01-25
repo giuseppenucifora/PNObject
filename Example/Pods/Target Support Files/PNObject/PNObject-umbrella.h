@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+#import "PNObject+PNObjectConnection.h"
+#import "PNObject+Protected.h"
 #import "PNObject.h"
 #import "PNObjectConfig.h"
 #import "PNObjectConstants.h"

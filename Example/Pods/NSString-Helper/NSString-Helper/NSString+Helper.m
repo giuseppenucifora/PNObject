@@ -28,6 +28,22 @@
     return isValid;
 }
 
+- (BOOL) isValidPhoneNumber {
+    
+    NSError *error = NULL;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypePhoneNumber error:&error];
+    NSArray *matches = [detector matchesInString:self options:0 range:NSMakeRange(0, [self length])];
+    
+    if (matches != nil) {
+        for (NSTextCheckingResult *match in matches) {
+            if ([match resultType] == NSTextCheckingTypePhoneNumber) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
 - (BOOL) isValidUrl {
     NSString *urlRegEx =
     @"(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+";

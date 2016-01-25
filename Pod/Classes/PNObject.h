@@ -27,14 +27,12 @@
 @interface PNObject : NSObject
 
 @property (nonatomic, strong) NSString * _Nonnull objID;
-@property (nonatomic, strong) NSDate * _Nonnull createdDate;
+@property (nonatomic, strong) NSDate * _Nonnull createdAt;
 @property (nonatomic, strong, getter=getObject) NSDictionary * _Nonnull objectMapping;
 @property (nonatomic, assign) id<PNObjectSubclassing> _Nonnull subClassDelegate;
 
 - (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON;
 
 - (id _Nonnull) saveLocally;
-
-- (void) saveLocallyInBackGroundWithBlock:(id _Nonnull) object inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id _Nullable responseObject, NSError * _Nullable error)) responseBlock;
 
 @end
