@@ -30,16 +30,22 @@
     PNUser *user = [PNUser currentUser];
     
     
-    NSLog(@"asd");
-    /*[user setFirstName:@"Giuseppe"];
-     [user setLastName:@"Nucifora"];
-     [user setHasAcceptedNewsletter:YES];
+    NSLog(@"user : %@",[user getJSONObject]);
+    
+    //[user autoRemoveLocally];
+    /*[user setFirstName:@"Giuseppe2"];
+     [user setLastName:@"Nucifora2"];
+     [user setEmail:@"giuseppe.nucifora@giuseppenucifora.com"];
+     [user setSex:@"M"];
+     [user setHasAcceptedNewsletter:NO];
      [user setHasAcceptedPrivacy:YES];
      [user setUsername:@"giuseppe.nucifora"];
      [user setPassword:@"giuseppe.nucifora.password"];
      [user setPhone:@"+393485904995"];
+     [user setUserId:@"blablabla"];
      [user saveLocally];
      */
+    
     //NSLog(@"%@",[user getObject]);
     
     /*

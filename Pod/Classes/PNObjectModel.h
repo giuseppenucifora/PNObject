@@ -39,7 +39,7 @@
  *
  *  @return <#return value description#>
  */
-- (id _Nonnull) removeObjectAndSaveLocally:(id _Nonnull) object;
+- (BOOL) removeObjectLocally:(id _Nonnull) object;
 
 - (id _Nonnull) fetchObjectsWithClass:(Class _Nonnull) class;
 

@@ -18,8 +18,12 @@
 @dynamic JSON;
 @dynamic singleInstance;
 
++ (PNObjectModel* _Nonnull) objectModel {
+    
+}
+
 + (NSArray * _Nonnull) protectedProperties {
-    return @[@"JSON",@"subClassDelegate",@"objectModel",@"objectMapping"];
+    return @[@"JSON",@"subClassDelegate",@"objectModel",@"objectMapping",@"singleInstance"];
 }
 
 - (void)populateObjectFromJSON:(id _Nullable)JSON
@@ -45,18 +49,13 @@
             mappedJSONKey = mappingValue;
         }
         
-        // Check if there is mapping for the property
-        if([self isObjNull:mappedJSONKey]) {
-            // No mapping so just continue
+        
+        if ([[PNObject protectedProperties] containsObject:propertyName]) {
             continue;
         }
-        
         
         // Get JSON value for the mapped key
         id value = [JSON valueForKeyPath:propertyName];
-        if([self isObjNull:value]) {
-            continue;
-        }
         
         
         ((void (^)())@{
@@ -89,9 +88,8 @@
             [self setValue:@(val) forKey:propertyName];
         },
                        @"NSString" : ^{
-            NSString *val = [NSString stringWithFormat:@"%@", value];
-            if (![self isObjNull:val]) {
-                [self setValue:val forKey:propertyName];
+            if (![self isObjNull:value]) {
+                [self setValue:value forKey:propertyName];
             }
             
         },
@@ -136,7 +134,6 @@
                            }
                        })();
     }
-    
 }
 
 - (BOOL)isObjNull:(id _Nullable)obj

@@ -43,9 +43,13 @@
     
     if (self) {
         if ([[self class] isSubclassOfClass:[PNObject class]]) {
+            
             NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing");
             
             _objID = [[NSProcessInfo processInfo] globallyUniqueString];
+            
+            _objectModel = [PNObjectModel sharedInstance];
+            [_objectModel setPersistencyDelegate:self];
             
             NSMutableDictionary * objectDict = [[NSMutableDictionary alloc] initWithDictionary:[[self class] objcetMapping]];
             [objectDict addEntriesFromDictionary:[self PNObjectMapping]];
@@ -56,23 +60,41 @@
             
             _singleInstance = [[self class] singleInstance];
             
-            _objectModel = [PNObjectModel sharedInstance];
-            [_objectModel setPersistencyDelegate:self];
-            
             _createdAt = [[NSDate date] toLocalTime];
+            
         }
     }
     return self;
 }
 
 - (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON {
-    self = [self init];
+    self = [super init];
     if (self) {
+        if ([[self class] isSubclassOfClass:[PNObject class]]) {
+            NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing");
+            
+            _objID = [[NSProcessInfo processInfo] globallyUniqueString];
+            
+            _objectModel = [PNObjectModel sharedInstance];
+            [_objectModel setPersistencyDelegate:self];
+            
+            NSMutableDictionary * objectDict = [[NSMutableDictionary alloc] initWithDictionary:[[self class] objcetMapping]];
+            [objectDict addEntriesFromDictionary:[self PNObjectMapping]];
+            
+            _objectMapping = objectDict;
+            
+            NSAssert(_objectMapping, @"You must create objectMapping");
+            
+            _singleInstance = [[self class] singleInstance];
+            
+            _createdAt = [[NSDate date] toLocalTime];
+            
+        }
         
         NSAssert(_objectMapping, @"You must create objectMapping");
         _JSON = [[NSMutableDictionary alloc] initWithDictionary:JSON];
         
-        [self populateObjectFromJSON:JSON];
+        [self populateObjectFromJSON:_JSON];
     }
     return self;
 }
@@ -162,7 +184,7 @@
                        @"NSArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
             for(id PNObject in value) {
-                SEL selector = NSSelectorFromString(@"getObject");
+                SEL selector = NSSelectorFromString(@"getJSONObject");
                 NSInvocation *invocation = [NSInvocation invocationWithMethodSignature: [[PNObject class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
                 [invocation setTarget:PNObject];
@@ -181,7 +203,7 @@
                 PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject];
                 [arr addObject:val];
                 
-                SEL selector = NSSelectorFromString(@"getObject");
+                SEL selector = NSSelectorFromString(@"getJSONObject");
                 NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
                 [invocation setTarget:value];
@@ -195,7 +217,7 @@
                        }[propertyType] ?: ^{
                            BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
                            if(isPNObjectSubclass) {
-                               SEL selector = NSSelectorFromString(@"getObject");
+                               SEL selector = NSSelectorFromString(@"getJSONObject");
                                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
                                [invocation setSelector:selector];
                                [invocation setTarget:value];
@@ -220,7 +242,7 @@
     return _JSON;
 }
 
-- (NSDictionary* _Nonnull) getObject {
+- (NSDictionary* _Nonnull) getJSONObject {
     return [self reverseMapping];
 }
 
@@ -261,6 +283,10 @@
 - (id _Nonnull) saveLocally {
     
     return [_objectModel saveLocally:self];
+}
+
+- (BOOL) autoRemoveLocally {
+    return [_objectModel removeObjectLocally:self];
 }
 
 #pragma mark -

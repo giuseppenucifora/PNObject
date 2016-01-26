@@ -44,7 +44,6 @@ static bool isFirstAccess = YES;
         
         if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
-            NSLogDebug(@"%@",[object subClassDelegate]);
             NSString *className;
             //if ([[object subClassDelegate] respondsToSelector:@selector(objectClassName)]) {
             
@@ -119,6 +118,7 @@ static bool isFirstAccess = YES;
         _fileManager = [PEARFileManager sharedInstatnce];
         
         [_fileManager setRootDirectory:k_ROOT_DIR_DOCUMENTS];
+        NSLogDebug(@"%@",[_fileManager getRootDirectoryPath]);
     }
     return self;
 }
@@ -160,7 +160,7 @@ static bool isFirstAccess = YES;
             
             if ([(PNObject*) object singleInstance]) {
                 
-                SEL selector = NSSelectorFromString(@"getObject");
+                SEL selector = NSSelectorFromString(@"getJSONObject");
                 NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
                 [invocation setTarget:object];
@@ -198,7 +198,7 @@ static bool isFirstAccess = YES;
                     NSMutableArray *objects = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
                     
                     
-                    SEL selector = NSSelectorFromString(@"getObject");
+                    SEL selector = NSSelectorFromString(@"getJSONObject");
                     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
                     [invocation setSelector:selector];
                     [invocation setTarget:object];
@@ -226,7 +226,7 @@ static bool isFirstAccess = YES;
                     NSMutableArray *objects = [[NSMutableArray alloc] init];
                     
                     
-                    SEL selector = NSSelectorFromString(@"getObject");
+                    SEL selector = NSSelectorFromString(@"getJSONObject");
                     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
                     [invocation setSelector:selector];
                     [invocation setTarget:object];
@@ -259,19 +259,19 @@ static bool isFirstAccess = YES;
     }
 }
 
-- (id _Nonnull) removeObjectAndSaveLocally:(id _Nonnull) object {
+- (BOOL) removeObjectLocally:(id _Nonnull) object {
     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
     
     if(isPNObjectSubclass) {
         
         if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
-            if ([(PNObject*) object singleInstance]) {
-                
-                
+            if ([self issetPNObjectModelForObject:object]) {
+                return [_fileManager deletePath:[self objectName:object]];
             }
         }
     }
+    return NO;
 }
 
 @end

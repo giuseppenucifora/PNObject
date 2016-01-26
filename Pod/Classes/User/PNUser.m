@@ -77,15 +77,17 @@ static bool isFirstAccess = YES;
     if (isFirstAccess) {
         [self doesNotRecognizeSelector:_cmd];
     }
-    self = [super init];
+    
+    NSDictionary *savedUser = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
+    
+    if (savedUser) {
+        self = [super initWithJSON:savedUser];
+    }
+    else {
+        self = [super init];
+    }
+    
     if (self) {
-        [self setSubClassDelegate:self];
-        
-        super.JSON = [super.objectModel fetchObjectsWithClass:[self class]];
-        
-        if(super.JSON){
-            [super populateObjectFromJSON:super.JSON];
-        }
     }
     return self;
 }

@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
 s.name             = "PNObject"
-s.version          = "0.1.0"
-s.summary          = "PNObject."
+s.version          = "0.2.0"
+s.summary          = "PNObject is a simple replica of the more complex ParseObject"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?

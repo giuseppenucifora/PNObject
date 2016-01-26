@@ -46,7 +46,7 @@
                                    failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     
     return [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",[[self class] objectClassName]]
-                                                parameters:[self getObject] constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                                                parameters:[self getJSONObject] constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                                                     
                                                 } progress:^(NSProgress * _Nonnull _uploadProgress) {
                                                     if (uploadProgress) {
@@ -67,7 +67,7 @@
                                  failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     
     return [[[PNObjectConfig sharedInstance] manager] PUT:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",[[self class] objectClassName]]
-                                               parameters:[self getObject]
+                                               parameters:[self getJSONObject]
                                                   success:^(NSURLSessionDataTask * _Nonnull _task, id  _Nullable _responseObject) {
                                                       if (success) {
                                                           success(_task,_responseObject);
@@ -82,7 +82,7 @@
 - (NSURLSessionDataTask *)DELETEWithSuccess:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                                     failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     return [[[PNObjectConfig sharedInstance] manager] DELETE:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingFormat:@"%@",[[self class] objectClassName]]
-                                                  parameters:[self getObject]
+                                                  parameters:[self getJSONObject]
                                                      success:^(NSURLSessionDataTask * _Nonnull _task, id  _Nullable _responseObject) {
                                                          if (success) {
                                                              success(_task,_responseObject);
