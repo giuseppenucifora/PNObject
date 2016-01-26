@@ -247,6 +247,9 @@
 }
 
 - (NSString* _Nonnull) description {
+    if (!_JSON) {
+        return [[self reverseMapping] description];
+    }
     return [_JSON description];
 }
 
