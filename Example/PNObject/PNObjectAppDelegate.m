@@ -8,16 +8,67 @@
 
 #import "PNObjectAppDelegate.h"
 #import "PNObject.h"
+#import "PNUser.h"
+#import "PNAddress.h"
 
 @implementation PNObjectAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [PNObjectConfig sharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
-                                                       EnvironmentStage : @"https://stage.it/api/v1",
-                                                       //EnvironmentProduction : @"https://production.it/api/v1"
-                                                       }];
+    [PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
+                                                           EnvironmentStage : @"https://stage.it/api/v1",
+                                                           EnvironmentProduction : @"http://pnobjectdemo.giuseppenucifora.com/"
+                                                           }];
+    
+    [[PNObjectConfig sharedInstance] setEnvironment:Production];
+    [[[PNObjectConfig sharedInstance] manager] setSecurityPolicy:[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate]];
+    [[PNObjectConfig sharedInstance] manager].securityPolicy.allowInvalidCertificates = YES;
+    
+    //[PNObject get];*/
+    
+    PNUser *user = [PNUser currentUser];
+    
+    
+    NSLog(@"user : %@",[user getJSONObject]);
+    
+    //[user autoRemoveLocally];
+    /*[user setFirstName:@"Giuseppe2"];
+     [user setLastName:@"Nucifora2"];
+     [user setEmail:@"giuseppe.nucifora@giuseppenucifora.com"];
+     [user setSex:@"M"];
+     [user setHasAcceptedNewsletter:NO];
+     [user setHasAcceptedPrivacy:YES];
+     [user setUsername:@"giuseppe.nucifora"];
+     [user setPassword:@"giuseppe.nucifora.password"];
+     [user setPhone:@"+393485904995"];
+     [user setUserId:@"blablabla"];
+     [user saveLocally];
+     */
+    
+    //NSLog(@"%@",[user getObject]);
+    
+    /*
+     
+     
+     PNAddress *address1 = [[PNAddress alloc] init];
+     [address1 setZip:@"95014"];
+     [address1 setCountry:@"Italy"];
+     [address1 setCity:@"Giarre"];
+     [address1 setProvince:@"Catania"];
+     
+     NSLog(@"%@",[address1 saveLocally]);
+     
+     
+     PNAddress *address2 = [[PNAddress alloc] init];
+     [address2 setZip:@"95014"];
+     [address2 setCountry:@"Italy"];
+     [address2 setCity:@"Giarre"];
+     [address2 setProvince:@"Catania"];
+     
+     NSLog(@"%@",[address2 saveLocally]);*/
+    
+    
     return YES;
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking/AFNetworking.h>
 
 typedef NS_ENUM(NSInteger, Environment) {
     Development,
@@ -20,12 +21,15 @@ extern NSString* const EnvironmentDevelopment;
 
 @interface PNObjectConfig : NSObject
 
-
+@property (nonatomic, strong) AFHTTPSessionManager *manager;
+@property (nonatomic) NSInteger minPasswordLenght;
 
 /**
  * gets singleton object.
  * @return singleton
  */
++ (instancetype) sharedInstance;
+
 /**
  *
  *
@@ -38,10 +42,12 @@ extern NSString* const EnvironmentDevelopment;
  *
  *  @return singleton
  */
-+ (instancetype) sharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments;
++ (instancetype) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments;
 
-- (void) enableEnvironment:(Environment) env;
+- (void) setEnvironment:(Environment) env;
 
+- (NSString *) PNObjEndpoint;
 
+- (void) setAcceptablePasswordLenght:(NSUInteger) passLenght;
 
 @end
