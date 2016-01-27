@@ -99,9 +99,11 @@ static bool isFirstAccess = YES;
 	
 	if (self) {
 		
+		_deviceType = @"iOS";
 		_deviceModel = [[UIDevice currentDevice] model];
-		_osVersion = [[UIDevice currentDevice] systemVersion];;
-		_deviceName = [[UIDevice currentDevice] name];;
+		_osVersion = [[UIDevice currentDevice] systemVersion];
+		_deviceName = [[UIDevice currentDevice] name];
+		
 	}
 	return self;
 }
