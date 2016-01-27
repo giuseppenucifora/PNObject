@@ -10,19 +10,17 @@
 #import <AFNetworking/AFNetworking.h>
 
 typedef NS_ENUM(NSInteger, Environment) {
-    Development,
-    Stage,
-    Production
+	Development,
+	Stage,
+	Production
 };
 
 extern NSString* const EnvironmentProduction;
 extern NSString* const EnvironmentStage;
 extern NSString* const EnvironmentDevelopment;
 
-@interface PNObjectConfig : NSObject
 
-@property (nonatomic, strong) AFHTTPSessionManager *manager;
-@property (nonatomic) NSInteger minPasswordLenght;
+@interface PNObjectConfig : NSObject
 
 /**
  * gets singleton object.
@@ -44,10 +42,38 @@ extern NSString* const EnvironmentDevelopment;
  */
 + (instancetype) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments;
 
+/**
+ *  <#Description#>
+ *
+ *  @param env <#env description#>
+ */
 - (void) setEnvironment:(Environment) env;
 
+/**
+ *  <#Description#>
+ *
+ *  @return <#return value description#>
+ */
 - (NSString *) PNObjEndpoint;
 
+/**
+ *  <#Description#>
+ *
+ *  @param passLenght <#passLenght description#>
+ */
 - (void) setAcceptablePasswordLenght:(NSUInteger) passLenght;
+
+
+///--------------------------------------
+#pragma mark - PNObjectConfig Properties
+///--------------------------------------
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong) AFHTTPSessionManager *manager;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic) NSInteger minPasswordLenght;
 
 @end

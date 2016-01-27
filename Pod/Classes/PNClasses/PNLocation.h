@@ -10,7 +10,17 @@
 
 @interface PNLocation : PNObject <PNObjectSubclassing>
 
+///--------------------------------------
+#pragma mark - PNLocation Properties
+///--------------------------------------
+
+/**
+ *  <#Description#>
+ */
 @property (nonatomic) CGFloat lat;
+/**
+ *  <#Description#>
+ */
 @property (nonatomic) CGFloat lng;
 
 @end

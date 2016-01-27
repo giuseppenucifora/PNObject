@@ -26,15 +26,28 @@
 
 @interface PNObject : NSObject
 
-@property (nonatomic, strong) NSString * _Nonnull objID;
-@property (nonatomic, strong) NSDate * _Nonnull createdAt;
-@property (nonatomic, strong, getter=getJSONObject) NSDictionary * _Nonnull objectMapping;
-@property (nonatomic, assign) id<PNObjectSubclassing> _Nonnull subClassDelegate;
-
 - (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON;
 
 - (id _Nonnull) saveLocally;
 
 - (BOOL) autoRemoveLocally;
+
+///--------------------------------------
+#pragma mark - PNObject Properties
+///--------------------------------------
+
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nonnull) NSString * objID;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nonnull) NSDate * createdAt;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, getter=getJSONObject, nonnull) NSDictionary * objectMapping;
+
 
 @end

@@ -18,9 +18,18 @@
 
 @interface PNObjectModel : NSObject
 
-@property (nonatomic, assign) id<PNObjectPersistency> _Nonnull persistencyDelegate;
+@property (nonatomic, assign, nonnull) id<PNObjectPersistency> persistencyDelegate;
 
 + (_Nonnull instancetype) sharedInstance;
+
+/**
+ *  <#Description#>
+ *
+ *  @param class <#class description#>
+ *
+ *  @return <#return value description#>
+ */
+- (id _Nonnull) fetchObjectsWithClass:(Class _Nonnull) class;
 
 /**
  *  <#Description#>
@@ -35,12 +44,21 @@
 /**
  *  <#Description#>
  *
+ *  @param object <#object description#>
+ *
+ *  @return <#return value description#>
+ */
+- (id _Nonnull) saveNSUSerDefautls:(id _Nonnull) object;
+
+/**
+ *  <#Description#>
+ *
  *  @param object PNObject Subclass add list objects and save the list
  *
  *  @return <#return value description#>
  */
 - (BOOL) removeObjectLocally:(id _Nonnull) object;
 
-- (id _Nonnull) fetchObjectsWithClass:(Class _Nonnull) class;
+
 
 @end
