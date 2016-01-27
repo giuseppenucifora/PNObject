@@ -170,8 +170,6 @@ static bool isFirstAccess = YES;
 				NSDictionary *objectDict;
 				[invocation getReturnValue:&objectDict];
 				
-				NSLogDebug(@"%@",objectDict);
-				
 				NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objectDict];
 				
 				if ([self issetPNObjectModelForObject:object]) {
@@ -235,8 +233,6 @@ static bool isFirstAccess = YES;
 					
 					NSDictionary *objectDict;
 					[invocation getReturnValue:&objectDict];
-					
-					NSLogDebug(@"%@",objectDict);
 					
 					[objects addObject:objectDict];
 					

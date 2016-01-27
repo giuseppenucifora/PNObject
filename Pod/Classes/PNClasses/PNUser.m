@@ -91,7 +91,9 @@ static bool isFirstAccess = YES;
 	if ([email isValidEmail]) {
 		_email = email;
 	}
-	NSLogDebug(@"insertedEmail is not valid.");
+	else {
+		NSLogDebug(@"insertedEmail is not valid.");
+	}
 }
 
 - (void) setPassword:(NSString *)password {
@@ -113,6 +115,11 @@ static bool isFirstAccess = YES;
 
 - (NSString *) password {
 	return @"password is not readble";
+}
+
+- (void)logout {
+	[self autoRemoveLocally];
+	[self resetObject];
 }
 
 #pragma mark PNObjectSubclassing Protocol 

@@ -12,6 +12,7 @@
 #import "PNObject/PNUser.h"
 #import "PNObjectConstants.h"
 #import "PNObject+Protected.h"
+#import "objc/runtime.h"
 
 #define PNOBJECT_DIR @"PNObjects"
 
@@ -242,10 +243,6 @@
 							   // do nothing
 						   }
 					   })();
-		
-		
-		
-		
 	}
 	
 	_JSON = JSON;
@@ -254,12 +251,17 @@
 }
 
 - (NSDictionary* _Nonnull) getJSONObject {
-	return [self reverseMapping];
+	if (!_JSON) {
+		return [self reverseMapping];
+	}
+	else {
+		return _JSON;
+	}
 }
 
 - (NSString* _Nonnull) description {
 	if (!_JSON) {
-		return [[self reverseMapping] description];
+		[self reverseMapping];
 	}
 	return [_JSON description];
 }
@@ -304,5 +306,17 @@
 }
 
 #pragma mark -
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	[_JSON setObject:[change objectForKey:@"new"] forKey:keyPath];
+}
+
+- (void)dealloc
+{
+	unsigned int propertyCount;
+	objc_property_t *properties = class_copyPropertyList([self class], &propertyCount);
+	for(int i = 0; i < propertyCount; i++)[self removeObserver:self forKeyPath:[NSString stringWithCString:property_getName(properties[i]) encoding:NSUTF8StringEncoding]];
+}
 
 @end

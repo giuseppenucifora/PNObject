@@ -38,6 +38,7 @@
  */
 + (NSDictionary * _Nullable)propertiesForClass:(Class _Nonnull)PNObjClass;
 
+- (void)resetObject;
 
 ///--------------------------------------
 #pragma mark - PNObject (Protected) Properties

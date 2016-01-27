@@ -17,8 +17,18 @@
  *  @return singleton
  */
 + (instancetype _Nonnull) currentUser;
-
+/**
+ *  <#Description#>
+ *
+ *  @param password <#password description#>
+ *
+ *  @return <#return value description#>
+ */
 - (BOOL) isValidPassword:(NSString* _Nonnull) password;
+/**
+ *  <#Description#>
+ */
+- (void) logout;
 
 //- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id responseObject, NSError * error)) responseBlock;
 
@@ -29,15 +39,15 @@
 /**
  *  <#Description#>
  */
-@property (strong, nonatomic, nonnull) NSString * userId;
+@property (strong, nonatomic, nullable) NSString * userId;
 /**
  *  <#Description#>
  */
-@property (strong, nonatomic, nonnull) NSString * firstName;
+@property (strong, nonatomic, nullable) NSString * firstName;
 /**
  *  <#Description#>
  */
-@property (strong, nonatomic, nonnull) NSString * lastName;
+@property (strong, nonatomic, nullable) NSString * lastName;
 /**
  *  <#Description#>
  */
@@ -73,15 +83,15 @@
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSString * email;
+@property (nonatomic, strong, nullable) NSString * email;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSString * username;
+@property (nonatomic, strong, nullable) NSString * username;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSString * password;
+@property (nonatomic, strong, nullable) NSString * password;
 /**
  *  <#Description#>
  */
@@ -89,7 +99,7 @@
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSNumber * loginCount;
+@property (nonatomic, strong, nullable) NSNumber * loginCount;
 /**
  *  <#Description#>
  */

@@ -26,6 +26,10 @@
 {
 	NSDictionary *properties = [PNObject propertiesForClass:self.class];
 	
+	for (NSString *propertyName in properties) {
+		[self addObserver:self forKeyPath:propertyName options:NSKeyValueObservingOptionNew context:nil];
+	}
+	
 	for(NSString *propertyName in properties) {
 		
 		if([propertyName isEqualToString:@"mappingError"])
@@ -123,6 +127,94 @@
 						   if(isPNObjectSubclass) {
 							   PNObject *val = [[NSClassFromString(propertyType) alloc] initWithJSON:value];
 							   [self setValue:val forKey:propertyName];
+						   }
+						   else {
+							   NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName];
+							   NSLogDebug(@"%@",errorStr);
+						   }
+					   })();
+	}
+}
+
+- (void)resetObject
+{
+	NSDictionary *properties = [PNObject propertiesForClass:self.class];
+	
+	for(NSString *propertyName in properties) {
+		
+		if([propertyName isEqualToString:@"mappingError"])
+			continue;
+		
+		NSString *mappedJSONKey;
+		NSString *mappedJSONType;
+		
+		NSString *propertyType = [properties valueForKey:propertyName];
+		
+		id mappingValue = [self.objectMapping valueForKey:propertyName];
+		
+		if([mappingValue isKindOfClass:NSDictionary.class]) {
+			mappedJSONKey = [mappingValue valueForKey:@"key"];
+			mappedJSONType = [mappingValue valueForKey:@"type"];
+		} else {
+			mappedJSONKey = mappingValue;
+		}
+		
+		
+		if ([[PNObject protectedProperties] containsObject:propertyName]
+			|| [propertyName isEqualToString:@"description"]
+			|| [propertyName isEqualToString:@"debugDescription"]) {
+			continue;
+		}
+		
+		// Get JSON value for the mapped key
+		
+		((void (^)())@{
+					   @"c" : ^{
+			char val = '\0';
+			[self setValue:@(val) forKey:propertyName];
+		},
+					   @"d" : ^{
+			double val = 0.0;
+			[self setValue:@(val) forKey:propertyName];
+		},
+					   @"f" : ^{
+			float val = 0.0;
+			[self setValue:@(val) forKey:propertyName];
+		},
+					   @"i" : ^{
+			int val = 0;
+			[self setValue:@(val) forKey:propertyName];
+		},
+					   @"l" : ^{
+			long val = 0;
+			[self setValue:@(val) forKey:propertyName];
+		},
+					   @"s" : ^{
+			short val = 0;
+			[self setValue:@(val) forKey:propertyName];
+		},
+					   @"B" : ^{
+			[self setValue:@(NO) forKey:propertyName];
+		},
+					   @"NSString" : ^{
+			[self setValue:[[NSString alloc] init] forKey:propertyName];
+		},
+					   @"NSNumber" : ^{
+			[self setValue:[[NSNumber alloc] init] forKey:propertyName];
+		},
+					   @"NSDate" : ^{
+			[self setValue:[[NSDate alloc] init] forKey:propertyName];
+		},
+					   @"NSArray" : ^{
+			[self setValue:[[NSArray alloc] init] forKey:propertyName];
+		},
+					   @"NSMutableArray" : ^{
+			[self setValue:[[NSMutableArray alloc] init] forKey:propertyName];
+		}
+					   }[propertyType] ?: ^{
+						   BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
+						   if(isPNObjectSubclass) {
+							   [self setValue:@"" forKey:propertyName];
 						   }
 						   else {
 							   NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName];
