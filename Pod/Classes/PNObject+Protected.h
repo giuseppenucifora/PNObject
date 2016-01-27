@@ -7,24 +7,58 @@
 //
 
 #import <PNObject/PNObject.h>
-#import <objc/runtime.h>
 
 @interface PNObject (Protected)
+/**
+ *  <#Description#>
+ *
+ *  @param JSON <#JSON description#>
+ */
+- (void)populateObjectFromJSON:(id _Nullable)JSON;
+/**
+ *  <#Description#>
+ *
+ *  @param obj <#obj description#>
+ *
+ *  @return <#return value description#>
+ */
+- (BOOL)isObjNull:(id _Nullable)obj;
+/**
+ *  <#Description#>
+ *
+ *  @return <#return value description#>
+ */
++ (NSArray * _Nonnull) protectedProperties;
+/**
+ *  <#Description#>
+ *
+ *  @param PNObjClass <#PNObjClass description#>
+ *
+ *  @return <#return value description#>
+ */
++ (NSDictionary * _Nullable)propertiesForClass:(Class _Nonnull)PNObjClass;
 
-@property (nonatomic, strong) PNObjectModel * _Nonnull objectModel;
+- (void)resetObject;
 
-@property (nonatomic, strong) NSDictionary * _Nonnull JSON;
-
-@property (nonatomic, strong) NSString * _Nonnull endPoint;
-
+///--------------------------------------
+#pragma mark - PNObject (Protected) Properties
+///--------------------------------------
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nonnull) PNObjectModel * objectModel;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nonnull) NSDictionary *  JSON;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nonnull) NSString * endPoint;
+/**
+ *  <#Description#>
+ */
 @property (nonatomic) BOOL singleInstance;
 
-- (void)populateObjectFromJSON:(id _Nullable)JSON;
-
-- (BOOL)isStringNull:(NSString * _Nullable)str;
-
-- (BOOL)isObjNull:(id _Nullable)obj;
-
-+ (NSArray * _Nonnull) protectedProperties;
 
 @end
