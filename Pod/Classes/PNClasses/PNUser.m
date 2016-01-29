@@ -31,28 +31,13 @@ static bool isFirstAccess = YES;
 	dispatch_once(&onceToken, ^{
 		isFirstAccess = NO;
 		
-		SINGLETON = [[super allocWithZone:NULL] init];
+		SINGLETON = [[super allocWithZone:NULL] initForCurrentUser];
 	});
 	
 	return SINGLETON;
 }
 
 #pragma mark - Life Cycle
-
-+ (instancetype) allocWithZone:(NSZone *)zone
-{
-	return [self currentUser];
-}
-
-+ (instancetype)copyWithZone:(struct _NSZone *)zone
-{
-	return [self currentUser];
-}
-
-+ (instancetype)mutableCopyWithZone:(struct _NSZone *)zone
-{
-	return [self currentUser];
-}
 
 - (instancetype)copy
 {
@@ -64,7 +49,7 @@ static bool isFirstAccess = YES;
 	return [[PNUser alloc] init];
 }
 
-- (id) init
+- (instancetype) initForCurrentUser
 {
 	if(SINGLETON){
 		return SINGLETON;
