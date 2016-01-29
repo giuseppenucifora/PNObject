@@ -323,9 +323,14 @@
 
 - (void)dealloc
 {
-	unsigned int propertyCount;
-	objc_property_t *properties = class_copyPropertyList([self class], &propertyCount);
-	for(int i = 0; i < propertyCount; i++)[self removeObserver:self forKeyPath:[NSString stringWithCString:property_getName(properties[i]) encoding:NSUTF8StringEncoding]];
+	
+	NSDictionary *properties = [PNObject propertiesForClass:self.class];
+	
+	for (NSString *propertyName in properties) {
+		
+		[self removeObserver:self forKeyPath:propertyName];
+	}
+	
 }
 
 @end
