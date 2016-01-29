@@ -15,12 +15,13 @@
 
 @required
 
-+ (NSString * _Nonnull ) objectClassName;
-
 + (NSDictionary * _Nonnull) objcetMapping;
 
 + (BOOL) singleInstance;
 
+@optional
+
++ (NSString * _Nonnull ) objectClassName;
 
 @end
 
