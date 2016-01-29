@@ -26,6 +26,8 @@
 
 @interface PNObject : NSObject
 
++ (NSString * _Nonnull) PNObjClassName;
+
 - (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON;
 
 - (id _Nonnull) saveLocally;
