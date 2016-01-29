@@ -323,14 +323,14 @@
 
 - (void)dealloc
 {
-	
 	NSDictionary *properties = [PNObject propertiesForClass:self.class];
 	
 	for (NSString *propertyName in properties) {
-		
+		if ([[PNObject protectedProperties] containsObject:propertyName]) {
+			continue;
+		}
 		[self removeObserver:self forKeyPath:propertyName];
 	}
-	
 }
 
 @end
