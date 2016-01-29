@@ -45,7 +45,7 @@
 }
 
 + (NSString*) objectClassName {
-	return @"PNObject";
+	return NSStringFromClass([self class]);
 }
 
 #pragma mark -
