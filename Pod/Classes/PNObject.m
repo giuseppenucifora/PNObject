@@ -50,6 +50,15 @@
 
 #pragma mark -
 
++ (NSString * _Nonnull) PNObjClassName {
+	if ([[self class] resolveClassMethod:@selector(objectClassName)]) {
+		return [[self class] objectClassName];
+	}
+	else {
+		return  [[super class] objectClassName];
+	}
+}
+
 - (_Nullable instancetype) init {
 	self = [super init];
 	

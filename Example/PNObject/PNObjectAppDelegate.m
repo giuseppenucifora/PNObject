@@ -50,6 +50,8 @@
 	[user setLastName:@"Sapienza"];
 	
 	[user getJSONObject];
+	
+	NSLog(@"%@",[PNUser PNObjClassName]);
 	//NSLog(@"%@",userDictionary);
 	
 	/*
