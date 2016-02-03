@@ -82,7 +82,11 @@ static bool isFirstAccess = YES;
 		}
 		
 		if (_expiresIn) {
-			_expirationDate = [[NSDate date] dateByAddingHours:[_expiresIn integerValue]];
+			NSLog(@"%ld",[_expiresIn integerValue]);
+			NSLog(@"%@",[NSDate date]);
+			NSLog(@"%@",[[NSDate date] dateByAddingMinutes:[_expiresIn integerValue]]);
+			NSLog(@"%@",[[NSDate date] dateByAddingMinutes:10000]);
+			_expirationDate = [[NSDate date] dateByAddingMinutes:[_expiresIn integerValue]];
 		}
 	}
 	
