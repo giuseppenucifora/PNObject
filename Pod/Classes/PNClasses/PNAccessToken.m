@@ -15,6 +15,81 @@
 
 @implementation PNAccessToken
 
+static PNAccessToken *SINGLETON = nil;
+
+static bool isFirstAccess = YES;
+
+#pragma mark - Public Method
+
++ (instancetype) currentAccessToken {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		isFirstAccess = NO;
+		
+		SINGLETON = [[super allocWithZone:NULL] initForCurrentAccessTokenWithJSON:nil];
+	});
+	
+	return SINGLETON;
+}
+
++ (instancetype _Nonnull) currentAccessTokenWithJSON:(NSDictionary *)JSON {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		isFirstAccess = NO;
+		
+		SINGLETON = [[super allocWithZone:NULL] initForCurrentAccessTokenWithJSON:JSON];
+	});
+	
+	return SINGLETON;
+}
+
+
+- (instancetype) initForCurrentAccessTokenWithJSON:(NSDictionary *)JSON {
+	if(SINGLETON){
+		return SINGLETON;
+	}
+	if (isFirstAccess) {
+		[self doesNotRecognizeSelector:_cmd];
+	}
+	NSDictionary *savedAccessToken;
+	
+	if (JSON) {
+		savedAccessToken =  JSON;
+	}
+	else {
+		savedAccessToken = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
+	}
+	
+	if (savedAccessToken) {
+		self = [super initWithJSON:savedAccessToken];
+	}
+	else {
+		self = [super init];
+	}
+	
+	if (self) {
+		if (_tokenTypeString) {
+			((void (^)())@{
+						   @"beaer" : ^{
+				_tokenType = TokenTypeBearer;
+			},
+						   @"basic" : ^{
+				_tokenType = TokenTypeBasic;
+			}
+						   }[_tokenTypeString] ?: ^{
+							   
+						   })();
+		}
+		
+		if (_expiresIn) {
+			_expirationDate = [[NSDate date] dateByAddingHours:[_expiresIn integerValue]];
+		}
+	}
+	
+	return self;
+}
+
+
 #pragma mark PNObjectSubclassing Protocol
 
 + (NSDictionary *)objcetMapping {
@@ -30,23 +105,7 @@
 }
 
 - (instancetype) initWithJSON:(NSDictionary *)JSON {
-	self = [super initWithJSON:JSON];
-	
-	if (self) {
-		((void (^)())@{
-					   @"beaer" : ^{
-			_tokenType = TokenTypeBearer;
-		},
-					   @"basic" : ^{
-			_tokenType = TokenTypeBasic;
-		}
-					   }[_tokenTypeString] ?: ^{
-						   
-					   })();
-		
-		_expirationDate = [[NSDate date] dateByAddingHours:[_expiresIn integerValue]];
-	}
-	return self;
+	return [[self class] currentAccessTokenWithJSON:JSON];
 }
 
 + (NSString *)objectClassName {

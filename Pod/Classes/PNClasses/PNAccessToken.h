@@ -20,8 +20,15 @@ typedef NS_ENUM(NSInteger, TokenType) {
  *
  *  @return singleton
  */
-+ (instancetype _Nonnull) currentUser;
++ (instancetype _Nonnull) currentAccessToken;
 
+
+/**
+ *  gets singleton object of current user session.
+ *
+ *  @return singleton
+ */
++ (instancetype _Nonnull) currentAccessTokenWithJSON:(NSDictionary *)JSON;
 
 ///--------------------------------------
 #pragma mark - PNAccessToken Properties

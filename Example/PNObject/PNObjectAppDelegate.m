@@ -51,22 +51,28 @@
 	 
 	 [user getJSONObject];*/
 	
+	PNAccessToken *accessToken = [PNAccessToken currentAccessToken];
 	
+	NSLog(@"%@",[accessToken JSONObject]);
 	
-	[[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingString:[PNAccessToken PNObjClassName]] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+	/*[[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingString:[PNAccessToken PNObjClassName]] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
 		
-	} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+	 } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 		
 		PNAccessToken *accessToken = [[PNAccessToken alloc] initWithJSON:responseObject];
 		
-		NSLog(@"%@",[accessToken getJSONObject]);
-		[accessToken saveLocally];
+		NSLog(@"%@",[accessToken JSONObject]);
 		
-	} failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+	 [accessToken saveLocally];
+		});
+		//[accessToken saveLocally];
+		
+	 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
 		
 		NSLog(@"%@",error);
 		
-	}];
+	 }];*/
 	//NSLog(@"%@",userDictionary);
 	
 	/*
