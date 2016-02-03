@@ -18,40 +18,61 @@
 	// Override point for customization after application launch.
 	[PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
 														   EnvironmentStage : @"https://stage.it/api/v1",
-														   EnvironmentProduction : @"http://pnobjectdemo.giuseppenucifora.com/"
+														   EnvironmentProduction : @"https://pnobject.giuseppenucifora.com/"
 														   }];
 	
 	[[PNObjectConfig sharedInstance] setEnvironment:Production];
-	[[[PNObjectConfig sharedInstance] manager] setSecurityPolicy:[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate]];
-	[[PNObjectConfig sharedInstance] manager].securityPolicy.allowInvalidCertificates = YES;
+	//[[[PNObjectConfig sharedInstance] manager] setSecurityPolicy:[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate]];
+	//[[PNObjectConfig sharedInstance] manager].securityPolicy.allowInvalidCertificates = YES;
 	
 	//[PNObject get];*/
+	/*
+	 PNUser *user = [PNUser currentUser];
+	 
+	 //NSLog(@"user : %@",[user getJSONObject]);
+	 
+	 //[user autoRemoveLocally];
+	 [user setFirstName:@"Giuseppe2"];
+	 [user setLastName:@"Nucifora2"];
+	 [user setEmail:@"giuseppe.nucifora@giuseppenucifora.com"];
+	 [user setSex:@"M"];
+	 [user setHasAcceptedNewsletter:NO];
+	 [user setHasAcceptedPrivacy:YES];
+	 [user setUsername:@"giuseppe.nucifora"];
+	 [user setPassword:@"giuseppe.nucifora.password"];
+	 [user setPhone:@"+393485904995"];
+	 [user setUserId:@"blablabla"];
+	 [user saveLocally];
+	 
+	 
+	 
+	 [user setFirstName:@"Angela"];
+	 [user setLastName:@"Sapienza"];
+	 
+	 [user getJSONObject];*/
 	
-	PNUser *user = [PNUser currentUser];
+	PNAccessToken *accessToken = [PNAccessToken currentAccessToken];
 	
-	//NSLog(@"user : %@",[user getJSONObject]);
+	NSLog(@"%@",[accessToken JSONObject]);
 	
-	//[user autoRemoveLocally];
-	[user setFirstName:@"Giuseppe2"];
-	[user setLastName:@"Nucifora2"];
-	[user setEmail:@"giuseppe.nucifora@giuseppenucifora.com"];
-	[user setSex:@"M"];
-	[user setHasAcceptedNewsletter:NO];
-	[user setHasAcceptedPrivacy:YES];
-	[user setUsername:@"giuseppe.nucifora"];
-	[user setPassword:@"giuseppe.nucifora.password"];
-	[user setPhone:@"+393485904995"];
-	[user setUserId:@"blablabla"];
-	[user saveLocally];
-	
-	
-	
-	[user setFirstName:@"Angela"];
-	[user setLastName:@"Sapienza"];
-	
-	[user getJSONObject];
-	
-	NSLog(@"%@",[PNUser PNObjClassName]);
+	/*[[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] PNObjEndpoint] stringByAppendingString:[PNAccessToken PNObjClassName]] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+		
+	 } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+		
+		PNAccessToken *accessToken = [[PNAccessToken alloc] initWithJSON:responseObject];
+		
+		NSLog(@"%@",[accessToken JSONObject]);
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+	 [accessToken saveLocally];
+		});
+		//[accessToken saveLocally];
+		
+	 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+		
+		NSLog(@"%@",error);
+		
+	 }];*/
 	//NSLog(@"%@",userDictionary);
 	
 	/*

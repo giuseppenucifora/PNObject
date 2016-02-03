@@ -161,7 +161,7 @@ static bool isFirstAccess = YES;
 			
 			if ([(PNObject*) object singleInstance]) {
 				
-				SEL selector = NSSelectorFromString(@"getJSONObject");
+				SEL selector = NSSelectorFromString(@"JSONObject");
 				NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
 				[invocation setSelector:selector];
 				[invocation setTarget:object];
@@ -197,7 +197,7 @@ static bool isFirstAccess = YES;
 					NSMutableArray *objects = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
 					
 					
-					SEL selector = NSSelectorFromString(@"getJSONObject");
+					SEL selector = NSSelectorFromString(@"JSONObject");
 					NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
 					[invocation setSelector:selector];
 					[invocation setTarget:object];
@@ -225,7 +225,7 @@ static bool isFirstAccess = YES;
 					NSMutableArray *objects = [[NSMutableArray alloc] init];
 					
 					
-					SEL selector = NSSelectorFromString(@"getJSONObject");
+					SEL selector = NSSelectorFromString(@"JSONObject");
 					NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
 					[invocation setSelector:selector];
 					[invocation setTarget:object];

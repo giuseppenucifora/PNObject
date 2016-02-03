@@ -50,7 +50,7 @@
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, getter=getJSONObject, nonnull) NSDictionary * objectMapping;
+@property (nonatomic, strong, nonnull) NSDictionary * JSONObject;
 
 
 @end

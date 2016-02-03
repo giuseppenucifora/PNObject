@@ -27,6 +27,9 @@
 	NSDictionary *properties = [PNObject propertiesForClass:self.class];
 	
 	for (NSString *propertyName in properties) {
+		if ([propertyName isEqualToString:@"description"] || [propertyName isEqualToString:@"debugDescription"])  {
+			continue;
+		}
 		[self addObserver:self forKeyPath:propertyName options:NSKeyValueObservingOptionNew context:nil];
 	}
 	
@@ -39,8 +42,11 @@
 		NSString *mappedJSONType;
 		
 		NSString *propertyType = [properties valueForKey:propertyName];
+		NSLogDebug(@"%@",self.JSONObject);
 		
-		id mappingValue = [self.objectMapping valueForKey:propertyName];
+		NSLogDebug(@"%@",[[self class] objcetMapping]);
+		
+		id mappingValue = [[[self class] objcetMapping] valueForKey:propertyName];
 		
 		if([mappingValue isKindOfClass:NSDictionary.class]) {
 			mappedJSONKey = [mappingValue valueForKey:@"key"];
@@ -55,7 +61,7 @@
 		}
 		
 		// Get JSON value for the mapped key
-		id value = [JSON valueForKeyPath:propertyName];
+		id value = [JSON valueForKeyPath:mappedJSONKey];
 		
 		
 		((void (^)())@{
@@ -150,7 +156,7 @@
 		
 		NSString *propertyType = [properties valueForKey:propertyName];
 		
-		id mappingValue = [self.objectMapping valueForKey:propertyName];
+		id mappingValue = [self.JSONObject valueForKey:propertyName];
 		
 		if([mappingValue isKindOfClass:NSDictionary.class]) {
 			mappedJSONKey = [mappingValue valueForKey:@"key"];

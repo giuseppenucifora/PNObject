@@ -7,7 +7,7 @@
 //
 
 #import "PNObject.h"
-
+#import "PNAccessToken.h"
 
 @interface PNUser : PNObject
 
@@ -33,7 +33,7 @@
 //- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id responseObject, NSError * error)) responseBlock;
 
 ///--------------------------------------
-#pragma mark - PNLocation Properties
+#pragma mark - PNUser Properties
 ///--------------------------------------
 
 /**
