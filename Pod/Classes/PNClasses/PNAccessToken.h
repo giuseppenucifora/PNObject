@@ -6,7 +6,7 @@
 //
 //
 
-#import <PNObject/PNObject.h>
+#import "PNObject.h"
 
 @interface PNAccessToken : PNObject
 
@@ -14,6 +14,20 @@ typedef NS_ENUM(NSInteger, TokenType) {
 	TokenTypeBasic = 1,
 	TokenTypeBearer = 2
 };
+
+/**
+ *  gets singleton object of current user session.
+ *
+ *  @return singleton
+ */
++ (instancetype _Nonnull) currentUser;
+
+
+///--------------------------------------
+#pragma mark - PNAccessToken Properties
+///--------------------------------------
+
+
 /**
  *  <#Description#>
  */
@@ -22,9 +36,18 @@ typedef NS_ENUM(NSInteger, TokenType) {
  *  <#Description#>
  */
 @property (nonatomic, strong, nullable) NSDate *expirationDate;
+
+@property (nonatomic, strong, nullable) NSNumber *expiresIn;
 /**
  *  <#Description#>
  */
 @property (nonatomic) TokenType tokenType;
+
+@property (nonatomic, strong, nullable) NSString *tokenTypeString;
+
+@property (nonatomic, strong, nullable) NSString *scope;
+
+@property (nonatomic, strong, nullable) NSString *refreshToken;
+
 
 @end

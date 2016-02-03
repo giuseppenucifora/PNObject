@@ -7,6 +7,7 @@
 //
 
 #import "PNAccessToken.h"
+#import <NSDate_Utils/NSDate+NSDate_Util.h>
 
 @interface PNAccessToken() <PNObjectSubclassing>
 
@@ -19,11 +20,33 @@
 + (NSDictionary *)objcetMapping {
 	
 	NSDictionary *mapping = @{
-							  @"accessToken":@"accessToken",
-							  @"expirationDate":@"expirationDate",
-							  @"tokenType":@"tokenType",
+							  @"accessToken":@"access_token",
+							  @"expiresIn":@"expires_in",
+							  @"tokenTypeString":@"token_type",
+							  @"tokenType":@"scope",
+							  @"refreshToken":@"refresh_token",
 							  };
 	return mapping;
+}
+
+- (instancetype) initWithJSON:(NSDictionary *)JSON {
+	self = [super initWithJSON:JSON];
+	
+	if (self) {
+		((void (^)())@{
+					   @"beaer" : ^{
+			_tokenType = TokenTypeBearer;
+		},
+					   @"basic" : ^{
+			_tokenType = TokenTypeBasic;
+		}
+					   }[_tokenTypeString] ?: ^{
+						   
+					   })();
+		
+		_expirationDate = [[NSDate date] dateByAddingHours:[_expiresIn integerValue]];
+	}
+	return self;
 }
 
 + (NSString *)objectClassName {
@@ -35,9 +58,6 @@
 }
 
 #pragma mark -
-
-
-
 
 
 

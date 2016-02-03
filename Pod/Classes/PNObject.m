@@ -259,6 +259,7 @@
 	return _JSON;
 }
 
+
 - (NSDictionary* _Nonnull) getJSONObject {
 	if (!_JSON) {
 		return [self reverseMapping];
@@ -307,7 +308,9 @@
 
 - (id _Nonnull) saveLocally {
 	
-	return [_objectModel saveLocally:self];
+	__weak id weakSelf = self;
+	
+	return [_objectModel saveLocally:weakSelf];
 }
 
 - (BOOL) autoRemoveLocally {
@@ -318,20 +321,26 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	[_JSON setObject:[change objectForKey:@"new"] forKey:keyPath];
+	NSLogDebug(@"%@",[[[self class] objcetMapping] objectForKey:keyPath]);
+	[_JSON setObject:[change objectForKey:@"new"] forKey:[[[self class] objcetMapping] objectForKey:keyPath]];
 }
 
-/*- (void)dealloc
- {
+- (void)dealloc
+{
 	NSDictionary *properties = [PNObject propertiesForClass:self.class];
 	
 	for (NSString *propertyName in properties) {
- if ([[PNObject protectedProperties] containsObject:propertyName]) {
- continue;
- }
- [self removeObserver:self forKeyPath:propertyName];
+		if ([propertyName isEqualToString:@"description"] || [propertyName isEqualToString:@"debugDescription"])  {
+			continue;
+		}
+		[self removeObserver:self forKeyPath:propertyName];
 	}
- }
- */
+	_JSON = nil;
+	_objectMapping = nil;
+	_objID = nil;
+	_createdAt = nil;
+	
+}
+
 
 @end
