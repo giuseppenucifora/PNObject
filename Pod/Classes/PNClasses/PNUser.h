@@ -7,7 +7,6 @@
 //
 
 #import "PNObject.h"
-#import "PNAccessToken.h"
 
 @interface PNUser : PNObject
 
