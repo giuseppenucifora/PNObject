@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-PNObject_Example/AFNetworking.framework"
+  install_framework "Pods-PNObject_Example/AFOAuth2Manager.framework"
   install_framework "Pods-PNObject_Example/CodFis_Helper.framework"
   install_framework "Pods-PNObject_Example/NSDate_Utils.framework"
   install_framework "Pods-PNObject_Example/NSString_Helper.framework"
@@ -96,6 +97,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-PNObject_Example/AFNetworking.framework"
+  install_framework "Pods-PNObject_Example/AFOAuth2Manager.framework"
   install_framework "Pods-PNObject_Example/CodFis_Helper.framework"
   install_framework "Pods-PNObject_Example/NSDate_Utils.framework"
   install_framework "Pods-PNObject_Example/NSString_Helper.framework"
