@@ -14,6 +14,8 @@ PODS:
   - AFNetworking/Serialization (3.0.4)
   - AFNetworking/UIKit (3.0.4):
     - AFNetworking/NSURLSession
+  - AFOAuth2Manager (3.0.0):
+    - AFNetworking/NSURLSession (~> 3.0)
   - CodFis-Helper (0.1.2)
   - Expecta (1.0.5)
   - Expecta+Snapshots (2.0.0):
@@ -43,6 +45,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - AFOAuth2Manager (from `https://github.com/AFNetworking/AFOAuth2Manager.git`, branch `3_0_0_branch`)
   - CodFis-Helper
   - Expecta
   - Expecta+Snapshots
@@ -57,11 +60,20 @@ DEPENDENCIES:
   - UIDevice-Utils
 
 EXTERNAL SOURCES:
+  AFOAuth2Manager:
+    :branch: 3_0_0_branch
+    :git: https://github.com/AFNetworking/AFOAuth2Manager.git
   PNObject:
     :path: "../"
 
+CHECKOUT OPTIONS:
+  AFOAuth2Manager:
+    :commit: b2c665b1d354ed322517cbfed004ec210c193200
+    :git: https://github.com/AFNetworking/AFOAuth2Manager.git
+
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
+  AFOAuth2Manager: 0566da1be64883e339813d411229fdc9a84dab7c
   CodFis-Helper: f303810699f22dbcba8fb8c600545ac91fc3ec42
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
@@ -75,6 +87,6 @@ SPEC CHECKSUMS:
   StrongestPasswordValidator: 554de9038705e18904f0337903dfd3b85a6b271b
   UIDevice-Utils: 0beb5f9d2bd256a3efe05c1e43a2a8b8702199c4
 
-PODFILE CHECKSUM: 45be31a9be903e671ec86941620bd073cbb1de02
+PODFILE CHECKSUM: a99ea6f90d6a9ddab0074828d11a973ce39b397e
 
 COCOAPODS: 1.0.0.beta.3
