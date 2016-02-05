@@ -121,7 +121,12 @@
 		67459AD239EF669A365519E06B45DCFE /* EXPExpect.h in Headers */ = {isa = PBXBuildFile; fileRef = BD7FD75ECDC4BB1525674A03FA676C24 /* EXPExpect.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68152D921ABF6A423C192C04FDF94F0F /* AFNetworkReachabilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 537A81B30117FDF56273A2E7900E00B1 /* AFNetworkReachabilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68527B0A6AE982293383787B56E689CE /* SPTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8DECFE13CAF5FE2BC70564FA0B8D6D /* SPTSpec.m */; };
-		685A9DE81C64ABC70071FDFF /* AFOAuth2Manager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F97585C762A2361AA6B8B5DE6BA290E0 /* AFOAuth2Manager.framework */; };
+		685A9DFD1C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.h in Headers */ = {isa = PBXBuildFile; fileRef = 685A9DF71C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		685A9DFE1C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.m in Sources */ = {isa = PBXBuildFile; fileRef = 685A9DF81C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.m */; };
+		685A9DFF1C64AF990071FDFF /* AFOAuth2Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 685A9DF91C64AF990071FDFF /* AFOAuth2Manager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		685A9E001C64AF990071FDFF /* AFOAuth2Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 685A9DFA1C64AF990071FDFF /* AFOAuth2Manager.m */; };
+		685A9E011C64AF990071FDFF /* AFOAuthCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 685A9DFB1C64AF990071FDFF /* AFOAuthCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		685A9E021C64AF990071FDFF /* AFOAuthCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = 685A9DFC1C64AF990071FDFF /* AFOAuthCredential.m */; };
 		68A38977EBAE334DC3C22386D00D2622 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 725140673556BBC10ACAAD4632961DE9 /* AFNetworkReachabilityManager.m */; };
 		6A1543B03FEA6C06D0F1CCD9F5A74CC3 /* AFHTTPRequestSerializer+OAuth2.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B66E6640C53F406757A1A11B590CF21 /* AFHTTPRequestSerializer+OAuth2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6D5A30E2A230B959E8EE809CE4BB32A2 /* PNObjectConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E302FEB8D6267D5AFF079585825E1ED7 /* PNObjectConfig.m */; };
@@ -705,6 +710,12 @@
 		65723DECCADB9956AFE96FA90C756BCC /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPSessionManager.h; path = AFNetworking/AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		65DB88F3478CD462B7C29AAB4546AD4D /* UIProgressView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIProgressView+AFNetworking.h"; path = "UIKit+AFNetworking/UIProgressView+AFNetworking.h"; sourceTree = "<group>"; };
 		681D38A1CD2CBD39B4504C4812CB0AAE /* CodFis_Helper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CodFis_Helper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		685A9DF71C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestSerializer+OAuth2.h"; sourceTree = "<group>"; };
+		685A9DF81C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestSerializer+OAuth2.m"; sourceTree = "<group>"; };
+		685A9DF91C64AF990071FDFF /* AFOAuth2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAuth2Manager.h; sourceTree = "<group>"; };
+		685A9DFA1C64AF990071FDFF /* AFOAuth2Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuth2Manager.m; sourceTree = "<group>"; };
+		685A9DFB1C64AF990071FDFF /* AFOAuthCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAuthCredential.h; sourceTree = "<group>"; };
+		685A9DFC1C64AF990071FDFF /* AFOAuthCredential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuthCredential.m; sourceTree = "<group>"; };
 		6876FC9C08DD37C56BD514A7E9831C99 /* EXPMatchers+contain.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+contain.h"; path = "Expecta/Matchers/EXPMatchers+contain.h"; sourceTree = "<group>"; };
 		68F466E31F6E0F889C4E5CA28C7B099C /* AFOAuth2Manager-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFOAuth2Manager-dummy.m"; sourceTree = "<group>"; };
 		692E8B124CD64FA5D34CB37A51BD7C6C /* Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Expecta.h; path = Expecta/Expecta.h; sourceTree = "<group>"; };
@@ -960,7 +971,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				685A9DE81C64ABC70071FDFF /* AFOAuth2Manager.framework in Frameworks */,
 				F2BB4F4AE2C6762333E2467AF48F9F52 /* AFNetworking.framework in Frameworks */,
 				EE6B19491E8AB9CBC615D12F5333BE9F /* CodFis_Helper.framework in Frameworks */,
 				8643BBFE1753CF931C374C7CA99EB405 /* Foundation.framework in Frameworks */,
@@ -1540,6 +1550,12 @@
 		685A9DF61C64AEB40071FDFF /* AFOAuth2Manager */ = {
 			isa = PBXGroup;
 			children = (
+				685A9DF71C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.h */,
+				685A9DF81C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.m */,
+				685A9DF91C64AF990071FDFF /* AFOAuth2Manager.h */,
+				685A9DFA1C64AF990071FDFF /* AFOAuth2Manager.m */,
+				685A9DFB1C64AF990071FDFF /* AFOAuthCredential.h */,
+				685A9DFC1C64AF990071FDFF /* AFOAuthCredential.m */,
 			);
 			path = AFOAuth2Manager;
 			sourceTree = "<group>";
@@ -1871,6 +1887,9 @@
 				44C7743BBE4CCB5065BDE9C1216B5DC9 /* PNObject-umbrella.h in Headers */,
 				847EED4B0EA774785C68431817CD93C9 /* PNObject.h in Headers */,
 				E9D106AFF48125A694CE99CCA5D7A157 /* PNObjectConfig.h in Headers */,
+				685A9E011C64AF990071FDFF /* AFOAuthCredential.h in Headers */,
+				685A9DFD1C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.h in Headers */,
+				685A9DFF1C64AF990071FDFF /* AFOAuth2Manager.h in Headers */,
 				386609B5751E053904117A93B2E91B99 /* PNObjectConstants.h in Headers */,
 				AD4FD9865F35392D4B5FB1693AEC72B5 /* PNObjectModel.h in Headers */,
 				0B24E4E9A2A547C4F2443E2B6FAD6227 /* PNUser.h in Headers */,
@@ -2886,8 +2905,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				685A9E021C64AF990071FDFF /* AFOAuthCredential.m in Sources */,
 				D2ED781E66AD5CD401EBC86CD03E9C27 /* PNAddress.m in Sources */,
+				685A9E001C64AF990071FDFF /* AFOAuth2Manager.m in Sources */,
 				735F937F3E969009D5F40CB33909BF63 /* PNInstallation.m in Sources */,
+				685A9DFE1C64AF990071FDFF /* AFHTTPRequestSerializer+OAuth2.m in Sources */,
 				AC1BD14C511A7825CEB0753CFAE51C6D /* PNLocation.m in Sources */,
 				9AEC0D13C5E01C1B225458FE03A15CDE /* PNObject+PNObjectConnection.m in Sources */,
 				1D0DF59F3721D214418AE5F859BA6A94 /* PNObject+Protected.m in Sources */,
