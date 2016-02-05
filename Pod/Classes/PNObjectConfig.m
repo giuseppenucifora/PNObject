@@ -185,7 +185,7 @@ static bool isFirstAccess = YES;
     return _currentEndPointBaseUrl;
 }
 
-- (AFHTTPSessionManager *) manager {
+- (AFOAuth2Manager *) manager {
     
     BOOL canTryRefreh = NO;
     
