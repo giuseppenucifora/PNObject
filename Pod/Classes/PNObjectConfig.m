@@ -224,8 +224,8 @@ static bool isFirstAccess = YES;
 }
 
 - (void) tryRefreshToken {
-    if (![PNUser currentUser]) {
-        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] username] password:[[PNUser currentUser] password] scope:kAFOAuthPasswordCredentialsGrantType success:^(AFOAuthCredential * _Nonnull credential) {
+    if ([PNUser currentUser]) {
+        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] username] password:[[PNUser currentUser] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         } failure:^(NSError * _Nonnull error) {
@@ -234,7 +234,7 @@ static bool isFirstAccess = YES;
     }
     else {
         
-        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:kAFOAuthClientCredentialsGrantType success:^(AFOAuthCredential * _Nonnull credential) {
+        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         } failure:^(NSError * _Nonnull error) {

@@ -19,53 +19,43 @@
         // Override point for customization after application launch.
     
     
-    [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://packman.local/app_dev.php/api/v1/",
-                                                        EnvironmentStage : @"http://packman.ppreview.it/app_stage.php/api/v1/",
-                                                        EnvironmentProduction : @"http://packman.ppreview.it/app_stage.php/api/v1/"
-                                                        } withOauth:YES];
-    [[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
-    [[PNObjectConfig sharedInstance] setClientID:@"1_pqjo2w5k7j4g8skco408oc048w8so0ws840gcg8k8gwsgk0g4" clientSecret:@"10w0vg2v6eggooc4wks4w4s0wkwok0wkck0w888so0o80g88w8" forEnv:Stage];
-#ifdef DEBUG
     
-    [[PNObjectConfig sharedInstance] setEnvironment:Stage];
     
-#endif
+    [PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
+                                                           EnvironmentStage : @"https://stage.it/api/v1",
+                                                           EnvironmentProduction : @"https://pnobject.giuseppenucifora.com/"
+                                                           } withOauth:NO];
     
-    /*[PNObjectConfig initSharedInstanceForEnvironments:@{   EnvironmentDevelopment : @"https://development.it/api/v1",
-     EnvironmentStage : @"https://stage.it/api/v1",
-     EnvironmentProduction : @"https://pnobject.giuseppenucifora.com/"
-     }];
-     
-     [[PNObjectConfig sharedInstance] setEnvironment:Production];
-     
-     //[[[PNObjectConfig sharedInstance] manager] setSecurityPolicy:[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate]];
-     //[[PNObjectConfig sharedInstance] manager].securityPolicy.allowInvalidCertificates = YES;
-     
-     //[PNObject get];
-     
-     PNUser *user = [PNUser currentUser];
-     
-     //NSLog(@"user : %@",[user getJSONObject]);
-     
-     //[user autoRemoveLocally];
-     [user setFirstName:@"Giuseppe2"];
-     [user setLastName:@"Nucifora2"];
-     [user setEmail:@"giuseppe.nucifora@giuseppenucifora.com"];
-     [user setSex:@"M"];
-     [user setHasAcceptedNewsletter:NO];
-     [user setHasAcceptedPrivacy:YES];
-     [user setUsername:@"giuseppe.nucifora"];
-     [user setPassword:@"giuseppe.nucifora.password"];
-     [user setPhone:@"+393485904995"];
-     [user setUserId:@"blablabla"];
-     [user saveLocally];
-     
-     
-     
-     [user setFirstName:@"Angela"];
-     [user setLastName:@"Sapienza"];
-     
-     [user getJSONObject];*/
+    [[PNObjectConfig sharedInstance] setEnvironment:Production];
+    
+        //[[[PNObjectConfig sharedInstance] manager] setSecurityPolicy:[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate]];
+        //[[PNObjectConfig sharedInstance] manager].securityPolicy.allowInvalidCertificates = YES;
+    
+        //[PNObject get];
+    
+    PNUser *user = [PNUser currentUser];
+    
+        //NSLog(@"user : %@",[user getJSONObject]);
+    
+        //[user autoRemoveLocally];
+    [user setFirstName:@"Giuseppe2"];
+    [user setLastName:@"Nucifora2"];
+    [user setEmail:@"giuseppe.nucifora@giuseppenucifora.com"];
+    [user setSex:@"M"];
+    [user setHasAcceptedNewsletter:NO];
+    [user setHasAcceptedPrivacy:YES];
+    [user setUsername:@"giuseppe.nucifora"];
+    [user setPassword:@"giuseppe.nucifora.password"];
+    [user setPhone:@"+393485904995"];
+    [user setUserId:@"blablabla"];
+    [user saveLocally];
+    
+    
+    
+    [user setFirstName:@"Angela"];
+    [user setLastName:@"Sapienza"];
+    
+    [user JSONObject];
     
     
     /*[[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingString:[PNAccessToken PNObjEndPoint]] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
