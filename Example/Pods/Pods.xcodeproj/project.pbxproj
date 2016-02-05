@@ -1127,6 +1127,7 @@
 		09DFBEE319FF263B46BE993205A73171 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				685A9DF61C64AEB40071FDFF /* AFOAuth2Manager */,
 			);
 			path = Vendors;
 			sourceTree = "<group>";
@@ -1534,6 +1535,13 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/PEAR-FileManager-iOS";
+			sourceTree = "<group>";
+		};
+		685A9DF61C64AEB40071FDFF /* AFOAuth2Manager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AFOAuth2Manager;
 			sourceTree = "<group>";
 		};
 		729C4611053B78A0900E14D5E1734624 /* Classes */ = {
