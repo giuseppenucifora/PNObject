@@ -1,6 +1,6 @@
 {
   "name": "PNObject",
-  "version": "0.2.5",
+  "version": "0.3.1",
   "summary": "PNObject is a simple replica of the more complex ParseObject",
   "homepage": "https://github.com/giuseppenucifora/PNObject",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/giuseppenucifora/PNObject.git",
-    "tag": "0.2.5"
+    "tag": "0.3.1"
   },
   "platforms": {
     "ios": "7.0"
@@ -41,6 +41,9 @@
 
     ],
     "CodFis-Helper": [
+
+    ],
+    "StrongestPasswordValidator": [
 
     ]
   }
