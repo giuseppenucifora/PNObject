@@ -29,6 +29,8 @@
  */
 - (void) logout;
 
+- (BOOL) isValidUser;
+
 //- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id responseObject, NSError * error)) responseBlock;
 
 ///--------------------------------------
