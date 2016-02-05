@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
-#import <AFOAuth2Manager/AFOAuth2Manager.h>
-#import <AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.h>
-#import <AFOAuth2Manager/AFOAuthCredential.h>
+#import "AFOAuth2Manager.h"
+#import "AFHTTPRequestSerializer+OAuth2.h"
+#import "AFOAuthCredential.h"
 
 typedef NS_ENUM(NSInteger, Environment) {
     Development = 0,
