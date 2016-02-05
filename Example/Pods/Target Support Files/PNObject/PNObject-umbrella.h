@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 
-#import "PNAccessToken.h"
 #import "PNAddress.h"
 #import "PNInstallation.h"
 #import "PNLocation.h"
@@ -11,6 +10,9 @@
 #import "PNObjectConfig.h"
 #import "PNObjectConstants.h"
 #import "PNObjectModel.h"
+#import "AFHTTPRequestSerializer+OAuth2.h"
+#import "AFOAuth2Manager.h"
+#import "AFOAuthCredential.h"
 
 FOUNDATION_EXPORT double PNObjectVersionNumber;
 FOUNDATION_EXPORT const unsigned char PNObjectVersionString[];

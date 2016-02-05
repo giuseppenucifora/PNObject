@@ -1,8 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-
-
 target 'PNObject_Example' do
     pod "PNObject", :path => "../"
     pod 'PEAR-FileManager-iOS'
@@ -13,8 +11,7 @@ target 'PNObject_Example' do
     pod 'NSString-Helper'
     pod 'CodFis-Helper'
     pod 'StrongestPasswordValidator'
-    pod 'AFOAuth2Manager', :git => 'https://github.com/AFNetworking/AFOAuth2Manager.git', :branch => '3_0_0_branch'
-
+    
 end
 
 target 'PNObject_Tests' do
