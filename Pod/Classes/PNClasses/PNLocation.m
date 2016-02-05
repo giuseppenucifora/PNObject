@@ -14,6 +14,9 @@
     return @"Location";
 }
 
++(NSString *)objectEndPoint {
+    return @"Location";
+}
 
 + (NSDictionary *) objcetMapping {
     NSDictionary *mapping = @{@"lat":@"lat",

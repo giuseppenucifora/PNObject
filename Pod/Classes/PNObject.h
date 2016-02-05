@@ -10,7 +10,6 @@
 #import "PNObjectConfig.h"
 #import "PNObjectModel.h"
 
-
 @protocol PNObjectSubclassing <NSObject>
 
 @required
@@ -18,6 +17,8 @@
 + (NSDictionary * _Nonnull) objcetMapping;
 
 + (BOOL) singleInstance;
+
++ (NSString * _Nonnull) objectEndPoint;
 
 @optional
 
@@ -28,6 +29,8 @@
 @interface PNObject : NSObject
 
 + (NSString * _Nonnull) PNObjClassName;
+
++ (NSString * _Nonnull) PNObjEndPoint;
 
 - (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON;
 
@@ -51,6 +54,5 @@
  *  <#Description#>
  */
 @property (nonatomic, strong, nonnull) NSDictionary * JSONObject;
-
 
 @end

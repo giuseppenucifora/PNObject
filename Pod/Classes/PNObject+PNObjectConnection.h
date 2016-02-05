@@ -10,8 +10,8 @@
 
 @interface PNObject (PNObjectConnection)
 
-- (NSURLSessionDataTask * _Nonnull)GETWithProgress:(void (^ _Nullable)(NSProgress * _Nonnull))downloadProgress
-                                           success:(void (^ _Nullable)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
-                                           failure:(void (^ _Nullable)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure;
++ (NSURLSessionDataTask * _Nonnull) GETWithProgress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
+											success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject))success
+											failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 @end

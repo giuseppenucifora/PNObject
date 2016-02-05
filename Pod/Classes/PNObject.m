@@ -13,6 +13,7 @@
 #import "PNObjectConstants.h"
 #import "PNObject+Protected.h"
 #import "objc/runtime.h"
+#import "PNObject+PNObjectConnection.m"
 
 #define PNOBJECT_DIR @"PNObjects"
 
@@ -40,6 +41,10 @@
 	return mapping;
 }
 
++ (NSString *)objectEndPoint {
+	return NSStringFromClass([self class]);
+}
+
 + (BOOL) singleInstance {
 	return NO;
 }
@@ -58,6 +63,16 @@
 		return  [[super class] objectClassName];
 	}
 }
+
++ (NSString * _Nonnull) PNObjEndPoint {
+	if ([[self class] resolveClassMethod:@selector(objectEndPoint)]) {
+		return [[self class] objectEndPoint];
+	}
+	else {
+		return  [[super class] objectEndPoint];
+	}
+}
+
 
 - (_Nullable instancetype) init {
 	self = [super init];
@@ -92,7 +107,7 @@
 	self = [super init];
 	if (self) {
 		if ([[self class] isSubclassOfClass:[PNObject class]]) {
-			NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing");
+			NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing Protocol");
 			
 			_objID = [[NSProcessInfo processInfo] globallyUniqueString];
 			

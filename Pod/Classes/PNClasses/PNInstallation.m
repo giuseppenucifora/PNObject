@@ -26,25 +26,29 @@ static bool isFirstAccess = YES;
 #pragma mark PNObjectSubclassing Protocol
 
 + (NSDictionary *)objcetMapping {
-	
-	NSDictionary *mapping = @{
-							  @"deviceType":@"deviceType",
-							  @"deviceModel":@"deviceModel",
-							  @"deviceName":@"deviceName",
-							  @"osVersion":@"osVersion",
-							  @"deviceToken":@"deviceToken",
-							  @"badge":@"badge",
-							  @"localeIdentifier":@"localeIdentifier",
-							  };
-	return mapping;
+    
+    NSDictionary *mapping = @{
+                              @"deviceType":@"deviceType",
+                              @"deviceModel":@"deviceModel",
+                              @"deviceName":@"deviceName",
+                              @"osVersion":@"osVersion",
+                              @"deviceToken":@"deviceToken",
+                              @"badge":@"badge",
+                              @"localeIdentifier":@"localeIdentifier",
+                              };
+    return mapping;
 }
 
 + (NSString *)objectClassName {
-	return  @"AccessToken";
+    return  @"Installation";
+}
+
++ (NSString *)objectEndPoint {
+    return @"Installation";
 }
 
 + (BOOL) singleInstance {
-	return YES;
+    return YES;
 }
 
 #pragma mark -
@@ -53,26 +57,26 @@ static bool isFirstAccess = YES;
 
 
 + (instancetype) currentInstallation {
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		isFirstAccess = NO;
-		
-		SINGLETON = [[super allocWithZone:NULL] init];
-	});
-	
-	return SINGLETON;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        isFirstAccess = NO;
+        
+        SINGLETON = [[super allocWithZone:NULL] init];
+    });
+    
+    return SINGLETON;
 }
 
 - (void)setDeviceTokenFromData:(NSData *)deviceTokenData {
-	
-	_deviceTokenData = deviceTokenData;
-	
-	NSString *ptoken = [[[[deviceTokenData description]
-						  stringByReplacingOccurrencesOfString:@"<"withString:@""]
-						 stringByReplacingOccurrencesOfString:@">" withString:@""]
-						stringByReplacingOccurrencesOfString: @" " withString: @""];
-	
-	_deviceToken = ptoken;
+    
+    _deviceTokenData = deviceTokenData;
+    
+    NSString *ptoken = [[[[deviceTokenData description]
+                          stringByReplacingOccurrencesOfString:@"<"withString:@""]
+                         stringByReplacingOccurrencesOfString:@">" withString:@""]
+                        stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    _deviceToken = ptoken;
 }
 
 #pragma mark -
@@ -81,31 +85,31 @@ static bool isFirstAccess = YES;
 
 - (id) init
 {
-	if(SINGLETON){
-		return SINGLETON;
-	}
-	if (isFirstAccess) {
-		[self doesNotRecognizeSelector:_cmd];
-	}
-	
-	NSDictionary *savedInstallation = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
-	
-	if (savedInstallation) {
-		self = [super initWithJSON:savedInstallation];
-	}
-	else {
-		self = [super init];
-	}
-	
-	if (self) {
-		
-		_deviceType = @"iOS";
-		_deviceModel = [[UIDevice currentDevice] model];
-		_osVersion = [[UIDevice currentDevice] systemVersion];
-		_deviceName = [[UIDevice currentDevice] name];
-		
-	}
-	return self;
+    if(SINGLETON){
+        return SINGLETON;
+    }
+    if (isFirstAccess) {
+        [self doesNotRecognizeSelector:_cmd];
+    }
+    
+    NSDictionary *savedInstallation = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
+    
+    if (savedInstallation) {
+        self = [super initWithJSON:savedInstallation];
+    }
+    else {
+        self = [super init];
+    }
+    
+    if (self) {
+        
+        _deviceType = @"iOS";
+        _deviceModel = [[UIDevice currentDevice] model];
+        _osVersion = [[UIDevice currentDevice] systemVersion];
+        _deviceName = [[UIDevice currentDevice] name];
+        
+    }
+    return self;
 }
 
 #pragma mark -
