@@ -102,6 +102,14 @@ static bool isFirstAccess = YES;
     [self resetObject];
 }
 
+- (BOOL) isValidUser {
+    if(self.username && self.password && [self isValidPassword:[self password]]){
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark PNObjectSubclassing Protocol 
 
 + (NSDictionary *)objcetMapping {

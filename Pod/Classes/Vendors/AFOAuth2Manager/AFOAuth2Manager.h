@@ -1,38 +1,37 @@
-// AFOAuth2Manager.h
-//
-// Copyright (c) 2012-2014 AFNetworking (http://afnetworking.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE
+    // AFOAuth2Manager.h
+    //
+    // Copyright (c) 2012-2014 AFNetworking (http://afnetworking.com)
+    //
+    // Permission is hereby granted, free of charge, to any person obtaining a copy
+    // of this software and associated documentation files (the "Software"), to deal
+    // in the Software without restriction, including without limitation the rights
+    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    // copies of the Software, and to permit persons to whom the Software is
+    // furnished to do so, subject to the following conditions:
+    //
+    // The above copyright notice and this permission notice shall be included in
+    // all copies or substantial portions of the Software.
+    //
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    // THE SOFTWARE
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking/AFNetworking.h>
 #import "AFOAuthCredential.h"
 #import "AFHTTPRequestSerializer+OAuth2.h"
-
-@import AFNetworking;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOAuth2Manager : AFHTTPSessionManager
 
-///------------------------------------------
-/// @name Accessing OAuth 2 Client Properties
-///------------------------------------------
+    ///------------------------------------------
+    /// @name Accessing OAuth 2 Client Properties
+    ///------------------------------------------
 
 /**
  The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthCredential`. Equivalent to the hostname of the client `baseURL`.
@@ -49,17 +48,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) BOOL useHTTPBasicAuthentication;
 
-///------------------------------------------------
-/// @name Creating and Initializing OAuth 2 Managers
-///------------------------------------------------
+    ///------------------------------------------------
+    /// @name Creating and Initializing OAuth 2 Managers
+    ///------------------------------------------------
 
 /**
  Creates and initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret.
-
+ 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client. This argument must not be `nil`.
  @param secret The client secret.
-
+ 
  @return The newly-initialized OAuth 2 manager
  */
 + (instancetype)managerWithBaseURL:(NSURL *)url
@@ -73,11 +72,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret. The communication to to the server will use HTTP basic auth by default (use `-(id)initWithBaseURL:clientID:secret:withBasicAuth:` to change this).
-
+ 
  @param url The base URL for the HTTP manager. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client. This argument must not be `nil`.
  @param secret The client secret.
-
+ 
  @return The newly-initialized OAuth 2 client
  */
 - (id)initWithBaseURL:(NSURL *)url
@@ -89,13 +88,13 @@ NS_ASSUME_NONNULL_BEGIN
              clientID:(NSString *)clientID
                secret:(NSString *)secret;
 
-///---------------------
-/// @name Authenticating
-///---------------------
+    ///---------------------
+    /// @name Authenticating
+    ///---------------------
 
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server using a specified username and password, with a designated scope.
-
+ 
  @param URLString The URL string used to create the request URL.
  @param username The username used for authentication
  @param password The password used for authentication
@@ -112,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server with a designated scope.
-
+ 
  @param URLString The URL string used to create the request URL.
  @param scope The authorization scope
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
@@ -151,7 +150,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server with the specified parameters.
-
+ 
  @param URLString The URL string used to create the request URL.
  @param parameters The parameters to be encoded and set in the request HTTP body.
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
@@ -164,9 +163,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-///----------------
-/// @name Constants
-///----------------
+    ///----------------
+    /// @name Constants
+    ///----------------
 
 /**
  ## Error Domains

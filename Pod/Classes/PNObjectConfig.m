@@ -1,10 +1,10 @@
-    //
-    //  PNObjectConfig.m
-    //  Pods
-    //
-    //  Created by Giuseppe Nucifora on 08/01/16.
-    //
-    //
+//
+//  PNObjectConfig.m
+//  Pods
+//
+//  Created by Giuseppe Nucifora on 08/01/16.
+//
+//
 
 #import "PNObjectConfig.h"
 #import "PNObjectConstants.h"
@@ -224,7 +224,7 @@ static bool isFirstAccess = YES;
 }
 
 - (void) tryRefreshToken {
-    if ([PNUser currentUser]) {
+    if ([PNUser currentUser] && [[PNUser currentUser] isValidUser]) {
         [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] username] password:[[PNUser currentUser] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
