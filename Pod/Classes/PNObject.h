@@ -38,6 +38,8 @@
 
 - (BOOL) autoRemoveLocally;
 
+- (NSDictionary * _Nonnull) JSONFormObject;
+
 ///--------------------------------------
 #pragma mark - PNObject Properties
 ///--------------------------------------
@@ -54,5 +56,6 @@
  *  <#Description#>
  */
 @property (nonatomic, strong, nonnull) NSDictionary * JSONObject;
+
 
 @end

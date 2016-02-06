@@ -37,6 +37,7 @@ PODS:
     - PEAR-FileManager-iOS
     - StrongestPasswordValidator
     - UIDevice-Utils
+  - PureLayout (3.0.1)
   - Specta (1.0.5)
   - StrongestPasswordValidator (0.1.1)
   - UIDevice-Utils (0.1.4)
@@ -52,6 +53,7 @@ DEPENDENCIES:
   - nv-ios-http-status
   - PEAR-FileManager-iOS
   - PNObject (from `../`)
+  - PureLayout
   - Specta
   - StrongestPasswordValidator
   - UIDevice-Utils
@@ -71,10 +73,11 @@ SPEC CHECKSUMS:
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
   PNObject: f1a1126226e7f0dac81111a98e49b8653603f518
+  PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   StrongestPasswordValidator: 554de9038705e18904f0337903dfd3b85a6b271b
   UIDevice-Utils: 0beb5f9d2bd256a3efe05c1e43a2a8b8702199c4
 
-PODFILE CHECKSUM: 99adfd0e15d4fe00ec0e738a05da2a580764ba73
+PODFILE CHECKSUM: 17e9b803760ee3243260eb8a4dbc6fd15054c221
 
 COCOAPODS: 1.0.0.beta.3

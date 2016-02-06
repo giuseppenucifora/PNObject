@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
+#import "HTTPStatusCodes.h"
 
 #import "AFOAuth2Manager.h"
 #import "AFHTTPRequestSerializer+OAuth2.h"
@@ -112,6 +113,38 @@ extern NSString* _Nonnull const Client_Secret;
  */
 - (void) setAcceptablePasswordLenght:(NSUInteger) passLenght;
 
+/**
+ *  <#Description#>
+ */
+- (void) refreshTokenForClientCredential;
+
+/**
+ *  <#Description#>
+ *
+ *  @param success <#success description#>
+ *  @param failure <#failure description#>
+ */
+- (void) refreshTokenForClientCredentialWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                                 failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+/**
+ *  <#Description#>
+ */
+- (void) refreshTokenForUser;
+
+/**
+ *  <#Description#>
+ *
+ *  @param success <#success description#>
+ *  @param failure <#failure description#>
+ */
+- (void) refreshTokenForUserWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                     failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+/**
+ *  <#Description#>
+ */
+- (BOOL) resetToken;
 
 ///--------------------------------------
 #pragma mark - PNObjectConfig Properties
@@ -119,7 +152,12 @@ extern NSString* _Nonnull const Client_Secret;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong) AFOAuth2Manager *manager;
+@property (nonatomic, strong, nonnull) AFOAuth2Manager *manager;
+
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nullable, readonly) AFOAuthCredential *currentOauthCredential;
 
 /**
  *  <#Description#>

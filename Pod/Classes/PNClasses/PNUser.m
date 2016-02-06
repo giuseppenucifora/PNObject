@@ -10,6 +10,7 @@
 #import "NSString+Helper.h"
 #import "PNObjectConstants.h"
 #import "PNObject+Protected.h"
+#import "PNObject+PNObjectConnection.h"
 
 
 @interface PNUser() <PNObjectSubclassing>
@@ -30,10 +31,10 @@ static bool isFirstAccess = YES;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
-        
+
         SINGLETON = [[super allocWithZone:NULL] initForCurrentUser];
     });
-    
+
     return SINGLETON;
 }
 
@@ -57,16 +58,16 @@ static bool isFirstAccess = YES;
     if (isFirstAccess) {
         [self doesNotRecognizeSelector:_cmd];
     }
-    
+
     NSDictionary *savedUser = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
-    
+
     if (savedUser) {
         self = [super initWithJSON:savedUser];
     }
     else {
         self = [super init];
     }
-    
+
     if (self) {
     }
     return self;
@@ -90,6 +91,20 @@ static bool isFirstAccess = YES;
     }
 }
 
+- (void) setConfirmPassword:(NSString *)confirmPassword {
+    if ([self isValidPassword:confirmPassword]) {
+        if ([confirmPassword isEqualToString:_password]) {
+            _confirmPassword = confirmPassword;
+        }
+        else {
+            NSLogDebug(@"Inserted Passord is not same password.");
+        }
+    }
+    else {
+        NSLogDebug(@"Inserted Passord is not valid.Lenght must be >= %ld",(long)[[PNObjectConfig sharedInstance] minPasswordLenght]);
+    }
+}
+
 - (BOOL) isValidPassword:(NSString* _Nonnull) password {
     if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
         return YES;
@@ -102,18 +117,33 @@ static bool isFirstAccess = YES;
     [self resetObject];
 }
 
-- (BOOL) isValidUser {
+- (BOOL) hasValidUserAndPasswordData {
     if(self.username && self.password && [self isValidPassword:[self password]]){
         return YES;
     }
-    
+
     return NO;
 }
 
-#pragma mark PNObjectSubclassing Protocol 
+- (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(id _Nullable responseObject))success
+                                     failure:(nullable void (^)(NSError * _Nonnull error))failure {
+
+    [self POSTWithEndpointAction:@"registration/register" Progress:nil success:^(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject) {
+        NSLog(@"response %@",responseObject);
+        if(success){
+            success(responseObject);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+#pragma mark PNObjectSubclassing Protocol
 
 + (NSDictionary *)objcetMapping {
-    
+
     NSDictionary *mapping = @{
                               @"userId":@"id",
                               @"firstName":@"firstName",
@@ -122,7 +152,8 @@ static bool isFirstAccess = YES;
                               @"sex":@"sex",
                               @"birthDate":@"birthDate",
                               @"phone":@"phone",
-                              @"password":@"password",
+                              @"password":@"plainPassword[first]",
+                              @"confirmPassword":@"plainPassword[second]",
                               @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
                               @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
                               @"hasVerifiedEmail":@"hasVerifiedEmail",

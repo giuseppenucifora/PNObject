@@ -24,12 +24,34 @@
  *  @return <#return value description#>
  */
 - (BOOL) isValidPassword:(NSString* _Nonnull) password;
+
 /**
  *  <#Description#>
  */
 - (void) logout;
 
-- (BOOL) isValidUser;
+/**
+ *  <#Description#>
+ *
+ *  @return <#return value description#>
+ */
+- (BOOL) hasValidUserAndPasswordData;
+
+/**
+ *  <#Description#>
+ *
+ *  @param success <#success description#>
+ *  @param failure <#failure description#>
+ */
+- (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(id _Nullable responseObject))success
+                                     failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+/**
+ *  <#Description#>
+ *
+ *  @return <#return value description#>
+ */
+- (BOOL) autenticated;
 
 //- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id responseObject, NSError * error)) responseBlock;
 
@@ -93,6 +115,10 @@
  *  <#Description#>
  */
 @property (nonatomic, strong, nullable) NSString * password;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nullable) NSString * confirmPassword;
 /**
  *  <#Description#>
  */
