@@ -11,6 +11,7 @@ target 'PNObject_Example' do
     pod 'NSString-Helper'
     pod 'CodFis-Helper'
     pod 'StrongestPasswordValidator'
+    pod 'PureLayout'
 
 end
 

@@ -70,17 +70,17 @@
     if (!self) {
         return nil;
     }
-
+    
     // Ensure terminal slash for baseURL path, so that NSURL +URLWithString:relativeToURL: works as expected
     if ([[url path] length] > 0 && ![[url absoluteString] hasSuffix:@"/"]) {
         url = [url URLByAppendingPathComponent:@""];
     }
-
+    
     self.baseURL = url;
-
+    
     self.requestSerializer = [AFHTTPRequestSerializer serializer];
     self.responseSerializer = [AFJSONResponseSerializer serializer];
-
+    
     return self;
 }
 
@@ -88,13 +88,13 @@
 
 - (void)setRequestSerializer:(AFHTTPRequestSerializer <AFURLRequestSerialization> *)requestSerializer {
     NSParameterAssert(requestSerializer);
-
+    
     _requestSerializer = requestSerializer;
 }
 
 - (void)setResponseSerializer:(AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
     NSParameterAssert(responseSerializer);
-
+    
     [super setResponseSerializer:responseSerializer];
 }
 
@@ -105,7 +105,7 @@
                       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
-
+    
     return [self GET:URLString parameters:parameters progress:nil success:success failure:failure];
 }
 
@@ -115,7 +115,7 @@
                       success:(void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
                       failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 {
-
+    
     NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"GET"
                                                         URLString:URLString
                                                        parameters:parameters
@@ -123,9 +123,9 @@
                                                  downloadProgress:downloadProgress
                                                           success:success
                                                           failure:failure];
-
+    
     [dataTask resume];
-
+    
     return dataTask;
 }
 
@@ -139,9 +139,9 @@
             success(task);
         }
     } failure:failure];
-
+    
     [dataTask resume];
-
+    
     return dataTask;
 }
 
@@ -160,9 +160,9 @@
                        failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 {
     NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"POST" URLString:URLString parameters:parameters uploadProgress:uploadProgress downloadProgress:nil success:success failure:failure];
-
+    
     [dataTask resume];
-
+    
     return dataTask;
 }
 
@@ -193,10 +193,9 @@
             });
 #pragma clang diagnostic pop
         }
-
+        
         return nil;
     }
-
     __block NSURLSessionDataTask *task = [self uploadTaskWithStreamedRequest:request progress:uploadProgress completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
         if (error) {
             if (failure) {
@@ -208,9 +207,9 @@
             }
         }
     }];
-
+    
     [task resume];
-
+    
     return task;
 }
 
@@ -220,9 +219,9 @@
                       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"PUT" URLString:URLString parameters:parameters uploadProgress:nil downloadProgress:nil success:success failure:failure];
-
+    
     [dataTask resume];
-
+    
     return dataTask;
 }
 
@@ -232,9 +231,9 @@
                         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"PATCH" URLString:URLString parameters:parameters uploadProgress:nil downloadProgress:nil success:success failure:failure];
-
+    
     [dataTask resume];
-
+    
     return dataTask;
 }
 
@@ -244,9 +243,9 @@
                          failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"DELETE" URLString:URLString parameters:parameters uploadProgress:nil downloadProgress:nil success:success failure:failure];
-
+    
     [dataTask resume];
-
+    
     return dataTask;
 }
 
@@ -269,26 +268,26 @@
             });
 #pragma clang diagnostic pop
         }
-
+        
         return nil;
     }
-
+    
     __block NSURLSessionDataTask *dataTask = nil;
     dataTask = [self dataTaskWithRequest:request
                           uploadProgress:uploadProgress
                         downloadProgress:downloadProgress
                        completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
-        if (error) {
-            if (failure) {
-                failure(dataTask, error);
-            }
-        } else {
-            if (success) {
-                success(dataTask, responseObject);
-            }
-        }
-    }];
-
+                           if (error) {
+                               if (failure) {
+                                   failure(dataTask, error);
+                               }
+                           } else {
+                               if (success) {
+                                   success(dataTask, responseObject);
+                               }
+                           }
+                       }];
+    
     return dataTask;
 }
 
@@ -317,25 +316,25 @@
 #endif
         }
     }
-
+    
     self = [self initWithBaseURL:baseURL sessionConfiguration:configuration];
     if (!self) {
         return nil;
     }
-
+    
     self.requestSerializer = [decoder decodeObjectOfClass:[AFHTTPRequestSerializer class] forKey:NSStringFromSelector(@selector(requestSerializer))];
     self.responseSerializer = [decoder decodeObjectOfClass:[AFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
     AFSecurityPolicy *decodedPolicy = [decoder decodeObjectOfClass:[AFSecurityPolicy class] forKey:NSStringFromSelector(@selector(securityPolicy))];
     if (decodedPolicy) {
         self.securityPolicy = decodedPolicy;
     }
-
+    
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [super encodeWithCoder:coder];
-
+    
     [coder encodeObject:self.baseURL forKey:NSStringFromSelector(@selector(baseURL))];
     if ([self.session.configuration conformsToProtocol:@protocol(NSCoding)]) {
         [coder encodeObject:self.session.configuration forKey:@"sessionConfiguration"];
@@ -351,7 +350,7 @@
 
 - (instancetype)copyWithZone:(NSZone *)zone {
     AFHTTPSessionManager *HTTPClient = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL sessionConfiguration:self.session.configuration];
-
+    
     HTTPClient.requestSerializer = [self.requestSerializer copyWithZone:zone];
     HTTPClient.responseSerializer = [self.responseSerializer copyWithZone:zone];
     HTTPClient.securityPolicy = [self.securityPolicy copyWithZone:zone];

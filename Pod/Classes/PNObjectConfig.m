@@ -35,8 +35,6 @@ NSString*  const Client_Secret = @"client_secret";
 
 @property (nonatomic) BOOL oauthEnabled;
 
-@property (nonatomic, strong) AFOAuthCredential *currentOauthCredential;
-
 @property (nonatomic, strong) NSMutableDictionary *configuration;
 @property (nonatomic, strong) NSMutableDictionary *headerFields;
 @property (nonatomic) Environment currentEnv;
@@ -193,6 +191,8 @@ static bool isFirstAccess = YES;
         _manager = [AFOAuth2Manager manager];
     }
     
+    _currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
+    
     if (_oauthEnabled && _currentOAuthClientID && _currentOAuthClientSecret) {
         
         if (![_manager clientID]) {
@@ -211,37 +211,79 @@ static bool isFirstAccess = YES;
     
     if (canTryRefreh) {
         
-        if (!_currentOauthCredential) {
-            
-            [self tryRefreshToken];
+        if (_currentOauthCredential && ![_currentOauthCredential isExpired]) {
+            [[_manager requestSerializer] setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         }
         else {
-            [[_manager requestSerializer] setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [self refreshTokenForClientCredential];
         }
     }
     
     return _manager;
 }
 
-- (void) tryRefreshToken {
-    if ([PNUser currentUser] && [[PNUser currentUser] isValidUser]) {
+- (BOOL) resetToken {
+    if (_currentOauthCredential) {
+       return [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
+    }
+    return NO;
+}
+
+- (void) refreshTokenForUser {
+
+    [self refreshTokenForUserWithBlockSuccess:nil failure:nil];
+}
+
+- (void) refreshTokenForUserWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                     failure:(nullable void (^)(NSError * _Nonnull error))failure {
+
+    if([PNUser currentUser] && [[PNUser currentUser] hasValidUserAndPasswordData]) {
         [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] username] password:[[PNUser currentUser] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
+            
+            [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+
+            if (success) {
+                success(YES);
+            }
         } failure:^(NSError * _Nonnull error) {
+
             [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
-        }];
-    }
-    else {
-        
-        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
-            _currentOauthCredential = credential;
-            [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-        } failure:^(NSError * _Nonnull error) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialFail object:error];
+            if (failure) {
+                failure(error);
+            }
         }];
     }
 }
+
+- (void) refreshTokenForClientCredential {
+    [self refreshTokenForClientCredentialWithBlockSuccess:nil failure:nil];
+}
+
+
+- (void) refreshTokenForClientCredentialWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                                 failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    
+    [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+        _currentOauthCredential = credential;
+        
+        [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
+        
+        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+
+        if (success) {
+            success(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialFail object:error];
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+}
+
 
 - (void) setAcceptablePasswordLenght:(NSUInteger) passLenght {
     _minPasswordLenght = passLenght;
