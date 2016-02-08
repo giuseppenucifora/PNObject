@@ -101,7 +101,16 @@
 
 - (void) apiCallAction {
 
-    [[User currentUser] registerCurrentUserWithBlockSuccess:^(id  _Nullable responseObject) {
+    User *user = [User currentUser];
+    [user setFirstName:@"Giuseppe"];
+    [user setLastName:@"Nuficora"];
+    [user setEmail:@"giuseppe.nucifora@purplenetwork.it"];
+    [user setPassword:@"asdasdasd"];
+    [user setConfirmPassword:@"asdasdasd"];
+    [user setHasAcceptedNewsletter:NO];
+    [user setHasAcceptedPrivacy:YES];
+
+    [user registerCurrentUserWithBlockSuccess:^(id  _Nullable responseObject) {
 
     } failure:^(NSError * _Nonnull error) {
         

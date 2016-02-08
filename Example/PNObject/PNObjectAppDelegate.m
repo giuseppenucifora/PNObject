@@ -33,14 +33,7 @@
     [[PNObjectConfig sharedInstance] setEnvironment:Stage];
 #endif
     
-    User *user = [User currentUser];
-    [user setFirstName:@"Giuseppe"];
-    [user setLastName:@"Nuficora"];
-    [user setEmail:@"giuseppe.nucifora@purplenetwork.it"];
-    [user setPassword:@"asdasdasd"];
-    [user setConfirmPassword:@"asdasdasd"];
     
-
     PNObjectViewController *viewController = [[PNObjectViewController alloc] init];
 
     _window.rootViewController = viewController;
