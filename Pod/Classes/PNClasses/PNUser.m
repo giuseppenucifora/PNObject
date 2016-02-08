@@ -135,9 +135,7 @@ static bool isFirstAccess = YES;
             [self saveLocally];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (failure) {
-            failure(error);
-        }
+        NSLogDebug(@"error : %ld",[error code]);
     }];
 }
 

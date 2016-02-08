@@ -123,6 +123,8 @@
 		67459AD239EF669A365519E06B45DCFE /* EXPExpect.h in Headers */ = {isa = PBXBuildFile; fileRef = 85B934B7F86B106DF78204B7AE8B8EC3 /* EXPExpect.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68152D921ABF6A423C192C04FDF94F0F /* AFNetworkReachabilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F0F90EF4748B4A966D1DAF164931F4 /* AFNetworkReachabilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68527B0A6AE982293383787B56E689CE /* SPTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FE1251C9E029D9BAE495F559EAE792 /* SPTSpec.m */; };
+		686ABCD31C68BB14000B3F7A /* AFJSONResponseSerializerWithData.h in Headers */ = {isa = PBXBuildFile; fileRef = 686ABCD11C68BB14000B3F7A /* AFJSONResponseSerializerWithData.h */; };
+		686ABCD41C68BB14000B3F7A /* AFJSONResponseSerializerWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = 686ABCD21C68BB14000B3F7A /* AFJSONResponseSerializerWithData.m */; };
 		68A38977EBAE334DC3C22386D00D2622 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8896632DE267959FC9A58A136F288D51 /* AFNetworkReachabilityManager.m */; };
 		6D5A30E2A230B959E8EE809CE4BB32A2 /* PNObjectConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E302FEB8D6267D5AFF079585825E1ED7 /* PNObjectConfig.m */; };
 		6DB00E9E820B5D01AB879D6D6C5761D0 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AE755B3A0FB88230CB157960D30465F3 /* ALView+PureLayout.m */; };
@@ -692,6 +694,8 @@
 		659A88606C2EB56A078B8000BF3C76EF /* NSValue+Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSValue+Expecta.h"; path = "Expecta/NSValue+Expecta.h"; sourceTree = "<group>"; };
 		665CA3EDF757B11180E35A2B3C4109A7 /* EXPMatchers+beSubclassOf.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beSubclassOf.m"; path = "Expecta/Matchers/EXPMatchers+beSubclassOf.m"; sourceTree = "<group>"; };
 		681D38A1CD2CBD39B4504C4812CB0AAE /* CodFis_Helper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CodFis_Helper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		686ABCD11C68BB14000B3F7A /* AFJSONResponseSerializerWithData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONResponseSerializerWithData.h; sourceTree = "<group>"; };
+		686ABCD21C68BB14000B3F7A /* AFJSONResponseSerializerWithData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONResponseSerializerWithData.m; sourceTree = "<group>"; };
 		686B13BFDA57BED5365B141F8035571A /* UIDevice-Utils-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Utils-prefix.pch"; sourceTree = "<group>"; };
 		68888A8DB78EC8BACCB7D5CB3E6FE473 /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLRequestSerialization.h; path = AFNetworking/AFURLRequestSerialization.h; sourceTree = "<group>"; };
 		68AD8EB00582BE9183A47EBF5778229F /* CodFis-Helper-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CodFis-Helper-umbrella.h"; sourceTree = "<group>"; };
@@ -1151,6 +1155,7 @@
 		09DFBEE319FF263B46BE993205A73171 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				686ABCD01C68BADF000B3F7A /* AFJSONResponseSerializerWithData */,
 				D59DE6098AB18223462166121D3EF123 /* AFOAuth2Manager */,
 			);
 			path = Vendors;
@@ -1459,6 +1464,15 @@
 				05EE480D05222894FA85EB9903ECFE12 /* UIWebView+AFNetworking.m */,
 			);
 			name = UIKit;
+			sourceTree = "<group>";
+		};
+		686ABCD01C68BADF000B3F7A /* AFJSONResponseSerializerWithData */ = {
+			isa = PBXGroup;
+			children = (
+				686ABCD11C68BB14000B3F7A /* AFJSONResponseSerializerWithData.h */,
+				686ABCD21C68BB14000B3F7A /* AFJSONResponseSerializerWithData.m */,
+			);
+			path = AFJSONResponseSerializerWithData;
 			sourceTree = "<group>";
 		};
 		729C4611053B78A0900E14D5E1734624 /* Classes */ = {
@@ -1885,6 +1899,7 @@
 				0F1F7C0A6EC86A3FCF1BB0B073A097DD /* PNLocation.h in Headers */,
 				5CDCF5E6A1A6BC03466189CB90B0D256 /* PNObject+PNObjectConnection.h in Headers */,
 				34C796D4FBF079C1EE491183EA1A6FEC /* PNObject+Protected.h in Headers */,
+				686ABCD31C68BB14000B3F7A /* AFJSONResponseSerializerWithData.h in Headers */,
 				44C7743BBE4CCB5065BDE9C1216B5DC9 /* PNObject-umbrella.h in Headers */,
 				847EED4B0EA774785C68431817CD93C9 /* PNObject.h in Headers */,
 				E9D106AFF48125A694CE99CCA5D7A157 /* PNObjectConfig.h in Headers */,
@@ -2902,6 +2917,7 @@
 				8A2A0069F4D5044BE03B3F39CC374519 /* AFOAuthCredential.m in Sources */,
 				D2ED781E66AD5CD401EBC86CD03E9C27 /* PNAddress.m in Sources */,
 				735F937F3E969009D5F40CB33909BF63 /* PNInstallation.m in Sources */,
+				686ABCD41C68BB14000B3F7A /* AFJSONResponseSerializerWithData.m in Sources */,
 				AC1BD14C511A7825CEB0753CFAE51C6D /* PNLocation.m in Sources */,
 				9AEC0D13C5E01C1B225458FE03A15CDE /* PNObject+PNObjectConnection.m in Sources */,
 				1D0DF59F3721D214418AE5F859BA6A94 /* PNObject+Protected.m in Sources */,

@@ -9,6 +9,7 @@
 #import "PNObjectConfig.h"
 #import "PNObjectConstants.h"
 #import "PNUser.h"
+#import "AFJSONResponseSerializerWithData.h"
 
 
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess = @"PNObjectLocalNotificationRefreshTokenClientCredentialSuccess";
@@ -218,7 +219,9 @@ static bool isFirstAccess = YES;
             [self refreshTokenForClientCredential];
         }
     }
-    
+
+    _manager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
+
     return _manager;
 }
 

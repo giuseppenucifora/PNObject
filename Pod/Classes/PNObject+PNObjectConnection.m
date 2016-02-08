@@ -17,7 +17,7 @@
 @implementation PNObject (PNObjectConnection)
 
 + (void) GETWithProgress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
-                                            success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject))success
+                                            success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
                                             failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
     if ([[PNObjectConfig sharedInstance] currentOauthCredential] && ![[[PNObjectConfig sharedInstance] currentOauthCredential] isExpired]) {
@@ -52,7 +52,7 @@
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
                                                  Progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
-                                                  success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject))success
+                                                  success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
                                                   failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
 
@@ -83,14 +83,6 @@
     }
 }
 
-+ (void) POSTWithProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                                             success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject))success
-                                             failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-
-
-
-}
-
 - (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
                        Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject))success
@@ -100,15 +92,19 @@
 
         [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:[self JSONFormObject] progress:uploadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
 
-            id PNObjectResponse = [[[self class] alloc] initWithJSON:[responseObject copy]];
+            id PNObjectResponse;
+            if (responseObject) {
+                PNObjectResponse = [[[self class] alloc] initWithJSON:[responseObject copy]];
+            }
 
             if (success) {
                 success(task,PNObjectResponse);
             }
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+
             if (failure) {
-                failure(task,error);
+                failure(task, error);
             }
         }];
     }
@@ -118,11 +114,23 @@
             [self POSTWithEndpointAction:endPoint Progress:uploadProgress success:success failure:failure];
         } failure:^(NSError * _Nonnull error) {
             
-            
+            if (failure) {
+                failure(nil,error);
+            }
         }];
     }
 }
 
+
+
++ (NSError* _Nonnull) getErrorFromTask:(NSURLSessionDataTask* _Nonnull) task andError:(NSError * _Nonnull) error {
+
+    NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+    NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
+
+    return [NSError errorWithDomain:[error domain] code:response.statusCode userInfo:serializedData];
+}
 /*+ (nullable NSURLSessionDataTask *) POSTConstructingBodyWithBlock:(nullable void (^)(id <AFMultipartFormData>  _Nonnull formData))block
  progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
  success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
