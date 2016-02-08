@@ -125,13 +125,14 @@ static bool isFirstAccess = YES;
     return NO;
 }
 
-- (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(id _Nullable responseObject))success
+- (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     [self POSTWithEndpointAction:@"registration/register" Progress:nil success:^(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject) {
         NSLog(@"response %@",responseObject);
         if(success){
-            success(responseObject);
+            success((PNUser*)responseObject);
+            [self saveLocally];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failure) {

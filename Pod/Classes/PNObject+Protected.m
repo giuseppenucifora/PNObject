@@ -258,7 +258,8 @@ static BOOL property_getTypeString( objc_property_t property, char *buffer )
     
     NSMutableDictionary *results = [NSMutableDictionary dictionary];
     if ([PNObjClass isSubclassOfClass:[PNObject class]] &&  PNObjClass != [PNObject class]) {
-        [results addEntriesFromDictionary:[self propertiesForClass:[PNObject class]]];
+
+        [results addEntriesFromDictionary:[self propertiesForClass:class_getSuperclass(PNObjClass)]];
     }
     
     unsigned int outCount, i;
