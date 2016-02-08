@@ -9,10 +9,8 @@
 #import "PNObjectAppDelegate.h"
 #import "PNObjectViewController.h"
 
-
-
 #import "PNObject.h"
-#import "PNUser.h"
+#import "User.h"
 #import "PNAddress.h"
 #import "PNObject+PNObjectConnection.h"
 
@@ -35,7 +33,7 @@
     [[PNObjectConfig sharedInstance] setEnvironment:Stage];
 #endif
     
-    PNUser *user = [PNUser currentUser];
+    User *user = [User currentUser];
     [user setFirstName:@"Giuseppe"];
     [user setLastName:@"Nuficora"];
     [user setEmail:@"giuseppe.nucifora@purplenetwork.it"];

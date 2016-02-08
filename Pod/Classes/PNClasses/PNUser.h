@@ -43,7 +43,7 @@
  *  @param success <#success description#>
  *  @param failure <#failure description#>
  */
-- (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(id _Nullable responseObject))success
+- (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**

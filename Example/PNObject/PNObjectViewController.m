@@ -9,7 +9,7 @@
 #import "PNObjectViewController.h"
 #import <PureLayout/PureLayout.h>
 #import "PNObject.h"
-#import "PNUser.h"
+#import "User.h"
 #import "PNAddress.h"
 #import "PNObject+PNObjectConnection.h"
 
@@ -101,7 +101,7 @@
 
 - (void) apiCallAction {
 
-    [[PNUser currentUser] registerCurrentUserWithBlockSuccess:^(id  _Nullable responseObject) {
+    [[User currentUser] registerCurrentUserWithBlockSuccess:^(id  _Nullable responseObject) {
 
     } failure:^(NSError * _Nonnull error) {
         
