@@ -76,33 +76,33 @@
 
 - (_Nullable instancetype) init {
     self = [super init];
-    
+
     if (self) {
         if ([[self class] isSubclassOfClass:[PNObject class]]) {
-            
+
             NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing");
-            
+
             _objID = [[NSProcessInfo processInfo] globallyUniqueString];
-            
+
             _objectModel = [PNObjectModel sharedInstance];
             [_objectModel setPersistencyDelegate:self];
-            
+
             NSMutableDictionary * objectDict = [[NSMutableDictionary alloc] initWithDictionary:[[self class] objcetMapping]];
             [objectDict addEntriesFromDictionary:[PNObject objcetMapping]];
-            
+
             _JSONObject = objectDict;
-            
+
             NSAssert(_JSONObject, @"You must create objectMapping");
-            
+
             _singleInstance = [[self class] singleInstance];
-            
+
             _createdAt = [[NSDate date] toLocalTime];
         }
-        
+
         _JSON = [[NSMutableDictionary alloc] init];
-        
+
         NSDictionary *properties = [PNObject propertiesForClass:self.class];
-        
+
         for (NSString *propertyName in properties) {
             if ([propertyName isEqualToString:@"description"] || [propertyName isEqualToString:@"debugDescription"])  {
                 continue;
@@ -118,37 +118,37 @@
     if (self) {
         if ([[self class] isSubclassOfClass:[PNObject class]]) {
             NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing Protocol");
-            
+
             _objID = [[NSProcessInfo processInfo] globallyUniqueString];
-            
+
             _objectModel = [PNObjectModel sharedInstance];
             [_objectModel setPersistencyDelegate:self];
-            
+
             NSMutableDictionary * objectDict = [[NSMutableDictionary alloc] initWithDictionary:[[self class] objcetMapping]];
             [objectDict addEntriesFromDictionary:[PNObject objcetMapping]];
-            
+
             _JSONObject = objectDict;
-            
+
             NSAssert(_JSONObject, @"You must create objectMapping");
-            
+
             _singleInstance = [[self class] singleInstance];
-            
+
             _createdAt = [[NSDate date] toLocalTime];
-            
+
         }
-        
+
         NSDictionary *properties = [PNObject propertiesForClass:self.class];
-        
+
         for (NSString *propertyName in properties) {
             if ([propertyName isEqualToString:@"description"] || [propertyName isEqualToString:@"debugDescription"])  {
                 continue;
             }
             [self addObserver:self forKeyPath:propertyName options:NSKeyValueObservingOptionNew context:nil];
         }
-        
+
         NSAssert(_JSONObject, @"You must create objectMapping");
         _JSON = [[NSMutableDictionary alloc] initWithDictionary:JSON];
-        
+
         [self populateObjectFromJSON:_JSON];
     }
     return self;
@@ -157,28 +157,28 @@
 - (NSDictionary * _Nonnull)reverseMapping
 {
     NSMutableDictionary *JSON = [NSMutableDictionary dictionary];
-    
+
     NSString *mappedJSONKey;
     NSString *mappedJSONType;
-    
+
     NSDictionary *properties = [PNObject propertiesForClass:self.class];
-    
+
     for (NSString* propertyName in _JSONObject) {
         id mappingValue = [_JSONObject objectForKey:propertyName];
-        
+
         if([mappingValue isKindOfClass:NSDictionary.class]) {
             mappedJSONKey = [mappingValue valueForKey:@"key"];
             mappedJSONType = [mappingValue valueForKey:@"type"];
         } else {
             mappedJSONKey = mappingValue;
         }
-        
+
         NSString *propertyType = [properties valueForKey:propertyName];
-        
+
         id value = [self valueForKey:propertyName];
-        
+
         NSLog(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
-        
+
         ((void (^)())@{
                        @"c" : ^{
             char val = [value charValue];
@@ -208,14 +208,14 @@
             BOOL val = [value boolValue];
             [JSON setValue:@(val) forKey:propertyName];
         },
-                       
+
                        @"UIImage" : ^{
             UIImage *image = [UIImage imageWithData:value];
             [JSON setValue:image forKey:propertyName];
         },
                        @"NSURL" : ^{
             NSURL *url = value;
-            
+
             if (![self isObjNull:url]) {
                 [JSON setValue:[url absoluteString] forKey:propertyName];
             }
@@ -246,10 +246,10 @@
                 [invocation invoke];
                 NSDictionary *returnValue;
                 [invocation getReturnValue:&returnValue];
-                
+
                 [arr addObject:returnValue];
             }
-            
+
             [JSON setValue:arr forKey:propertyName];
         },
                        @"NSMutableArray" : ^{
@@ -257,7 +257,7 @@
             for(id JSONObject in value) {
                 PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject];
                 [arr addObject:val];
-                
+
                 SEL selector = NSSelectorFromString(@"JSONObject");
                 NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
                 [invocation setSelector:selector];
@@ -266,7 +266,7 @@
                 NSDictionary *returnValue;
                 [invocation getReturnValue:&returnValue];
             }
-            
+
             [JSON setValue:arr forKey:propertyName];
         }
                        }[propertyType] ?: ^{
@@ -279,7 +279,7 @@
                                [invocation invoke];
                                NSDictionary *returnValue;
                                [invocation getReturnValue:&returnValue];
-                               
+
                                [JSON setValue:returnValue forKey:propertyName];
                            }
                            else {
@@ -287,20 +287,20 @@
                            }
                        })();
     }
-    
+
     _JSON = JSON;
-    
+
     return _JSON;
 }
 
 - (NSDictionary * _Nonnull) JSONFormObject {
-    
+
     NSMutableDictionary *JSONFormObject = [[NSMutableDictionary alloc] init];
-    
+
     NSDictionary *JSONMap = [[self class] objcetMapping];
-    
+
     for (NSString *key in JSONMap) {
-        
+
         if ([_JSON objectForKey:[JSONMap objectForKey:key]]) {
             [JSONFormObject setObject:[_JSON objectForKey:[JSONMap objectForKey:key]] forKey:[JSONMap objectForKey:key]];
         }
@@ -332,16 +332,16 @@
 #pragma mark PNObjectPersistency protocol
 
 - (BOOL) initObjectPersistency {
-    
+
     BOOL isDir=YES;
     NSError *error;
-    
+
     NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
+
     NSFileManager *fileManager= [NSFileManager defaultManager];
-    
+
     if(![fileManager fileExistsAtPath:[docDir stringByAppendingFormat:@"/%@",PNOBJECT_DIR] isDirectory:&isDir]) {
-        
+
         if (![[NSFileManager defaultManager] createDirectoryAtPath:[docDir stringByAppendingFormat:@"/%@",PNOBJECT_DIR] withIntermediateDirectories:NO attributes:nil error:&error]) {
 #ifdef DEBUG
             NSLogDebug(@"Create directory error: %@", error);
@@ -356,9 +356,9 @@
 }
 
 - (id _Nonnull) saveLocally {
-    
+
     __weak id weakSelf = self;
-    
+
     return [_objectModel saveLocally:weakSelf];
 }
 
@@ -370,33 +370,46 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    [_JSON setObject:[change objectForKey:@"new"] forKey:[[[self class] objcetMapping] objectForKey:keyPath]];
+    @try {
+        if ([change objectForKey:@"new"]) {
+            [_JSON setObject:[change objectForKey:@"new"] forKey:[[[self class] objcetMapping] objectForKey:keyPath]];
+        }
+        else {
+            [_JSON removeObjectForKey:[[[self class] objcetMapping] objectForKey:keyPath]];
+        }
+    }
+    @catch (NSException *exception) {
+
+    }
+    @finally {
+
+    }
 }
 
 - (void)dealloc
 {
     NSDictionary *properties = [PNObject propertiesForClass:self.class];
-    
+
     for (NSString *propertyName in properties) {
         if ([propertyName isEqualToString:@"description"] || [propertyName isEqualToString:@"debugDescription"])  {
             continue;
         }
-        
+
         @try {
             [self removeObserver:self forKeyPath:propertyName];
         }
         @catch (NSException *exception) {
-            
+
         }
         @finally {
-            
+
         }
     }
     _JSON = nil;
     _JSONObject = nil;
     _objID = nil;
     _createdAt = nil;
-    
+
     
 }
 

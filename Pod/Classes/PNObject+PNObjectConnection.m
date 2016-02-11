@@ -16,54 +16,18 @@
 
 @implementation PNObject (PNObjectConnection)
 
-+ (void) GETWithProgress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
-                                            success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
-                                            failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-
-    if ([[PNObjectConfig sharedInstance] currentOauthCredential] && ![[[PNObjectConfig sharedInstance] currentOauthCredential] isExpired]) {
-
-        [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",[[self class] objectEndPoint]]
-                                                   parameters:nil
-                                                     progress:downloadProgress
-                                                      success:^(NSURLSessionDataTask *task, id responseObject) {
-
-            id PNObjectResponse = [[[self class] alloc] initWithJSON:[responseObject copy]];
-
-            if (success) {
-                success(task,PNObjectResponse);
-            }
-
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            if (failure) {
-                failure(task,error);
-            }
-        }];
-    }
-    else {
-        [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
-
-            [self GETWithProgress:downloadProgress success:success failure:failure];
-        } failure:^(NSError * _Nonnull error) {
-            
-            
-        }];
-    }
-}
-
-+ (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                                                 Progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
-                                                  success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
-                                                  failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
+- (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
+                      progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
+                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
+                       failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
 
     if ([[PNObjectConfig sharedInstance] currentOauthCredential] && ![[[PNObjectConfig sharedInstance] currentOauthCredential] isExpired]) {
 
         [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:nil progress:downloadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
 
-            id PNObjectResponse = [[[self class] alloc] initWithJSON:[responseObject copy]];
-
             if (success) {
-                success(task,PNObjectResponse);
+                success(task,[[self class] parseObjectFromResponse:responseObject]);
             }
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -75,30 +39,27 @@
     else {
         [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
 
-            [self GETWithProgress:downloadProgress success:success failure:failure];
+            [self GETWithEndpointAction:endPoint progress:downloadProgress success:success failure:failure];
         } failure:^(NSError * _Nonnull error) {
-            
-            
+            if (failure) {
+                failure(nil,error);
+            }
         }];
     }
 }
 
 - (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
-                       Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject))success
+                     parameters:(NSDictionary * _Nonnull) parameters
+                       progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
     if ([[PNObjectConfig sharedInstance] currentOauthCredential] && ![[[PNObjectConfig sharedInstance] currentOauthCredential] isExpired]) {
 
-        [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:[self JSONFormObject] progress:uploadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
-
-            id PNObjectResponse;
-            if (responseObject) {
-                PNObjectResponse = [[[self class] alloc] initWithJSON:[responseObject copy]];
-            }
+        [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:parameters progress:uploadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
 
             if (success) {
-                success(task,PNObjectResponse);
+                success(task,[[self class] parseObjectFromResponse:responseObject]);
             }
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -111,9 +72,9 @@
     else {
         [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
 
-            [self POSTWithEndpointAction:endPoint Progress:uploadProgress success:success failure:failure];
+            [self POSTWithEndpointAction:endPoint parameters:parameters progress:uploadProgress success:success failure:failure];
         } failure:^(NSError * _Nonnull error) {
-            
+
             if (failure) {
                 failure(nil,error);
             }
@@ -122,53 +83,43 @@
 }
 
 
+#pragma mark Private Methods
+
++ (id _Nonnull) parseObjectFromResponse:(id _Nullable) response {
+
+    id PNObjectResponse;
+    if (response) {
+
+        if ([response isKindOfClass:[NSDictionary class]] && [[response allKeys] count] > 0) {
+            PNObjectResponse = [[[self class] alloc] initWithJSON:[response copy]];
+        }
+        else if ([response isKindOfClass:[NSArray class]] && [response count] > 0){
+
+            NSMutableArray * resposeArray = [[NSMutableArray alloc] init];
+            for (id singleObjectDict  in response) {
+                if ([singleObjectDict isKindOfClass:[NSDictionary class]]) {
+                    id singleObject = [[[self class] alloc] initWithJSON:singleObjectDict];
+                    [resposeArray addObject:singleObject];
+                }
+            }
+
+            PNObjectResponse = resposeArray;
+        }
+
+    }
+    return PNObjectResponse;
+}
+
 
 + (NSError* _Nonnull) getErrorFromTask:(NSURLSessionDataTask* _Nonnull) task andError:(NSError * _Nonnull) error {
 
     NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
     NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
     NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
-
+    
     return [NSError errorWithDomain:[error domain] code:response.statusCode userInfo:serializedData];
 }
-/*+ (nullable NSURLSessionDataTask *) POSTConstructingBodyWithBlock:(nullable void (^)(id <AFMultipartFormData>  _Nonnull formData))block
- progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
- success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
- failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure {
 
- NSDictionary *parameters = [NSDictionary dictionary];
-
- [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",[[self class] objectEndPoint]]
- parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-
- } progress:^(NSProgress * _Nonnull uploadProgress) {
-
- } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
- } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-
- }];
- }
-
- - (NSURLSessionDataTask * _Nonnull) GETWithProgress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
- success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject))success
- failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-
- return [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",[[self class] objectEndPoint]]  parameters:nil progress:downloadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
-
- [self resetObject];
- [self populateObjectFromJSON:responseObject];
-
- if (success) {
- success(task,self);
- }
-
- } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
- if (failure) {
- failure(task,error);
- }
- }];
- }*/   
-
+#pragma mark -
 
 @end

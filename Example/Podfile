@@ -12,6 +12,9 @@ target 'PNObject_Example' do
     pod 'CodFis-Helper'
     pod 'StrongestPasswordValidator'
     pod 'PureLayout'
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKShareKit'
+    pod 'FBSDKLoginKit'
 
 end
 

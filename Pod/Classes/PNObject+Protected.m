@@ -93,7 +93,11 @@
             
         },
                        @"NSNumber" : ^{
-            NSInteger val = [value integerValue];
+            NSInteger val = 0;
+            if (value && ![value isKindOfClass:[NSNull class]]) {
+				val = [value integerValue];
+            }
+
             [self setValue:@(val) forKey:propertyName];
         },
                        @"NSDate" : ^{
@@ -196,7 +200,7 @@
             [self setValue:@(NO) forKey:propertyName];
         },
                        @"NSString" : ^{
-            [self setValue:[[NSString alloc] init] forKey:propertyName];
+            [self setValue:[NSString string] forKey:propertyName];
         },
                        @"NSNumber" : ^{
             [self setValue:[[NSNumber alloc] init] forKey:propertyName];
@@ -205,10 +209,10 @@
             [self setValue:[[NSDate alloc] init] forKey:propertyName];
         },
                        @"NSArray" : ^{
-            [self setValue:[[NSArray alloc] init] forKey:propertyName];
+            [self setValue:[NSArray array] forKey:propertyName];
         },
                        @"NSMutableArray" : ^{
-            [self setValue:[[NSMutableArray alloc] init] forKey:propertyName];
+            [self setValue:[NSMutableArray array] forKey:propertyName];
         }
                        }[propertyType] ?: ^{
                            BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
