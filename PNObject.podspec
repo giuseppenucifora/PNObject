@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = "PNObject"
-s.version          = "0.3.5"
+s.version          = "0.3.6"
 s.summary          = "PNObject is a simple replica of the more complex ParseObject"
 
 # This description is used to generate tags and improve search results.
@@ -42,7 +42,10 @@ s.dependency 'UIDevice-Utils'
 s.dependency 'nv-ios-http-status'
 s.dependency 'NSString-Helper'
 s.dependency 'CodFis-Helper'
-s.dependency 'CodFis-Helper'
 s.dependency 'StrongestPasswordValidator'
+s.dependency 'FBSDKCoreKit'
+s.dependency 'FBSDKShareKit'
+s.dependency 'FBSDKLoginKit'
+
 
 end

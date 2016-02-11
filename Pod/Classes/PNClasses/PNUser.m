@@ -12,6 +12,10 @@
 #import "PNObject+Protected.h"
 #import "PNObject+PNObjectConnection.h"
 
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
+
 
 @interface PNUser() <PNObjectSubclassing>
 
@@ -38,6 +42,12 @@ static bool isFirstAccess = YES;
     return SINGLETON;
 }
 
++ (instancetype)resetUser {
+    [SINGLETON autoRemoveLocally];
+    SINGLETON = nil;
+    return [self currentUser];
+}
+
 #pragma mark - Life Cycle
 
 - (instancetype)copy
@@ -62,15 +72,15 @@ static bool isFirstAccess = YES;
     NSDictionary *savedUser = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
 
     if (savedUser) {
-        self = [super initWithJSON:savedUser];
+        SINGLETON = [super initWithJSON:savedUser];
     }
     else {
-        self = [super init];
+        SINGLETON = [super init];
     }
 
-    if (self) {
+    if (SINGLETON) {
     }
-    return self;
+    return SINGLETON;
 }
 
 - (void) setEmail:(NSString *)email {
@@ -112,31 +122,185 @@ static bool isFirstAccess = YES;
     return NO;
 }
 
++ (BOOL) isValidPassword:(NSString* _Nonnull) password {
+    if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)logout {
     [self autoRemoveLocally];
     [self resetObject];
 }
 
-- (BOOL) hasValidUserAndPasswordData {
-    if(self.username && self.password && [self isValidPassword:[self password]]){
+- (BOOL) hasValidEmailAndPasswordData {
+    if(self.email && [self.email isValidEmail] && self.password && [self isValidPassword:[self password]]){
         return YES;
     }
 
     return NO;
 }
 
-- (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
-                                     failure:(nullable void (^)(NSError * _Nonnull error))failure {
+- (void) autoLogin {
+    [self autoLoginWithBlockSuccess:nil failure:nil];
+}
 
-    [self POSTWithEndpointAction:@"registration/register" Progress:nil success:^(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject) {
-        NSLog(@"response %@",responseObject);
-        if(success){
-            success((PNUser*)responseObject);
-            [self saveLocally];
+- (void) autoLoginWithBlockSuccess:(nullable void (^)(BOOL loginSuccess))success
+                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    [[PNObjectConfig sharedInstance] refreshTokenForUserWithBlockSuccess:^(BOOL refreshSuccess) {
+        if (success) {
+            success(refreshSuccess);
         }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLogDebug(@"error : %ld",[error code]);
+    } failure:^(NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
     }];
+}
+
+
+- (void) reloadFormServer {
+    ///api/v1/user/profile
+
+    [self autoLoginWithBlockSuccess:^(BOOL loginSuccess) {
+        [self GETWithEndpointAction:@"user/profile"
+                           progress:nil
+                            success:^(NSURLSessionDataTask * _Nullable task, id  _Nullable responseObject) {
+
+                                NSLogDebug(@"%@",responseObject);
+                            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                NSLogDebug(@"%@",error);
+                            }];
+    } failure:^(NSError * _Nonnull error) {
+        NSLogDebug(@"error : %@",error);
+    }];
+}
+
+- (void) registerWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                          failure:(nullable void (^)(NSError * _Nonnull error))failure {
+
+    [self POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
+                        progress:nil
+                         success:^(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject) {
+                             NSLog(@"response %@",responseObject);
+                             if(success){
+                                 success(self);
+                                 [self saveLocally];
+                             }
+                         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                             NSLogDebug(@"error : %ld",[error code]);
+                             if (failure) {
+                                 failure(error);
+                             }
+                         }];
+}
+
+
+- (void) socialLoginWithBlockSuccessFromViewController:(UIViewController* _Nonnull) viewController
+                                          blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    if ([FBSDKAccessToken currentAccessToken]) {
+        //FBSDKProfile *user = [FBSDKProfile currentProfile];
+
+        FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields": @"first_name, last_name, link, birthday, email, gender"}];
+
+        [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+            NSLogDebug(@"%@",result);
+            NSLogDebug(@"%@",error);
+
+            if (error) {
+                if (failure) {
+                    failure(error);
+                }
+            }
+            else {
+                [self setFacebookAccessToken:[FBSDKAccessToken currentAccessToken].tokenString];
+                [self setFirstName:[result objectForKey:@"first_name"]];
+                [self setLastName:[result objectForKey:@"last_name"]];
+                [self setEmail:[result objectForKey:@"email"]];
+                [self setFacebookId:[result objectForKey:@"id"]];
+
+                NSString *gender = [[result objectForKey:@"gender"] isEqualToString:@"male"] ? @"M" : @"F";
+
+                [self setSex:gender];
+
+                NSArray *birthArray = [[result objectForKey:@"birthday" ] componentsSeparatedByString: @"/"];
+
+                //NSMutableString *birthString = [NSMutableString stringWithString:[[[[[birthArray objectAtIndex:1] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:0]] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:2]]];
+
+            }
+
+            /*[UserDataManager setParameter:DEF_PROFILE_FIRSTNAME withValue:user.firstName];
+             [UserDataManager setParameter:DEF_PROFILE_LASTNAME withValue:user.lastName];
+
+             NSArray *birthArray = [[result objectForKey:@"birthday" ] componentsSeparatedByString: @"/"];
+
+             NSMutableString *birthString = [NSMutableString stringWithString:[[[[[birthArray objectAtIndex:1] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:0]] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:2]]];
+
+             NSString *gender = [[result objectForKey:@"gender"] isEqualToString:@"male"] ? @"M" : @"F";
+
+             [UserDataManager setParameter:DEF_PROFILE_BIRTH withValue:birthString];
+             [UserDataManager setParameter:DEF_PROFILE_GENDER withValue:gender];
+
+             [UserDataManager setParameter:DEF_PROFILE_EMAIL withValue:[result objectForKey:@"email"]];
+             [UserDataManager setParameter:DEF_PROFILE_AVATAR withValue:[NSNumber numberWithInt:1]];
+             [UserDataManager setParameter:DEF_PROFILE_FB_ID withValue:[result objectForKey:@"id"]];*/
+
+
+            //[self setFacebookId:[user userID]];
+        }];
+
+
+    }
+    else {
+        FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+        [login logInWithReadPermissions: @[@"public_profile",@"email"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            if (error) {
+                NSLog(@"Process error");
+            } else if (result.isCancelled) {
+                NSLog(@"Cancelled");
+            } else {
+                NSLog(@"Logged in");
+
+
+            }
+        }];
+    }
+}
+
+- (void) socialLoginWithBlockSuccess:(void (^)(PNUser * _Nullable))success
+                             failure:(void (^)(NSError * _Nonnull))failure {
+
+
+    /*[self POSTWithEndpointAction:@"registration/register" progress:nil success:^(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject) {
+     NSLog(@"response %@",responseObject);
+     if(success){
+     success(self);
+     [self saveLocally];
+     }
+     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+     NSLogDebug(@"error : %ld",[error code]);
+     if (failure) {
+     failure(error);
+     }
+     }];*/
+}
+
+- (void) loginCurrentUserWithEmail:(NSString * _Nonnull) email
+                          password:(NSString * _Nonnull) password
+                  withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
+
+    [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
+
+        if (refreshSuccess) {
+            if (success) {
+                success([PNUser currentUser]);
+            }
+        }
+    } failure:failure];
+
 }
 
 #pragma mark PNObjectSubclassing Protocol
@@ -145,6 +309,7 @@ static bool isFirstAccess = YES;
 
     NSDictionary *mapping = @{
                               @"userId":@"id",
+                              @"userUUID":@"uuid",
                               @"firstName":@"firstName",
                               @"lastName":@"lastName",
                               @"profileImage":@"profileImage",
@@ -159,10 +324,12 @@ static bool isFirstAccess = YES;
                               @"emailVerifiedDate":@"emailVerifiedDate",
                               @"email":@"email",
                               @"username":@"username",
-                              @"publicProfile":@"public_profile",
+                              @"publicProfile":@"publicProfile",
                               @"loginCount":@"login_count",
                               @"facebookId":@"facebookId",
                               @"facebookAccessToken":@"facebookAccessToken",
+                              @"isFacebookUser":@"isFacebookUser",
+                              @"registeredAt":@"registeredAt",
                               };
     return mapping;
 }

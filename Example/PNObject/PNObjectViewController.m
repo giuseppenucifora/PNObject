@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) UIButton *cancelToken;
 
+
 @end
 
 @implementation PNObjectViewController
@@ -81,12 +82,10 @@
         [_apiCall autoSetDimension:ALDimensionWidth toSize:140];
         [_apiCall autoSetDimension:ALDimensionHeight toSize:44];
 
-
         [_cancelToken autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [_cancelToken autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_refreshToken withOffset:35];
         [_cancelToken autoSetDimension:ALDimensionWidth toSize:140];
         [_cancelToken autoSetDimension:ALDimensionHeight toSize:44];
-
     }
     [super updateViewConstraints];
 }
@@ -101,19 +100,32 @@
 
 - (void) apiCallAction {
 
-    User *user = [User currentUser];
+
+    /*User *user = [User currentUser];
     [user setFirstName:@"Giuseppe"];
     [user setLastName:@"Nuficora"];
-    [user setEmail:@"giuseppe.nucifora@purplenetwork.it"];
+    [user setEmail:@"packman@giuseppenucifora.com"];
     [user setPassword:@"asdasdasd"];
     [user setConfirmPassword:@"asdasdasd"];
     [user setHasAcceptedNewsletter:NO];
     [user setHasAcceptedPrivacy:YES];
 
-    [user registerCurrentUserWithBlockSuccess:^(id  _Nullable responseObject) {
+    [user saveLocally];
 
+    [user reloadFormServer];*/
+
+    /*[[User currentUser] socialLoginWithBlockSuccessFromViewController:self
+     blockSuccess:^(PNUser * _Nullable responseObject) {
+
+     } failure:^(NSError * _Nonnull error) {
+
+     }];*/
+
+    [[PNUser currentUser] loginCurrentUserWithEmail:@"packman@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+
+        NSLog(@"response : %@",responseObject);
     } failure:^(NSError * _Nonnull error) {
-        
+		NSLog(@"response : %@",error);
     }];
 }
 

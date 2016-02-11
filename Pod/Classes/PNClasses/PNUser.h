@@ -16,6 +16,23 @@
  *  @return singleton
  */
 + (instancetype _Nonnull) currentUser;
+
+/**
+ *  reset current user and gets new singleton object of current user session.
+ *
+ *  @return <#return value description#>
+ */
++ (instancetype _Nonnull) resetUser;
+
+/**
+ *  <#Description#>
+ *
+ *  @param password <#password description#>
+ *
+ *  @return <#return value description#>
+ */
++ (BOOL) isValidPassword:(NSString* _Nonnull) password;
+
 /**
  *  <#Description#>
  *
@@ -35,7 +52,21 @@
  *
  *  @return <#return value description#>
  */
-- (BOOL) hasValidUserAndPasswordData;
+- (BOOL) hasValidEmailAndPasswordData;
+
+/**
+ *  <#Description#>
+ *
+ *  @param email    <#email description#>
+ *  @param password <#password description#>
+ *  @param success  <#success description#>
+ *  @param failure  <#failure description#>
+ */
+- (void) loginCurrentUserWithEmail:(NSString * _Nonnull) email
+                          password:(NSString * _Nonnull) password
+                  withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                           failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 
 /**
  *  <#Description#>
@@ -46,6 +77,20 @@
 - (void) registerCurrentUserWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
+/**
+ *  <#Description#>
+ *
+ *  @param viewController <#viewController description#>
+ *  @param success        <#success description#>
+ *  @param failure        <#failure description#>
+ */
+- (void) socialLoginWithBlockSuccessFromViewController:(UIViewController* _Nonnull) viewController
+                                          blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+
+
+- (void) reloadFormServer;
 /**
  *  <#Description#>
  *
@@ -127,6 +172,10 @@
  *  <#Description#>
  */
 @property (nonatomic, strong, nullable) NSNumber * loginCount;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic) BOOL isFacebookUser;
 /**
  *  <#Description#>
  */

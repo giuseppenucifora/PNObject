@@ -143,6 +143,18 @@ extern NSString* _Nonnull const Client_Secret;
 
 /**
  *  <#Description#>
+ *
+ *  @param email    <#email description#>
+ *  @param password <#password description#>
+ *  @param success  <#success description#>
+ *  @param failure  <#failure description#>
+ */
+- (void) refreshTokenForUserWithEmail:(NSString * _Nonnull) email
+                             password:(NSString * _Nonnull) password
+                     withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                              failure:(nullable void (^)(NSError * _Nonnull error))failure;
+/**
+ *  <#Description#>
  */
 - (BOOL) resetToken;
 
