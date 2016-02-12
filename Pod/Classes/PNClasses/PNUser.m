@@ -314,6 +314,10 @@ static bool isFirstAccess = YES;
 
 }
 
+- (BOOL) isAuthenticated {
+    return self.authenticated;
+}
+
 #pragma mark PNObjectSubclassing Protocol
 
 + (NSDictionary *)objcetMapping {
