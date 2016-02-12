@@ -96,7 +96,7 @@
  *
  *  @return <#return value description#>
  */
-- (BOOL) autenticated;
+- (BOOL) isAuthenticated;
 
 //- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id responseObject, NSError * error)) responseBlock;
 
