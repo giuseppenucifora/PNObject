@@ -62,6 +62,8 @@
 
     [self.view addSubview:_cancelToken];
 
+    User * user = [User currentUser];
+
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -102,17 +104,17 @@
 
 
     /*User *user = [User currentUser];
-    [user setFirstName:@"Giuseppe"];
-    [user setLastName:@"Nuficora"];
-    [user setEmail:@"packman@giuseppenucifora.com"];
-    [user setPassword:@"asdasdasd"];
-    [user setConfirmPassword:@"asdasdasd"];
-    [user setHasAcceptedNewsletter:NO];
-    [user setHasAcceptedPrivacy:YES];
+     [user setFirstName:@"Giuseppe"];
+     [user setLastName:@"Nuficora"];
+     [user setEmail:@"packman@giuseppenucifora.com"];
+     [user setPassword:@"asdasdasd"];
+     [user setConfirmPassword:@"asdasdasd"];
+     [user setHasAcceptedNewsletter:NO];
+     [user setHasAcceptedPrivacy:YES];
 
-    [user saveLocally];
+     [user saveLocally];
 
-    [user reloadFormServer];*/
+     [user reloadFormServer];*/
 
     /*[[User currentUser] socialLoginWithBlockSuccessFromViewController:self
      blockSuccess:^(PNUser * _Nullable responseObject) {
@@ -121,12 +123,17 @@
 
      }];*/
 
-    [[PNUser currentUser] loginCurrentUserWithEmail:@"packman@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+    User * user = [User currentUser];
 
-        NSLog(@"response : %@",responseObject);
-    } failure:^(NSError * _Nonnull error) {
-		NSLog(@"response : %@",error);
-    }];
+    if ([user isAuthenticated]) {
+
+        [user loginCurrentUserWithEmail:@"packman@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+
+            NSLog(@"response : %@",responseObject);
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"response : %@",error);
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning

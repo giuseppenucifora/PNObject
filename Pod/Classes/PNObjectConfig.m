@@ -293,14 +293,7 @@ static bool isFirstAccess = YES;
 
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-            PNUser *user = [PNUser currentUser];
-
-            [user setEmail:email];
-            [user setPassword:password];
-            [user setConfirmPassword:password];
-
-            [user saveLocally];
-
+            
             if (success) {
                 success(YES);
             }

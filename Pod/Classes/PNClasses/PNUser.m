@@ -19,6 +19,8 @@
 
 @interface PNUser() <PNObjectSubclassing>
 
+@property (nonatomic) BOOL authenticated;
+
 @end
 
 @implementation PNUser
@@ -79,6 +81,10 @@ static bool isFirstAccess = YES;
     }
 
     if (SINGLETON) {
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self autoLogin];
+        });
     }
     return SINGLETON;
 }
@@ -293,10 +299,15 @@ static bool isFirstAccess = YES;
                            failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
-
         if (refreshSuccess) {
+            [self setAuthenticated:YES];
+            [self setEmail:email];
+            [self setPassword:password];
+            [self setConfirmPassword:password];
+            [self saveLocally];
+
             if (success) {
-                success([PNUser currentUser]);
+                success(self);
             }
         }
     } failure:failure];
@@ -330,6 +341,7 @@ static bool isFirstAccess = YES;
                               @"facebookAccessToken":@"facebookAccessToken",
                               @"isFacebookUser":@"isFacebookUser",
                               @"registeredAt":@"registeredAt",
+                              @"authenticated":@"authenticated"
                               };
     return mapping;
 }
