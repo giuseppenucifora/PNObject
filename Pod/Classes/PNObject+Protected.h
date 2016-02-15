@@ -6,7 +6,15 @@
 //
 //
 
-#import <PNObject/PNObject.h>
+#import "PNObject.h"
+
+#pragma mark MappingSelector Keys
+
+extern NSString* _Nonnull const PNObjectMappingKey;
+extern NSString* _Nonnull const PNObjectMappingType;
+extern NSString* _Nonnull const PNObjectMappingSelector;
+
+#pragma mark -
 
 @interface PNObject (Protected)
 /**
@@ -38,6 +46,15 @@
  */
 + (NSDictionary * _Nullable)propertiesForClass:(Class _Nonnull)PNObjClass;
 
+/**
+ *  <#Description#>
+ *
+ *  @param mappingSelector <#mappingSelector description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSDictionary* _Nonnull) getFormObject:(SEL _Nonnull) dictionaryMappingSelector;
+
 - (void)resetObject;
 
 ///--------------------------------------
@@ -50,11 +67,11 @@
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSDictionary *  JSON;
+@property (nonatomic, strong, nullable) NSMutableDictionary *  JSON;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSString * endPoint;
+@property (nonatomic, strong, nullable) NSString * endPoint;
 /**
  *  <#Description#>
  */

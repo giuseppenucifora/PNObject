@@ -32,6 +32,8 @@
 
 + (NSString * _Nonnull) PNObjEndPoint;
 
++ (NSArray * _Nonnull) batch:(id _Nonnull)JSON;
+
 - (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON;
 
 - (id _Nonnull) saveLocally;
@@ -39,6 +41,8 @@
 - (BOOL) autoRemoveLocally;
 
 - (NSDictionary * _Nonnull) JSONFormObject;
+
+- (NSDictionary * _Nonnull) reverseMapping;
 
 ///--------------------------------------
 #pragma mark - PNObject Properties
@@ -55,7 +59,7 @@
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSDictionary * JSONObject;
+@property (nonatomic, strong, nonnull) NSDictionary * JSONObjectMap;
 
 
 @end

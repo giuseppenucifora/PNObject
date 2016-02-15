@@ -11,6 +11,8 @@
 #import "PEARFileManager.h"
 #import "PNObjectConstants.h"
 
+@import RNCryptor;
+
 @interface PNObjectModel()
 
 @property (nonatomic, strong) PEARFileManager *fileManager;
@@ -161,16 +163,10 @@ static bool isFirstAccess = YES;
             
             if ([(PNObject*) object singleInstance]) {
                 
-                SEL selector = NSSelectorFromString(@"JSONObject");
-                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
-                [invocation setSelector:selector];
-                [invocation setTarget:object];
-                [invocation invoke];
+                NSDictionary *objectDict = [(PNObject*) object reverseMapping];
                 
-                NSDictionary *objectDict;
-                [invocation getReturnValue:&objectDict];
-                
-                NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objectDict];
+                NSData *objectData = [RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objectDict] password:[[PNObjectConfig sharedInstance] encrypKey]];
+
                 
                 if ([self issetPNObjectModelForObject:object]) {
                     if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
@@ -192,25 +188,19 @@ static bool isFirstAccess = YES;
             else {
                 if ([self issetPNObjectModelForObject:object]) {
                     
-                    NSData * data = [_fileManager fetchFileDataWithPath:[self objectName:object]];
-                    
+                    //NSData * data = [_fileManager fetchFileDataWithPath:[self objectName:object]];
+
+                    NSError *error = nil;
+
+					NSData *data = [RNCryptor decryptData:[_fileManager fetchFileDataWithPath:[self objectName:object]] password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
+
                     NSMutableArray *objects = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
                     
-                    
-                    SEL selector = NSSelectorFromString(@"JSONObject");
-                    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
-                    [invocation setSelector:selector];
-                    [invocation setTarget:object];
-                    [invocation invoke];
-                    
-                    NSDictionary *objectDict;
-                    [invocation getReturnValue:&objectDict];
-                    
-                    NSLogDebug(@"%@",objectDict);
+                   NSDictionary *objectDict = [(PNObject*)object reverseMapping];
                     
                     [objects addObject:objectDict];
                     
-                    NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objects];
+                    NSData *objectData = [RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
                     
                     if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
                         
@@ -223,20 +213,12 @@ static bool isFirstAccess = YES;
                 else {
                     
                     NSMutableArray *objects = [[NSMutableArray alloc] init];
-                    
-                    
-                    SEL selector = NSSelectorFromString(@"JSONObject");
-                    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[PNObject class] instanceMethodSignatureForSelector:selector]];
-                    [invocation setSelector:selector];
-                    [invocation setTarget:object];
-                    [invocation invoke];
-                    
-                    NSDictionary *objectDict;
-                    [invocation getReturnValue:&objectDict];
+
+                    NSDictionary *objectDict = [(PNObject*)object reverseMapping];
                     
                     [objects addObject:objectDict];
                     
-                    NSData *objectData = [NSKeyedArchiver archivedDataWithRootObject:objects];
+                    NSData *objectData = [RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
                     
                     if ([_fileManager createFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
                         return object;

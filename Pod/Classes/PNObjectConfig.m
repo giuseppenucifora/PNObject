@@ -24,6 +24,8 @@ NSString * const PNObjectLocalNotificationRefreshTokenUserFail = @"PNObjectLocal
 
 NSInteger const minPassLenght = 4;
 
+NSString * const PNObjectEncryptionKey = @"PNObjectConfigEncryptionKey";
+
 NSString * const PNObjectServiceCredentialIdentifier = @"PNObjectServiceCredentialIdentifier";
 
 NSString* const EnvironmentProduction = @"PNObjectConfigEnvProduction";
@@ -146,6 +148,15 @@ static bool isFirstAccess = YES;
 
         _headerFields = [[NSMutableDictionary alloc] init];
 
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:PNObjectEncryptionKey]) {
+            _encrypKey = [[NSUserDefaults standardUserDefaults] objectForKey:PNObjectEncryptionKey];
+        }
+        else {
+            _encrypKey = [[NSProcessInfo processInfo] globallyUniqueString];
+
+            [[NSUserDefaults standardUserDefaults] setObject:_encrypKey forKey:PNObjectEncryptionKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
 
     }
     return self;
@@ -218,7 +229,7 @@ static bool isFirstAccess = YES;
             [[_manager requestSerializer] setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         }
         else {
-            [self refreshTokenForClientCredential];
+            [self refreshToken];
         }
     }
 
@@ -234,6 +245,15 @@ static bool isFirstAccess = YES;
     return NO;
 }
 
+- (void) refreshToken {
+	if([PNUser currentUser] && [[PNUser currentUser] hasValidEmailAndPasswordData]) {
+        [self refreshTokenForUser];
+    }
+    else {
+        [self refreshTokenForClientCredential];
+    }
+}
+
 - (void) refreshTokenForUser {
 
     [self refreshTokenForUserWithBlockSuccess:nil failure:nil];
@@ -243,7 +263,7 @@ static bool isFirstAccess = YES;
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     if([PNUser currentUser] && [[PNUser currentUser] hasValidEmailAndPasswordData]) {
-        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] email] password:[[PNUser currentUser] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] email] password:[[[PNUser currentUser] password] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
 
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
