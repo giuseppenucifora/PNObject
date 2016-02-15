@@ -172,7 +172,6 @@ static bool isFirstAccess = YES;
                 
                 NSData *objectData = [RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objectDict] password:[[PNObjectConfig sharedInstance] encrypKey]];
 
-                
                 if ([self issetPNObjectModelForObject:object]) {
                     if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
                         return object;

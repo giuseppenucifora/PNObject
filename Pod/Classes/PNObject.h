@@ -32,9 +32,13 @@
 
 + (NSString * _Nonnull) PNObjEndPoint;
 
-+ (NSArray * _Nonnull) batch:(id _Nonnull)JSON;
++ (NSArray * _Nonnull) batch:(id _Nonnull)JSON fromLocal:(BOOL) fromLocal;
 
-- (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON;
+- (_Nullable instancetype) initWithLocalJSON:( NSDictionary * _Nonnull) JSON;
+
+- (_Nullable instancetype) initWithRemoteJSON:( NSDictionary * _Nonnull) JSON;
+
+- (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON fromLocal:(BOOL) fromLocal;
 
 - (id _Nonnull) saveLocally;
 

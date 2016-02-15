@@ -102,7 +102,7 @@
 
 - (void) apiCallAction {
 
-    PNObjcPassword *password = [PNObjcPassword new];
+    /*PNObjcPassword *password = [PNObjcPassword new];
     [password setPassword:@"asdasdasd"];
     [password setConfirmPassword:@"asdasdasd"];
 
@@ -113,10 +113,10 @@
     [user setPassword:password];
     [user setHasAcceptedNewsletter:YES];
     [user setHasAcceptedPrivacy:YES];
-
+*/
     //[user saveLocally];
 
-    NSLog(@"%@",[user JSONFormObject]);
+    NSLog(@"%@",[[User currentUser] JSONFormObject]);
     //NSLog(@"%@",[user JSONObjectMap]);
     /*[user registerWithBlockSuccess:^(PNUser * _Nullable responseObject) {
 
@@ -138,9 +138,23 @@
     [User loginCurrentUserWithEmail:@"packman@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
 
         NSLog(@"response : %@",responseObject);
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [responseObject reloadFormServer];
+        });
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"response : %@",error);
     }];
+
+
+
+    /*[User resetPasswordForEmail:@"packman@giuseppenucifora.com" Progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } Success:^(NSDictionary * _Nullable responseObject) {
+
+    } failure:^(NSError * _Nonnull error) {
+
+    }];*/
 
 }
 

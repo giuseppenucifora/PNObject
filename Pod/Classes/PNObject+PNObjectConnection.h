@@ -11,14 +11,14 @@
 @interface PNObject (PNObjectConnection)
 
 
-- (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
++ (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
+                      progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
-- (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
-                     parameters:(NSDictionary * _Nonnull) parameters
-                       progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
++ (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
+                     parameters:(NSDictionary * _Nullable) parameters
+                       progress:(nullable void (^)(NSProgress * _Nullable uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 

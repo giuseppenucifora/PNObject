@@ -75,7 +75,7 @@ static bool isFirstAccess = YES;
     NSDictionary *savedUser = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
 
     if (savedUser) {
-        USER = [super initWithJSON:savedUser];
+        USER = [super initWithLocalJSON:savedUser];
     }
 
     if (USER) {
@@ -136,11 +136,15 @@ static bool isFirstAccess = YES;
     ///api/v1/user/profile
 
     [self autoLoginWithBlockSuccess:^(BOOL loginSuccess) {
-        [self GETWithEndpointAction:@"user/profile"
+        [[self class] GETWithEndpointAction:@"user/profile"
                            progress:nil
                             success:^(NSURLSessionDataTask * _Nullable task, id  _Nullable responseObject) {
 
-                                NSLogDebug(@"%@",responseObject);
+                                NSLogDebug(@"%@",[responseObject objectForKey:@"user"]);
+
+                                [self populateObjectFromJSON:[responseObject objectForKey:@"user"]];
+                                [self saveLocally];
+                                
                             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                 NSLogDebug(@"%@",error);
                             }];
@@ -152,7 +156,7 @@ static bool isFirstAccess = YES;
 - (void) registerWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
-    [self POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
+    [[self class] POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
                         progress:nil
                          success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
                              NSLog(@"response %@",responseObject);
@@ -295,23 +299,23 @@ static bool isFirstAccess = YES;
 
     NSDictionary *mapping = @{
                               @"userId":@"uuid",
-                              @"firstName":@"firstName",
-                              @"lastName":@"lastName",
-                              @"profileImage":@"profileImage",
+                              @"firstName":@"first_name",
+                              @"lastName":@"last_name",
+                              @"profileImage":@"profile_image",
                               @"sex":@"sex",
-                              @"birthDate":@"birthDate",
+                              @"birthDate":@"birth_year",
                               @"phone":@"phone",
                               @"password":@{@"key":@"password",@"type":@"PNObjcPassword"},
-                              @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
-                              @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
-                              @"hasVerifiedEmail":@"hasVerifiedEmail",
+                              @"hasAcceptedPrivacy":@"has_accepted_privacy",
+                              @"hasAcceptedNewsletter":@"has_accepted_newsletter",
+                              @"hasVerifiedEmail":@"has_verified_email",
                               @"hasVerifiedPhone":@"has_verified_phone",
-                              @"emailVerifiedDate":@"emailVerifiedDate",
+                              @"emailVerifiedDate":@"email_verified_date",
                               @"email":@"email",
                               @"username":@"username",
                               @"publicProfile":@"publicProfile",
                               @"loginCount":@"login_count",
-                              @"facebookId":@"facebookId",
+                              @"facebookId":@"facebook_id",
                               @"facebookAccessToken":@"facebookAccessToken",
                               @"isFacebookUser":@"isFacebookUser",
                               @"registeredAt":@"registeredAt",
