@@ -54,7 +54,7 @@
  *  @param success  <#success description#>
  *  @param failure  <#failure description#>
  */
-- (void) loginCurrentUserWithEmail:(NSString * _Nonnull) email
++ (void) loginCurrentUserWithEmail:(NSString * _Nonnull) email
                           password:(NSString * _Nonnull) password
                   withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                            failure:(nullable void (^)(NSError * _Nonnull error))failure;

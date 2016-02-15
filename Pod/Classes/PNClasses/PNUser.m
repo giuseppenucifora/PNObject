@@ -259,24 +259,26 @@ static bool isFirstAccess = YES;
      }];*/
 }
 
-- (void) loginCurrentUserWithEmail:(NSString * _Nonnull) email
++ (void) loginCurrentUserWithEmail:(NSString * _Nonnull) email
                           password:(NSString * _Nonnull) password
                   withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                            failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
         if (refreshSuccess) {
+            PNUser *user = [[self class] new];
+
             PNObjcPassword *objectPassword = [PNObjcPassword new];
             [objectPassword setPassword:password];
             [objectPassword setConfirmPassword:password];
 
-            [self setAuthenticated:YES];
-            [self setEmail:email];
-            [self setPassword:objectPassword];
-            [self saveLocally];
+            [user setAuthenticated:YES];
+            [user setEmail:email];
+            [user setPassword:objectPassword];
+            [user saveLocally];
 
             if (success) {
-                success(self);
+                success(user);
             }
         }
     } failure:failure];
