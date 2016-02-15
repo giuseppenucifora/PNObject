@@ -46,6 +46,7 @@ s.dependency 'StrongestPasswordValidator'
 s.dependency 'FBSDKCoreKit'
 s.dependency 'FBSDKShareKit'
 s.dependency 'FBSDKLoginKit'
+s.dependency 'RNCryptor'
 
 
 end

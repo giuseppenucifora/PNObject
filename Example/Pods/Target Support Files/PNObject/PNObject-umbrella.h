@@ -3,6 +3,7 @@
 #import "PNAddress.h"
 #import "PNInstallation.h"
 #import "PNLocation.h"
+#import "PNObjcPassword.h"
 #import "PNUser.h"
 #import "PNObject+PNObjectConnection.h"
 #import "PNObject+Protected.h"

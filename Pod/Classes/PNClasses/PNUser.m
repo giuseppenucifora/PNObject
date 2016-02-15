@@ -15,6 +15,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import "PNObjcPassword.h"
 
 
 @interface PNUser() <PNObjectSubclassing>
@@ -98,54 +99,21 @@ static bool isFirstAccess = YES;
     }
 }
 
-- (void) setPassword:(NSString *)password {
-    if ([self isValidPassword:password]) {
-        _password = password;
-    }
-    else {
-        NSLogDebug(@"Inserted Passord is not valid.Lenght must be >= %ld",(long)[[PNObjectConfig sharedInstance] minPasswordLenght]);
-    }
-}
-
-- (void) setConfirmPassword:(NSString *)confirmPassword {
-    if ([self isValidPassword:confirmPassword]) {
-        if ([confirmPassword isEqualToString:_password]) {
-            _confirmPassword = confirmPassword;
-        }
-        else {
-            NSLogDebug(@"Inserted Passord is not same password.");
-        }
-    }
-    else {
-        NSLogDebug(@"Inserted Passord is not valid.Lenght must be >= %ld",(long)[[PNObjectConfig sharedInstance] minPasswordLenght]);
-    }
-}
-
-- (BOOL) isValidPassword:(NSString* _Nonnull) password {
-    if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
-        return YES;
-    }
-    return NO;
-}
-
-+ (BOOL) isValidPassword:(NSString* _Nonnull) password {
-    if ([password length] >= [[PNObjectConfig sharedInstance] minPasswordLenght]) {
-        return YES;
-    }
-    return NO;
-}
-
 - (void)logout {
     [self autoRemoveLocally];
     [self resetObject];
 }
 
 - (BOOL) hasValidEmailAndPasswordData {
-    if(self.email && [self.email isValidEmail] && self.password && [self isValidPassword:[self password]]){
+    if(self.email && [self.email isValidEmail] && self.password && [self.password isValid]){
         return YES;
     }
 
     return NO;
+}
+
++ (BOOL) isValidPassword:(NSString* _Nonnull) password {
+    return [PNObjcPassword validateMinimumRequirenment:password];
 }
 
 - (void) autoLogin {
@@ -300,10 +268,13 @@ static bool isFirstAccess = YES;
 
     [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
         if (refreshSuccess) {
+            PNObjcPassword *objectPassword = [PNObjcPassword new];
+            [objectPassword setPassword:password];
+            [objectPassword setConfirmPassword:password];
+
             [self setAuthenticated:YES];
             [self setEmail:email];
-            [self setPassword:password];
-            [self setConfirmPassword:password];
+            [self setPassword:objectPassword];
             [self saveLocally];
 
             if (success) {
@@ -331,8 +302,7 @@ static bool isFirstAccess = YES;
                               @"sex":@"sex",
                               @"birthDate":@"birthDate",
                               @"phone":@"phone",
-                              @"password":@"plainPassword[first]",
-                              @"confirmPassword":@"plainPassword[second]",
+                              @"password":@{@"key":@"password",@"type":@"PNObjcPassword"},
                               @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
                               @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
                               @"hasVerifiedEmail":@"hasVerifiedEmail",

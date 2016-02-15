@@ -62,7 +62,7 @@
 
     [self.view addSubview:_cancelToken];
 
-    User * user = [User currentUser];
+    //User * user = [User currentUser];
 
     [self.view setNeedsUpdateConstraints];
 }
@@ -102,19 +102,27 @@
 
 - (void) apiCallAction {
 
+    PNObjcPassword *password = [PNObjcPassword new];
+    [password setPassword:@"asdasdasd"];
+    [password setConfirmPassword:@"asdasdasd"];
 
-    /*User *user = [User currentUser];
-     [user setFirstName:@"Giuseppe"];
-     [user setLastName:@"Nuficora"];
-     [user setEmail:@"packman@giuseppenucifora.com"];
-     [user setPassword:@"asdasdasd"];
-     [user setConfirmPassword:@"asdasdasd"];
-     [user setHasAcceptedNewsletter:NO];
-     [user setHasAcceptedPrivacy:YES];
+    User *user = [User currentUser];
+    [user setFirstName:@"Giuseppe"];
+    [user setLastName:@"Nuficora"];
+    [user setEmail:@"packman@giuseppenucifora.com"];
+    [user setPassword:password];
+    [user setHasAcceptedNewsletter:NO];
+    [user setHasAcceptedPrivacy:YES];
 
-     [user saveLocally];
+    [user saveLocally];
 
-     [user reloadFormServer];*/
+    NSLog(@"%@",[user JSONFormObject]);
+    //NSLog(@"%@",[user JSONObjectMap]);
+    [user registerWithBlockSuccess:^(PNUser * _Nullable responseObject) {
+
+     } failure:^(NSError * _Nonnull error) {
+
+     }];
 
     /*[[User currentUser] socialLoginWithBlockSuccessFromViewController:self
      blockSuccess:^(PNUser * _Nullable responseObject) {
@@ -123,17 +131,17 @@
 
      }];*/
 
-    User * user = [User currentUser];
+    /*User * user = [User currentUser];
 
-    if ([user isAuthenticated]) {
+     if ([user isAuthenticated]) {
 
-        [user loginCurrentUserWithEmail:@"packman@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+     [user loginCurrentUserWithEmail:@"packman@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
 
-            NSLog(@"response : %@",responseObject);
-        } failure:^(NSError * _Nonnull error) {
-            NSLog(@"response : %@",error);
-        }];
-    }
+     NSLog(@"response : %@",responseObject);
+     } failure:^(NSError * _Nonnull error) {
+     NSLog(@"response : %@",error);
+     }];
+     }*/
 }
 
 - (void)didReceiveMemoryWarning

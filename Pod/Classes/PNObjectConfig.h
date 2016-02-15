@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
-#import "HTTPStatusCodes.h"
+//#import "HTTPStatusCodes"
 
 #import "AFOAuth2Manager.h"
 #import "AFHTTPRequestSerializer+OAuth2.h"
@@ -175,5 +175,9 @@ extern NSString* _Nonnull const Client_Secret;
  *  <#Description#>
  */
 @property (nonatomic) NSInteger minPasswordLenght;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly) NSString *encrypKey;
 
 @end

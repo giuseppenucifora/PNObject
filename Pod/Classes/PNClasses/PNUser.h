@@ -7,6 +7,7 @@
 //
 
 #import "PNObject.h"
+#import "PNObjcPassword.h"
 
 @interface PNUser : PNObject
 
@@ -32,15 +33,6 @@
  *  @return <#return value description#>
  */
 + (BOOL) isValidPassword:(NSString* _Nonnull) password;
-
-/**
- *  <#Description#>
- *
- *  @param password <#password description#>
- *
- *  @return <#return value description#>
- */
-- (BOOL) isValidPassword:(NSString* _Nonnull) password;
 
 /**
  *  <#Description#>
@@ -159,11 +151,7 @@
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nullable) NSString * password;
-/**
- *  <#Description#>
- */
-@property (nonatomic, strong, nullable) NSString * confirmPassword;
+@property (nonatomic, strong, nullable) PNObjcPassword * password;
 /**
  *  <#Description#>
  */
@@ -184,6 +172,9 @@
  *  <#Description#>
  */
 @property (nonatomic, strong, nullable) NSString * facebookAccessToken;
-
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, nullable) NSDate * registeredAt;
 
 @end
