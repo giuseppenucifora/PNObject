@@ -36,9 +36,9 @@
                                                         EnvironmentProduction : @"http://packman.ppreview.it/app_stage.php/api/v1/"
                                                         } withOauth:YES];
     [[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
-    [[PNObjectConfig sharedInstance] setClientID:@"1_pqjo2w5k7j4g8skco408oc048w8so0ws840gcg8k8gwsgk0g4" clientSecret:@"10w0vg2v6eggooc4wks4w4s0wkwok0wkck0w888so0o80g88w8" forEnv:Stage];
+    [[PNObjectConfig sharedInstance] setClientID:@"1_pqjo2w5k7j4g8skco408oc048w8so0ws840gcg8k8gwsgk0g4" clientSecret:@"10w0vg2v6eggooc4wks4w4s0wkwok0wkck0w888so0o80g88w8" forEnv:EnvironmentProduction];
 #ifdef DEBUG
-    [[PNObjectConfig sharedInstance] setEnvironment:Stage];
+    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
 #endif
     
     

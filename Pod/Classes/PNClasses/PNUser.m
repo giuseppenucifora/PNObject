@@ -28,7 +28,7 @@
 
 @synthesize password = _password;
 
-static PNUser *SINGLETON = nil;
+static id USER = nil;
 
 static bool isFirstAccess = YES;
 
@@ -39,15 +39,15 @@ static bool isFirstAccess = YES;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
 
-        SINGLETON = [[super allocWithZone:NULL] initForCurrentUser];
+        USER = [[super allocWithZone:NULL] initForCurrentUser];
     });
 
-    return SINGLETON;
+    return USER;
 }
 
 + (instancetype)resetUser {
-    [SINGLETON autoRemoveLocally];
-    SINGLETON = nil;
+    [USER autoRemoveLocally];
+    USER = nil;
     return [self currentUser];
 }
 
@@ -65,8 +65,8 @@ static bool isFirstAccess = YES;
 
 - (instancetype) initForCurrentUser
 {
-    if(SINGLETON){
-        return SINGLETON;
+    if(USER){
+        return USER;
     }
     if (isFirstAccess) {
         [self doesNotRecognizeSelector:_cmd];
@@ -75,19 +75,17 @@ static bool isFirstAccess = YES;
     NSDictionary *savedUser = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
 
     if (savedUser) {
-        SINGLETON = [super initWithJSON:savedUser];
-    }
-    else {
-        SINGLETON = [super init];
+        USER = [super initWithJSON:savedUser];
     }
 
-    if (SINGLETON) {
+    if (USER) {
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self autoLogin];
         });
     }
-    return SINGLETON;
+    
+    return USER;
 }
 
 - (void) setEmail:(NSString *)email {
@@ -156,7 +154,7 @@ static bool isFirstAccess = YES;
 
     [self POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
                         progress:nil
-                         success:^(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject) {
+                         success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
                              NSLog(@"response %@",responseObject);
                              if(success){
                                  success(self);
@@ -294,8 +292,7 @@ static bool isFirstAccess = YES;
 + (NSDictionary *)objcetMapping {
 
     NSDictionary *mapping = @{
-                              @"userId":@"id",
-                              @"userUUID":@"uuid",
+                              @"userId":@"uuid",
                               @"firstName":@"firstName",
                               @"lastName":@"lastName",
                               @"profileImage":@"profileImage",
@@ -306,6 +303,7 @@ static bool isFirstAccess = YES;
                               @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
                               @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
                               @"hasVerifiedEmail":@"hasVerifiedEmail",
+                              @"hasVerifiedPhone":@"has_verified_phone",
                               @"emailVerifiedDate":@"emailVerifiedDate",
                               @"email":@"email",
                               @"username":@"username",

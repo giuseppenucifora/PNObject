@@ -42,11 +42,11 @@ NSString*  const Client_Secret = @"client_secret";
 
 @property (nonatomic, strong) NSMutableDictionary *configuration;
 @property (nonatomic, strong) NSMutableDictionary *headerFields;
-@property (nonatomic) Environment currentEnv;
+@property (nonatomic, strong) NSString *currentEnv;
 @property (nonatomic, strong) NSString *currentEndPointBaseUrl;
 @property (nonatomic, strong) NSString *currentOAuthClientID;
 @property (nonatomic, strong) NSString *currentOAuthClientSecret;
-@property (nonatomic, strong) NSMutableArray *environments;
+//@property (nonatomic, strong) NSMutableDictionary *environments;
 
 @end
 
@@ -84,16 +84,14 @@ static bool isFirstAccess = YES;
         SINGLETON.oauthEnabled = oauthEnabled;
         for (NSString *key in [endpointUrlsForEnvironments allKeys]) {
 
-            if ([SINGLETON.environments containsObject:key]) {
-
-                NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
-                if (endpointUrl) {
-                    [SINGLETON.configuration setValue:[NSDictionary dictionaryWithObjectsAndKeys:[endpointUrl absoluteString],BaseUrl, nil] forKey:key];
-                }
+            NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
+            if (endpointUrl) {
+                [SINGLETON.configuration setValue:[NSDictionary dictionaryWithObjectsAndKeys:[endpointUrl absoluteString],BaseUrl, nil] forKey:key];
             }
+
         }
         NSAssert([SINGLETON.configuration objectForKey:EnvironmentProduction], @"EnvironmentProduction must be valid endpoint url");
-        [SINGLETON setEnvironment:Production];
+        [SINGLETON setEnvironment:EnvironmentProduction];
 
 
 
@@ -138,10 +136,8 @@ static bool isFirstAccess = YES;
 
     if (self) {
         if (_oauthEnabled) {
-            _currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
+            [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
         }
-
-        _environments = [[NSMutableArray alloc] initWithArray:@[EnvironmentDevelopment,EnvironmentStage,EnvironmentProduction]];
 
         _configuration = [[NSMutableDictionary alloc] init];
         _minPasswordLenght = minPassLenght;
@@ -162,30 +158,20 @@ static bool isFirstAccess = YES;
     return self;
 }
 
-- (void) setEnvironment:(Environment) env {
+- (void) setEnvironment:(NSString * _Nonnull) environment {
 
-    _currentEnv = env;
+    _currentEnv = environment;
     _currentEndPointBaseUrl = nil;
     _currentOAuthClientID = nil;
     _currentOAuthClientSecret = nil;
 
-    if (env < [_environments count]) {
-        if ([_configuration objectForKey:[_environments objectAtIndex:env]]) {
-            _currentEndPointBaseUrl = [[_configuration objectForKey:[_environments objectAtIndex:env]] objectForKey:BaseUrl];
-            _currentOAuthClientID = [[_configuration objectForKey:[_environments objectAtIndex:env]] objectForKey:Client_ID];
-            _currentOAuthClientSecret = [[_configuration objectForKey:[_environments objectAtIndex:env]] objectForKey:Client_Secret];
+        if ([_configuration objectForKey:environment]) {
+            _currentEndPointBaseUrl = [[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl];
+            _currentOAuthClientID = [[_configuration objectForKey:_currentEnv] objectForKey:Client_ID];
+            _currentOAuthClientSecret = [[_configuration objectForKey:_currentEnv] objectForKey:Client_Secret];
         }
-    }
-    else {
-        _currentEndPointBaseUrl = [[_configuration objectForKey:EnvironmentProduction] objectForKey:BaseUrl];
-        if ([[_configuration objectForKey:EnvironmentProduction] objectForKey:Client_ID]) {
-            _currentOAuthClientID = [[_configuration objectForKey:EnvironmentProduction] objectForKey:Client_ID];
-        }
-        if ([[_configuration objectForKey:EnvironmentProduction] objectForKey:Client_Secret]) {
-            _currentOAuthClientSecret = [[_configuration objectForKey:EnvironmentProduction] objectForKey:Client_Secret];
-        }
-    }
-    NSLog(@"%@",[[_configuration objectForKey:[_environments objectAtIndex:env]] objectForKey:BaseUrl]);
+
+    NSLog(@"%@",[[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl]);
 
     NSAssert(_currentEndPointBaseUrl,@"Selected environment generate error. Please check configuration");
 
@@ -205,7 +191,7 @@ static bool isFirstAccess = YES;
         _manager = [AFOAuth2Manager manager];
     }
 
-    _currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
+    //_currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
 
     if (_oauthEnabled && _currentOAuthClientID && _currentOAuthClientSecret) {
 
@@ -246,7 +232,7 @@ static bool isFirstAccess = YES;
 }
 
 - (void) refreshToken {
-	if([PNUser currentUser] && [[PNUser currentUser] hasValidEmailAndPasswordData]) {
+    if([PNUser currentUser] && [[PNUser currentUser] hasValidEmailAndPasswordData]) {
         [self refreshTokenForUser];
     }
     else {
@@ -296,7 +282,7 @@ static bool isFirstAccess = YES;
 
     if (![email isValidEmail]) {
         if (failure) {
-             NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Email is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+            NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Email is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
             failure(error);
             return;
         }
@@ -308,22 +294,22 @@ static bool isFirstAccess = YES;
             return;
         }
     }
-        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
-            _currentOauthCredential = credential;
+    [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+        _currentOauthCredential = credential;
 
-            [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
-            [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-            
-            if (success) {
-                success(YES);
-            }
-        } failure:^(NSError * _Nonnull error) {
+        [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
+        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
-            [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
-            if (failure) {
-                failure(error);
-            }
-        }];
+        if (success) {
+            success(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (void) refreshTokenForClientCredential {
@@ -368,16 +354,16 @@ static bool isFirstAccess = YES;
     }
 }
 
-- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret forEnv:(Environment) environment {
+- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret forEnv:(NSString *) environment {
 
-    if ([_configuration objectForKey:[_environments objectAtIndex:environment]]) {
+    if ([_configuration objectForKey:environment]) {
 
-        NSMutableDictionary *currentConfigurationDict = [[NSMutableDictionary alloc] initWithDictionary:[_configuration objectForKey:[_environments objectAtIndex:environment]]];
+        NSMutableDictionary *currentConfigurationDict = [[NSMutableDictionary alloc] initWithDictionary:[_configuration objectForKey:environment]];
         [currentConfigurationDict setObject:clientID forKey:Client_ID];
         [currentConfigurationDict setObject:clientSecret forKey:Client_Secret];
-
-        [_configuration setObject:currentConfigurationDict forKey:[_environments objectAtIndex:environment]];
-
+        
+        [_configuration setObject:currentConfigurationDict forKey:environment];
+        
         if (_currentEnv == environment) {
             [self setEnvironment:environment];
         }

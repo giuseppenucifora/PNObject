@@ -238,9 +238,9 @@ static bool isFirstAccess = YES;
     }
 }
 
-- (id _Nonnull) saveNSUSerDefautls:(id _Nonnull) object {
+/*- (id _Nonnull) saveNSUSerDefautls:(id _Nonnull) object {
     
-}
+}*/
 
 - (BOOL) removeObjectLocally:(id _Nonnull) object {
     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];

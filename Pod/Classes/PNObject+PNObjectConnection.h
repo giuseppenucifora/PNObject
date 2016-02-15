@@ -13,13 +13,15 @@
 
 - (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
                       progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
-                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
+                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 - (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
                      parameters:(NSDictionary * _Nonnull) parameters
                        progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
+                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
+
++ (id _Nonnull) parseObjectFromResponse:(id _Nullable) response;
 
 @end

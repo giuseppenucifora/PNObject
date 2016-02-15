@@ -412,7 +412,7 @@
             
         }
     }
-    self.JSON = nil;
+    _JSON = nil;
     _JSONObjectMap = nil;
     _objID = nil;
     _createdAt = nil;

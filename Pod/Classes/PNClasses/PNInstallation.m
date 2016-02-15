@@ -19,7 +19,7 @@
 
 @implementation PNInstallation
 
-static PNInstallation *SINGLETON = nil;
+static PNInstallation *INSTALLATION = nil;
 
 static bool isFirstAccess = YES;
 
@@ -61,10 +61,10 @@ static bool isFirstAccess = YES;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
         
-        SINGLETON = [[super allocWithZone:NULL] init];
+        INSTALLATION = [[super allocWithZone:NULL] init];
     });
     
-    return SINGLETON;
+    return INSTALLATION;
 }
 
 - (void)setDeviceTokenFromData:(NSData *)deviceTokenData {
@@ -85,8 +85,8 @@ static bool isFirstAccess = YES;
 
 - (id) init
 {
-    if(SINGLETON){
-        return SINGLETON;
+    if(INSTALLATION){
+        return INSTALLATION;
     }
     if (isFirstAccess) {
         [self doesNotRecognizeSelector:_cmd];

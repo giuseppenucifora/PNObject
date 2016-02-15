@@ -14,13 +14,6 @@
 #import "AFHTTPRequestSerializer+OAuth2.h"
 #import "AFOAuthCredential.h"
 
-typedef NS_ENUM(NSInteger, Environment) {
-    Development = 0,
-    Stage = 1,
-    Production = 2
-};
-
-
 #pragma mark LocalNotification Keys
 
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess;
@@ -79,7 +72,7 @@ extern NSString* _Nonnull const Client_Secret;
  *
  *  @param env <#env description#>
  */
-- (void) setEnvironment:(Environment) env;
+- (void) setEnvironment:(NSString * _Nonnull) environment;
 
 /**
  *  <#Description#>
@@ -92,12 +85,12 @@ extern NSString* _Nonnull const Client_Secret;
 /**
  *  <#Description#>
  *
- *  @param value <#value description#>
+ *  @param value EnvironmentProduction, EnvironmentStage, EnvironmentDevelopment
  *  @param key   <#key description#>
  */
 - (void) removeHTTPHeaderValueForKey:(NSString * _Nonnull) key;
 
-- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret forEnv:(Environment) environment;
+- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret forEnv:(NSString * _Nonnull) environment;
 
 /**
  *  <#Description#>
@@ -178,6 +171,6 @@ extern NSString* _Nonnull const Client_Secret;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, readonly) NSString *encrypKey;
+@property (nonatomic, strong, nonnull , readonly) NSString *encrypKey;
 
 @end

@@ -18,7 +18,7 @@
 
 - (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
                       progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
-                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
+                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
 
@@ -27,7 +27,7 @@
         [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:nil progress:downloadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
 
             if (success) {
-                success(task,[[self class] parseObjectFromResponse:responseObject]);
+                success(task,responseObject);
             }
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -51,7 +51,7 @@
 - (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
                      parameters:(NSDictionary * _Nonnull) parameters
                        progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, id _Nullable responseObject))success
+                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
     if ([[PNObjectConfig sharedInstance] currentOauthCredential] && ![[[PNObjectConfig sharedInstance] currentOauthCredential] isExpired]) {
@@ -59,7 +59,7 @@
         [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:parameters progress:uploadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
 
             if (success) {
-                success(task,[[self class] parseObjectFromResponse:responseObject]);
+                success(task,responseObject);
             }
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

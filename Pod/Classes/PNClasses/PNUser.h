@@ -139,6 +139,10 @@
 /**
  *  <#Description#>
  */
+@property (nonatomic) BOOL hasVerifiedPhone;
+/**
+ *  <#Description#>
+ */
 @property (nonatomic, strong, nullable) NSDate * emailVerifiedDate;
 /**
  *  <#Description#>

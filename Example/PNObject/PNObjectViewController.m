@@ -106,15 +106,15 @@
     [password setPassword:@"asdasdasd"];
     [password setConfirmPassword:@"asdasdasd"];
 
-    User *user = [User currentUser];
+    User *user = [User new];
     [user setFirstName:@"Giuseppe"];
     [user setLastName:@"Nuficora"];
-    [user setEmail:@"packman@giuseppenucifora.com"];
+    [user setEmail:@"packman5@giuseppenucifora.com"];
     [user setPassword:password];
-    [user setHasAcceptedNewsletter:NO];
+    [user setHasAcceptedNewsletter:YES];
     [user setHasAcceptedPrivacy:YES];
 
-    [user saveLocally];
+    //[user saveLocally];
 
     NSLog(@"%@",[user JSONFormObject]);
     //NSLog(@"%@",[user JSONObjectMap]);

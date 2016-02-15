@@ -44,15 +44,6 @@
 /**
  *  <#Description#>
  *
- *  @param object <#object description#>
- *
- *  @return <#return value description#>
- */
-- (id _Nonnull) saveNSUSerDefautls:(id _Nonnull) object;
-
-/**
- *  <#Description#>
- *
  *  @param object PNObject Subclass add list objects and save the list
  *
  *  @return <#return value description#>
