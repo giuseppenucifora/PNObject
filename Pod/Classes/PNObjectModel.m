@@ -145,7 +145,12 @@ static bool isFirstAccess = YES;
         @finally {
             
             if ([_fileManager checkPath:className]) {
-                return [NSKeyedUnarchiver unarchiveObjectWithData:[_fileManager fetchFileDataWithPath:className]];
+
+                NSError *error = nil;
+
+                NSData *data = [RNCryptor decryptData:[_fileManager fetchFileDataWithPath:className] password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
+
+                return [NSKeyedUnarchiver unarchiveObjectWithData:data];
             }
             else
                 return nil;
