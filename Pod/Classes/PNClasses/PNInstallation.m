@@ -95,7 +95,7 @@ static bool isFirstAccess = YES;
     NSDictionary *savedInstallation = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
     
     if (savedInstallation) {
-        self = [super initWithJSON:savedInstallation];
+        self = [super initWithLocalJSON:savedInstallation];
     }
     else {
         self = [super init];

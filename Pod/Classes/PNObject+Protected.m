@@ -30,8 +30,12 @@ NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTok
     return @[@"JSON",@"objectModel",@"objectMapping",@"singleInstance"];
 }
 
-- (void)populateObjectFromJSON:(id _Nullable)JSON
-{
+- (void) populateObjectFromJSON:(id)JSON {
+    return [self populateObjectFromJSON:JSON fromLocal:NO];
+}
+
+- (void) populateObjectFromJSON:(id _Nullable)JSON fromLocal:(BOOL) fromLocal {
+
     NSDictionary *properties = [PNObject propertiesForClass:self.class];
 
     for(NSString *propertyName in properties) {
@@ -46,7 +50,6 @@ NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTok
 
         id mappingValue = [[[self class] objcetMapping] valueForKey:propertyName];
 
-
         if([mappingValue isKindOfClass:NSDictionary.class]) {
             mappedJSONKey = [mappingValue valueForKey:@"key"];
             mappedJSONType = [mappingValue valueForKey:@"type"];
@@ -54,13 +57,23 @@ NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTok
             mappedJSONKey = mappingValue;
         }
 
+        /*if (fromLocal) {
+            propertyName = mappedJSONKey;
+        }*/
 
         if ([[PNObject protectedProperties] containsObject:propertyName] || [self isObjNull:mappedJSONKey]) {
             continue;
         }
 
         // Get JSON value for the mapped key
-        id value = [JSON valueForKeyPath:mappedJSONKey];
+        id value;
+        if (fromLocal) {
+            value = [JSON valueForKeyPath:propertyName];
+        }
+        else {
+            value = [JSON valueForKeyPath:mappedJSONKey];
+        }
+
 
         if([self isObjNull:value]) {
             continue;
@@ -121,7 +134,7 @@ NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTok
                        @"NSArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
-                PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject];
+                PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
                 [arr addObject:val];
             }
 
@@ -130,7 +143,7 @@ NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTok
                        @"NSMutableArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
-                PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject];
+                PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
                 [arr addObject:val];
             }
 
@@ -142,7 +155,7 @@ NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTok
 
                            if(isPNObjectSubclass) {
 
-                               PNObject *val = [[NSClassFromString(propertyType) alloc] initWithJSON:value];
+                               PNObject *val = [[NSClassFromString(propertyType) alloc] initWithJSON:value fromLocal:fromLocal];
                                [self setValue:val forKey:propertyName];
                            }
                            else {

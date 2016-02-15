@@ -16,7 +16,7 @@
 
 @implementation PNObject (PNObjectConnection)
 
-- (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
++ (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
                       progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
@@ -48,8 +48,8 @@
     }
 }
 
-- (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
-                     parameters:(NSDictionary * _Nonnull) parameters
++ (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
+                     parameters:(NSDictionary * _Nullable) parameters
                        progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
@@ -91,14 +91,14 @@
     if (response) {
 
         if ([response isKindOfClass:[NSDictionary class]] && [[response allKeys] count] > 0) {
-            PNObjectResponse = [[[self class] alloc] initWithJSON:[response copy]];
+            PNObjectResponse = [[[self class] alloc] initWithRemoteJSON:[response copy]];
         }
         else if ([response isKindOfClass:[NSArray class]] && [response count] > 0){
 
             NSMutableArray * resposeArray = [[NSMutableArray alloc] init];
             for (id singleObjectDict  in response) {
                 if ([singleObjectDict isKindOfClass:[NSDictionary class]]) {
-                    id singleObject = [[[self class] alloc] initWithJSON:singleObjectDict];
+                    id singleObject = [[[self class] alloc] initWithRemoteJSON:singleObjectDict];
                     [resposeArray addObject:singleObject];
                 }
             }

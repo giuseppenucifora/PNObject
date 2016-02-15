@@ -114,7 +114,16 @@
     return self;
 }
 
-- (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON {
+- (_Nullable instancetype) initWithRemoteJSON:( NSDictionary * _Nonnull) JSON {
+    return [self initWithJSON:JSON fromLocal:NO];
+}
+
+- (_Nullable instancetype) initWithLocalJSON:( NSDictionary * _Nonnull) JSON {
+    return [self initWithJSON:JSON fromLocal:YES];
+}
+
+
+- (_Nullable instancetype) initWithJSON:( NSDictionary * _Nonnull) JSON fromLocal:(BOOL) fromLocal {
     self = [super init];
     if (self) {
         if ([[self class] isSubclassOfClass:[PNObject class]]) {
@@ -150,14 +159,14 @@
         NSAssert(self.JSONObjectMap, @"You must create objectMapping");
         self.JSON = [[NSMutableDictionary alloc] initWithDictionary:JSON];
 
-        [self populateObjectFromJSON:self.JSON];
+        [self populateObjectFromJSON:self.JSON fromLocal:fromLocal];
     }
     return self;
 }
 
 - (NSDictionary * _Nonnull) reverseMapping
 {
-    NSMutableDictionary *JSON = [NSMutableDictionary dictionary];
+    NSMutableDictionary *JSON = [[NSMutableDictionary alloc] init];
 
     NSString *mappedJSONKey;
     NSString *mappedJSONType;
@@ -350,14 +359,14 @@
     return [self.objectModel removeObjectLocally:self];
 }
 
-+ (NSArray *)batch:(id)JSON
++ (NSArray *)batch:(id)JSON fromLocal:(BOOL) fromLocal
 {
     NSString *className = NSStringFromClass([self class]);
 
     NSMutableArray *batch = [NSMutableArray array];
 
     for(id objectJSON in JSON) {
-        PNObject *val = [[NSClassFromString(className) alloc] initWithJSON:objectJSON];
+        PNObject *val = [[NSClassFromString(className) alloc] initWithJSON:objectJSON fromLocal:fromLocal];
         [batch addObject:val];
     }
 

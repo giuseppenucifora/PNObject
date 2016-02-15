@@ -23,6 +23,15 @@ extern NSString* _Nonnull const PNObjectMappingSelector;
  *  @param JSON <#JSON description#>
  */
 - (void)populateObjectFromJSON:(id _Nullable)JSON;
+
+/**
+ *  <#Description#>
+ *
+ *  @param JSON      <#JSON description#>
+ *  @param fromLocal <#fromLocal description#>
+ */
+- (void) populateObjectFromJSON:(id _Nullable)JSON fromLocal:(BOOL) fromLocal;
+
 /**
  *  <#Description#>
  *
@@ -31,12 +40,14 @@ extern NSString* _Nonnull const PNObjectMappingSelector;
  *  @return <#return value description#>
  */
 - (BOOL)isObjNull:(id _Nullable)obj;
+
 /**
  *  <#Description#>
  *
  *  @return <#return value description#>
  */
 + (NSArray * _Nonnull) protectedProperties;
+
 /**
  *  <#Description#>
  *
