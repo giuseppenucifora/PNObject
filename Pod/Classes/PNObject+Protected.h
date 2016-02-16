@@ -8,14 +8,6 @@
 
 #import "PNObject.h"
 
-#pragma mark MappingSelector Keys
-
-extern NSString* _Nonnull const PNObjectMappingKey;
-extern NSString* _Nonnull const PNObjectMappingType;
-extern NSString* _Nonnull const PNObjectMappingSelector;
-
-#pragma mark -
-
 @interface PNObject (Protected)
 /**
  *  <#Description#>

@@ -17,6 +17,10 @@
 
 #define PNOBJECT_DIR @"PNObjects"
 
+NSString * const PNObjectMappingKey = @"key";
+NSString * const PNObjectMappingType = @"type";
+NSString * const PNObjectMappingSelector = @"selector";
+
 
 @interface PNObject() <PNObjectPersistency,PNObjectSubclassing>
 

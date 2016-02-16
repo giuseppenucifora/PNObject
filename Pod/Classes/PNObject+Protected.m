@@ -11,13 +11,7 @@
 #import <NSDate_Utils/NSDate+NSDate_Util.h>
 #import "objc/runtime.h"
 
-extern NSString* _Nonnull const PNObjectMappingKey;
-extern NSString* _Nonnull const PNObjectMappingType;
-extern NSString* _Nonnull const PNObjectMappingSelector;
 
-NSString * const PNObjectMappingKey = @"PNObjectLocalNotificationRefreshTokenClientCredentialSuccess";
-NSString * const PNObjectMappingType = @"PNObjectLocalNotificationRefreshTokenClientCredentialFail";
-NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTokenClientCredentialFail";
 
 @implementation PNObject (Protected)
 
@@ -51,8 +45,8 @@ NSString * const PNObjectMappingSelector = @"PNObjectLocalNotificationRefreshTok
         id mappingValue = [[[self class] objcetMapping] valueForKey:propertyName];
 
         if([mappingValue isKindOfClass:NSDictionary.class]) {
-            mappedJSONKey = [mappingValue valueForKey:@"key"];
-            mappedJSONType = [mappingValue valueForKey:@"type"];
+            mappedJSONKey = [mappingValue valueForKey:PNObjectMappingKey];
+            mappedJSONType = [mappingValue valueForKey:PNObjectMappingType];
         } else {
             mappedJSONKey = mappingValue;
         }
