@@ -7,6 +7,7 @@
 //
 
 #import "PNObject.h"
+#import "PNObjectFormData.h"
 
 @interface PNObject (PNObjectConnection)
 
@@ -19,6 +20,13 @@
 + (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
                      parameters:(NSDictionary * _Nullable) parameters
                        progress:(nullable void (^)(NSProgress * _Nullable uploadProgress)) uploadProgress
+                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
+                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
+
++ (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
+                       formData:(NSArray * _Nullable) postFormData
+                     parameters:(NSDictionary * _Nullable) parameters
+                       progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
