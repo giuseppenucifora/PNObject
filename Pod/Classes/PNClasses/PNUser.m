@@ -289,6 +289,32 @@ static bool isFirstAccess = YES;
 
 }
 
++ (void) uploadAvatar:(UIImage * _Nonnull) avatar
+             Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+              Success:(nullable void (^)(NSDictionary * _Nullable responseObject))success
+              failure:(nullable void (^)(NSError * _Nonnull error))failure {
+
+    PNObjectFormData *formData = [PNObjectFormData formDataFromUIImage:avatar compression:1 name:@"file" fileName:@"avatar.jpg" mimeType:@"image/jpeg"];
+
+    [self POSTWithEndpointAction:@"user/avatar"
+                        formData:@[formData]
+                      parameters:nil
+                        progress:uploadProgress
+                         success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
+                             if (success) {
+                                 success(responseObject);
+                             }
+                             [[PNUser currentUser] setProfileImage:avatar];
+                             [[PNUser currentUser] reloadFormServer];
+                         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                             if (failure) {
+                                 failure(error);
+                             }
+                         }];
+    
+    
+}
+
 - (BOOL) isAuthenticated {
     return self.authenticated;
 }

@@ -80,7 +80,18 @@
                                           blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                                                failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
-
+/**
+ *  <#Description#>
+ *
+ *  @param avatar         <#avatar description#>
+ *  @param uploadProgress <#uploadProgress description#>
+ *  @param success        <#success description#>
+ *  @param failure        <#failure description#>
+ */
++ (void) uploadAvatar:(UIImage * _Nonnull) avatar
+             Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+              Success:(nullable void (^)(NSDictionary * _Nullable responseObject))success
+              failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 - (void) reloadFormServer;
 /**
