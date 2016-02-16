@@ -301,7 +301,7 @@ static bool isFirstAccess = YES;
                               @"userId":@"uuid",
                               @"firstName":@"first_name",
                               @"lastName":@"last_name",
-                              @"profileImage":@"profile_image",
+                              @"profileImageUrl":@"profile_image",
                               @"sex":@"sex",
                               @"birthDate":@"birth_year",
                               @"phone":@"phone",

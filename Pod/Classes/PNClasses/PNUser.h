@@ -111,6 +111,10 @@
 /**
  *  <#Description#>
  */
+@property (nonatomic, strong, nullable) NSURL * profileImageUrl;
+/**
+ *  <#Description#>
+ */
 @property (nonatomic, strong, nullable) UIImage * profileImage;
 /**
  *  <#Description#>
