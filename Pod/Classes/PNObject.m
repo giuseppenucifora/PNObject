@@ -113,6 +113,19 @@ NSString * const PNObjectMappingSelector = @"selector";
                 continue;
             }
             [self addObserver:self forKeyPath:propertyName options:NSKeyValueObservingOptionNew context:nil];
+
+            NSString *propertyType = [properties valueForKey:propertyName];
+
+            ((void (^)())@{
+
+                           @"NSMutableArray" : ^{
+                NSMutableArray *arr = [[NSMutableArray alloc] init];
+
+                [self setValue:arr forKey:propertyName];
+            }
+                           }[propertyType] ?: ^{
+
+                           })();
         }
     }
     return self;
@@ -158,6 +171,19 @@ NSString * const PNObjectMappingSelector = @"selector";
                 continue;
             }
             [self addObserver:self forKeyPath:propertyName options:NSKeyValueObservingOptionNew context:nil];
+
+            NSString *propertyType = [properties valueForKey:propertyName];
+
+            ((void (^)())@{
+
+                           @"NSMutableArray" : ^{
+                NSMutableArray *arr = [[NSMutableArray alloc] init];
+
+                [self setValue:arr forKey:propertyName];
+            }
+                           }[propertyType] ?: ^{
+                               
+                           })();
         }
 
         NSAssert(self.JSONObjectMap, @"You must create objectMapping");
