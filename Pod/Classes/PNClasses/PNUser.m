@@ -75,7 +75,9 @@ static bool isFirstAccess = YES;
     NSDictionary *savedUser = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
 
     if (savedUser) {
-        USER = [super initWithLocalJSON:savedUser];
+        Class objectClass = NSClassFromString([[self class] PNObjClassName]);
+
+        USER = [[objectClass alloc] initWithLocalJSON:savedUser];
     }
 
     if (USER) {
