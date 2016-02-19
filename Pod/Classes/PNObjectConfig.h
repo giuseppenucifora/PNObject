@@ -41,7 +41,7 @@ extern NSString* _Nonnull const Client_Secret;
 /**
  *	Oauth is NO by default
  *
- *  @param clientIdsForEnvironments
+ *  @param endpointUrlsForEnvironments
  *  For example,
  *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
  *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
@@ -53,9 +53,24 @@ extern NSString* _Nonnull const Client_Secret;
 + (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments;
 
 /**
+ *  <#Description#>
+ *
+ *  @param endpointUrlsForEnvironments
+ *  For example,
+ *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
+ *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
+ *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
+ *   }
+ *  @param userSubClass                <#userSubClass description#>
+ *
+ *  @return <#return value description#>
+ */
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments andUserSubclass:(Class _Nonnull) userSubClass;
+
+/**
  *
  *
- *  @param clientIdsForEnvironments
+ *  @param endpointUrlsForEnvironments
  *  For example,
  *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
  *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
@@ -67,6 +82,21 @@ extern NSString* _Nonnull const Client_Secret;
  */
 + (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments withOauth:(BOOL) oauthEnabled;
 
+/**
+ *  <#Description#>
+ *
+ *  @param endpointUrlsForEnvironments
+ *  For example,
+ *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
+ *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
+ *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
+ *   }
+ *  @param userSubClass                <#userSubClass description#>
+ *  @param oauthEnabled                <#oauthEnabled description#>
+ *
+ *  @return <#return value description#>
+ */
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withOauth:(BOOL) oauthEnabled;
 /**
  *  <#Description#>
  *

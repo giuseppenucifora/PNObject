@@ -135,7 +135,7 @@
 
     //if ([user isAuthenticated]) {
 
-    [User loginCurrentUserWithEmail:@"packman@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+    [User loginCurrentUserWithEmail:@"demo@packman.example" password:@"demo@packman.example" withBlockSuccess:^(PNUser * _Nullable responseObject) {
 
         NSLog(@"response : %@",responseObject);
 

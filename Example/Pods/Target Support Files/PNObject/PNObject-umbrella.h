@@ -10,6 +10,7 @@
 #import "PNObject.h"
 #import "PNObjectConfig.h"
 #import "PNObjectConstants.h"
+#import "PNObjectFormData.h"
 #import "PNObjectModel.h"
 #import "AFJSONResponseSerializerWithData.h"
 #import "AFHTTPRequestSerializer+OAuth2.h"

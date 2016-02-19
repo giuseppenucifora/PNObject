@@ -47,6 +47,7 @@ NSString*  const Client_Secret = @"client_secret";
 @property (nonatomic, strong) NSString *currentOAuthClientID;
 @property (nonatomic, strong) NSString *currentOAuthClientSecret;
 //@property (nonatomic, strong) NSMutableDictionary *environments;
+@property (nonatomic)  Class userSubClass;
 
 @end
 
@@ -74,14 +75,24 @@ static bool isFirstAccess = YES;
 #pragma mark - Life Cycle
 
 + (instancetype) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments {
-    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments withOauth:NO];
+    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:[PNUser class] withOauth:NO];
 }
 
++ (instancetype) initSharedInstanceForEnvironments:(NSDictionary *)endpointUrlsForEnvironments andUserSubclass:(Class)userSubClass {
+    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:userSubClass withOauth:NO];
+}
+
+
 + (instancetype) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments withOauth:(BOOL) oauthEnabled {
+	    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:[PNUser class] withOauth:oauthEnabled];
+}
+
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withOauth:(BOOL) oauthEnabled {
     SINGLETON = [self sharedInstance];
 
     if (SINGLETON) {
         SINGLETON.oauthEnabled = oauthEnabled;
+        SINGLETON.userSubClass = userSubClass;
         for (NSString *key in [endpointUrlsForEnvironments allKeys]) {
 
             NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
@@ -232,7 +243,9 @@ static bool isFirstAccess = YES;
 }
 
 - (void) refreshToken {
-    if([PNUser currentUser] && [[PNUser currentUser] hasValidEmailAndPasswordData]) {
+
+
+    if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
         [self refreshTokenForUser];
     }
     else {
@@ -248,7 +261,7 @@ static bool isFirstAccess = YES;
 - (void) refreshTokenForUserWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
-    if([PNUser currentUser] && [[PNUser currentUser] hasValidEmailAndPasswordData]) {
+    if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
         [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] email] password:[[[PNUser currentUser] password] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
 

@@ -272,6 +272,8 @@ static bool isFirstAccess = YES;
 
     [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
         if (refreshSuccess) {
+
+            
             PNUser *user = [[self class] new];
 
             PNObjcPassword *objectPassword = [PNObjcPassword new];
@@ -353,7 +355,7 @@ static bool isFirstAccess = YES;
 }
 
 + (NSString *)objectClassName {
-    return  @"User";
+    return  @"PNUser";
 }
 
 + (NSString *) objectEndPoint {
