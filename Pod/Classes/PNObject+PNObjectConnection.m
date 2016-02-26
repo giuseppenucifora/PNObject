@@ -21,10 +21,19 @@
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
+    return [self GETWithEndpointAction:endPoint parameters:nil progress:downloadProgress success:success failure:failure];
+
+}
+
++ (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
+                    parameters:(NSDictionary * _Nullable) parameters
+                      progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
+                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
+                       failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
 
     if ([[PNObjectConfig sharedInstance] currentOauthCredential] && ![[[PNObjectConfig sharedInstance] currentOauthCredential] isExpired]) {
 
-        [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:nil progress:downloadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:parameters progress:downloadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
 
             if (success) {
                 success(task,responseObject);
@@ -46,6 +55,7 @@
             }
         }];
     }
+
 }
 
 + (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
