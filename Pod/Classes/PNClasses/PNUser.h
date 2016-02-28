@@ -101,6 +101,10 @@
  */
 - (BOOL) isAuthenticated;
 
+- (UIImage* _Nonnull) userProfileImage;
+
+- (UIImage* _Nonnull) userProfileImage:(BOOL) forceReload;
+
 //- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id responseObject, NSError * error)) responseBlock;
 
 ///--------------------------------------

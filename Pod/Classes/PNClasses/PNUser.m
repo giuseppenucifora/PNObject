@@ -86,7 +86,7 @@ static bool isFirstAccess = YES;
             [self autoLogin];
         });
     }
-    
+
     return USER;
 }
 
@@ -139,17 +139,17 @@ static bool isFirstAccess = YES;
 
     [self autoLoginWithBlockSuccess:^(BOOL loginSuccess) {
         [[self class] GETWithEndpointAction:@"user/profile"
-                           progress:nil
-                            success:^(NSURLSessionDataTask * _Nullable task, id  _Nullable responseObject) {
+                                   progress:nil
+                                    success:^(NSURLSessionDataTask * _Nullable task, id  _Nullable responseObject) {
 
-                                NSLogDebug(@"%@",[responseObject objectForKey:@"user"]);
+                                        NSLogDebug(@"%@",[responseObject objectForKey:@"user"]);
 
-                                [self populateObjectFromJSON:[responseObject objectForKey:@"user"]];
-                                [self saveLocally];
-                                
-                            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                                NSLogDebug(@"%@",error);
-                            }];
+                                        [self populateObjectFromJSON:[responseObject objectForKey:@"user"]];
+                                        [self saveLocally];
+
+                                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                        NSLogDebug(@"%@",error);
+                                    }];
     } failure:^(NSError * _Nonnull error) {
         NSLogDebug(@"error : %@",error);
     }];
@@ -159,19 +159,19 @@ static bool isFirstAccess = YES;
                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     [[self class] POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
-                        progress:nil
-                         success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
-                             NSLog(@"response %@",responseObject);
-                             if(success){
-                                 success(self);
-                                 [self saveLocally];
-                             }
-                         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                             NSLogDebug(@"error : %ld",[error code]);
-                             if (failure) {
-                                 failure(error);
-                             }
-                         }];
+                                progress:nil
+                                 success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
+                                     NSLog(@"response %@",responseObject);
+                                     if(success){
+                                         success(self);
+                                         [self saveLocally];
+                                     }
+                                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                     NSLogDebug(@"error : %ld",[error code]);
+                                     if (failure) {
+                                         failure(error);
+                                     }
+                                 }];
 }
 
 
@@ -273,7 +273,7 @@ static bool isFirstAccess = YES;
     [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
         if (refreshSuccess) {
 
-            
+
             PNUser *user = [[self class] new];
 
             PNObjcPassword *objectPassword = [PNObjcPassword new];
@@ -315,12 +315,42 @@ static bool isFirstAccess = YES;
                                  failure(error);
                              }
                          }];
-    
-    
+
+
 }
 
 - (BOOL) isAuthenticated {
     return self.authenticated;
+}
+
+- (UIImage* _Nonnull) userProfileImage {
+    return [self userProfileImage:NO];
+}
+
+
+- (UIImage* _Nonnull) userProfileImage:(BOOL) forceReload {
+
+    if (!_profileImage || forceReload) {
+
+        if (_profileImageUrl) {
+
+            NSError* error = nil;
+            NSData* data = [NSData dataWithContentsOfURL:_profileImageUrl options:NSDataReadingUncached error:&error];
+            if (error) {
+                NSLog(@"%@", [error localizedDescription]);
+                return [UIImage imageNamed:@"userProfileAvatar"];
+            } else {
+                NSLog(@"Data has loaded successfully.");
+                return [UIImage imageWithData:data];
+            }
+        }
+        else {
+			return [UIImage imageNamed:@"userProfileAvatar"];
+        }
+    }
+    else {
+		return _profileImage;
+    }
 }
 
 #pragma mark PNObjectSubclassing Protocol
