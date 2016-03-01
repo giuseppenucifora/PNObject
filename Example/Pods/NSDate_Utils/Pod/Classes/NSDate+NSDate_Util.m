@@ -46,6 +46,16 @@ static NSDateFormatter *_displayFormatter = nil;
     components.second = 0;
     return [CURRENT_CALENDAR dateFromComponents:components];
 }
+
+- (NSDate *) dateAtEndOfDay
+{
+    NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:self];
+    components.hour = 23;
+    components.minute = 59;
+    components.second = 59;
+    return [CURRENT_CALENDAR dateFromComponents:components];
+}
+
 - (NSInteger) minutesAfterDate: (NSDate *) aDate
 {
     NSTimeInterval ti = [self timeIntervalSinceDate:aDate];

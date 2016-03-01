@@ -36,11 +36,11 @@ PODS:
   - FBSnapshotTestCase/Core (2.0.7)
   - FBSnapshotTestCase/SwiftSupport (2.0.7):
     - FBSnapshotTestCase/Core
-  - NSDate_Utils (0.1.0)
+  - NSDate_Utils (0.1.2)
   - NSString-Helper (1.0.3)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (0.3.11):
+  - PNObject (0.3.12):
     - AFNetworking
     - CodFis-Helper
     - FBSDKCoreKit
@@ -92,11 +92,11 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: d3d4a2e9d31954deb00bfea964167a05ca1ea976
   FBSDKShareKit: 54587b4624706ace1e810cf83412a918141f807a
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
-  NSDate_Utils: 4a57f91094123d5b7600c7de8c9ad9e1d43306a3
+  NSDate_Utils: 6f310af16917c48536836d4c17e1e47bf6fbe8e4
   NSString-Helper: d4c5459e8142ee6a96b070118009f08637030c2d
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: ad9ec93536cac8a9d777ffb849029b6b0b4c946e
+  PNObject: cc3f3e854b20545b9caffb32a7ced7bb760fb5e7
   PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
   RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
