@@ -40,7 +40,7 @@ PODS:
   - NSString-Helper (1.0.3)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (0.3.12):
+  - PNObject (0.3.13):
     - AFNetworking
     - CodFis-Helper
     - FBSDKCoreKit
@@ -96,7 +96,7 @@ SPEC CHECKSUMS:
   NSString-Helper: d4c5459e8142ee6a96b070118009f08637030c2d
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: cc3f3e854b20545b9caffb32a7ced7bb760fb5e7
+  PNObject: 7e0d02a6de46f9b8d72859bee9088c260c5ae078
   PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
   RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
