@@ -315,8 +315,6 @@ static bool isFirstAccess = YES;
                                  failure(error);
                              }
                          }];
-
-
 }
 
 - (BOOL) isAuthenticated {

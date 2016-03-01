@@ -262,7 +262,7 @@ static bool isFirstAccess = YES;
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
-        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[PNUser currentUser] email] password:[[[PNUser currentUser] password] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[SINGLETON.userSubClass currentUser] email] password:[[(PNUser*)[SINGLETON.userSubClass currentUser] password] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
 
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
@@ -300,7 +300,7 @@ static bool isFirstAccess = YES;
             return;
         }
     }
-    if (![PNUser isValidPassword:password]) {
+    if (![SINGLETON.userSubClass isValidPassword:password]) {
         if (failure) {
             NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Password is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
             failure(error);
