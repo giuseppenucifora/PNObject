@@ -227,8 +227,10 @@ static bool isFirstAccess = YES;
     if (canTryRefreh) {
 
         if (_currentOauthCredential && ![_currentOauthCredential isExpired]) {
+            
             [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         }
         else {
             [self refreshToken];
@@ -272,9 +274,10 @@ static bool isFirstAccess = YES;
             _currentOauthCredential = credential;
 
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
-            //[_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+
             [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
             if (success) {
                 success(YES);
@@ -320,9 +323,10 @@ static bool isFirstAccess = YES;
         _currentOauthCredential = credential;
 
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
-        //[_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+
         [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
         if (success) {
             success(YES);
@@ -350,7 +354,9 @@ static bool isFirstAccess = YES;
 
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
 
-        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+		[_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
         if (success) {
             success(YES);
