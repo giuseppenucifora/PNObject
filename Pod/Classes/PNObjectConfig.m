@@ -193,6 +193,8 @@ static bool isFirstAccess = YES;
 
     [self manager];
 
+    [self authManager];
+
 }
 
 - (NSString *) baseUrl {
