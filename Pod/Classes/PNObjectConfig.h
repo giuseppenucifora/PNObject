@@ -188,7 +188,7 @@ extern NSString* _Nonnull const Client_Secret;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) AFOAuth2Manager *manager;
+@property (nonatomic, strong, readonly, nonnull) AFHTTPSessionManager *manager;
 
 /**
  *  <#Description#>

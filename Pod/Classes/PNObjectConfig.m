@@ -46,13 +46,15 @@ NSString*  const Client_Secret = @"client_secret";
 @property (nonatomic, strong) NSString *currentEndPointBaseUrl;
 @property (nonatomic, strong) NSString *currentOAuthClientID;
 @property (nonatomic, strong) NSString *currentOAuthClientSecret;
-//@property (nonatomic, strong) NSMutableDictionary *environments;
+@property (nonatomic, strong) AFOAuth2Manager *authManager;
+
 @property (nonatomic)  Class userSubClass;
 
 @end
 
 @implementation PNObjectConfig
 
+@synthesize manager = _manager;
 
 
 static PNObjectConfig *SINGLETON = nil;
@@ -185,7 +187,7 @@ static bool isFirstAccess = YES;
             _currentOAuthClientSecret = [[_configuration objectForKey:_currentEnv] objectForKey:Client_Secret];
         }
 
-    NSLog(@"%@",[[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl]);
+    NSLogDebug(@"%@",[[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl]);
 
     NSAssert(_currentEndPointBaseUrl,@"Selected environment generate error. Please check configuration");
 
@@ -197,26 +199,16 @@ static bool isFirstAccess = YES;
     return _currentEndPointBaseUrl;
 }
 
-- (AFOAuth2Manager *) manager {
+- (AFHTTPSessionManager *) manager {
 
     BOOL canTryRefreh = NO;
 
     if (!_manager) {
-        _manager = [AFOAuth2Manager manager];
+        _manager = [AFHTTPSessionManager manager];
     }
 
     //_currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
 
-    if (_oauthEnabled && _currentOAuthClientID && _currentOAuthClientSecret) {
-
-        if (![_manager clientID]) {
-            _manager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointBaseUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
-        }
-
-        [_manager setUseHTTPBasicAuthentication:NO];
-
-        canTryRefreh = YES;
-    }
 
     for (NSString *key in [_headerFields allKeys]) {
 
@@ -238,8 +230,54 @@ static bool isFirstAccess = YES;
     }
 
     _manager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
+    _manager.requestSerializer = _jsonSerializer;
 
     return _manager;
+}
+
+- (AFOAuth2Manager *) authManager {
+
+    BOOL canTryRefreh = NO;
+
+    if (!_authManager) {
+        _authManager = [AFOAuth2Manager manager];
+    }
+
+    //_currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
+
+    if (_oauthEnabled && _currentOAuthClientID && _currentOAuthClientSecret) {
+
+        if (![_authManager clientID]) {
+            _authManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointBaseUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
+        }
+
+        [_authManager setUseHTTPBasicAuthentication:NO];
+
+        canTryRefreh = YES;
+    }
+
+    for (NSString *key in [_headerFields allKeys]) {
+
+        [_httpSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
+        [_jsonSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
+    }
+
+    if (canTryRefreh) {
+
+        if (_currentOauthCredential && ![_currentOauthCredential isExpired]) {
+
+            [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        }
+        else {
+            [self refreshToken];
+        }
+    }
+
+    _authManager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
+    
+    return _authManager;
 }
 
 - (BOOL) resetToken {
@@ -269,14 +307,14 @@ static bool isFirstAccess = YES;
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
-        [_manager setRequestSerializer:_httpSerializer];
-        [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[SINGLETON.userSubClass currentUser] email] password:[[(PNUser*)[SINGLETON.userSubClass currentUser] password] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+        [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[SINGLETON.userSubClass currentUser] email] password:[[(PNUser*)[SINGLETON.userSubClass currentUser] password] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
 
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
 
             [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
             if (success) {
@@ -318,15 +356,15 @@ static bool isFirstAccess = YES;
             return;
         }
     }
-    [_manager setRequestSerializer:_httpSerializer];
-    [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+    [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
 
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
 
         [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+		[_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
         if (success) {
             success(YES);
@@ -348,15 +386,15 @@ static bool isFirstAccess = YES;
 - (void) refreshTokenForClientCredentialWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                                  failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
-    [_manager setRequestSerializer:_httpSerializer];
-    [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+    [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
 
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
 
         [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-		[_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
         if (success) {
             success(YES);
