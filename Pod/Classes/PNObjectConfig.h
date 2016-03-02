@@ -184,10 +184,21 @@ extern NSString* _Nonnull const Client_Secret;
 ///--------------------------------------
 #pragma mark - PNObjectConfig Properties
 ///--------------------------------------
+
 /**
  *  <#Description#>
  */
 @property (nonatomic, strong, nonnull) AFOAuth2Manager *manager;
+
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly, nonnull) AFJSONRequestSerializer *jsonSerializer;
+
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly, nonnull) AFHTTPRequestSerializer *httpSerializer;
 
 /**
  *  <#Description#>

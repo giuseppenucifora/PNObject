@@ -153,6 +153,9 @@ static bool isFirstAccess = YES;
         _configuration = [[NSMutableDictionary alloc] init];
         _minPasswordLenght = minPassLenght;
 
+        _jsonSerializer = [AFJSONRequestSerializer serializer];
+        _httpSerializer = [AFHTTPRequestSerializer serializer];
+
         _headerFields = [[NSMutableDictionary alloc] init];
 
         if ([[NSUserDefaults standardUserDefaults] objectForKey:PNObjectEncryptionKey]) {
@@ -217,13 +220,15 @@ static bool isFirstAccess = YES;
 
     for (NSString *key in [_headerFields allKeys]) {
 
-        [[_manager requestSerializer] setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
+        [_httpSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
+        [_jsonSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
     }
 
     if (canTryRefreh) {
 
         if (_currentOauthCredential && ![_currentOauthCredential isExpired]) {
-            [[_manager requestSerializer] setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         }
         else {
             [self refreshToken];
@@ -262,11 +267,14 @@ static bool isFirstAccess = YES;
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
+        [_manager setRequestSerializer:_httpSerializer];
         [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:[[SINGLETON.userSubClass currentUser] email] password:[[(PNUser*)[SINGLETON.userSubClass currentUser] password] password] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
 
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
-            [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            //[_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
             if (success) {
                 success(YES);
@@ -307,11 +315,14 @@ static bool isFirstAccess = YES;
             return;
         }
     }
+    [_manager setRequestSerializer:_httpSerializer];
     [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
 
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
-        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        //[_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
         if (success) {
             success(YES);
@@ -333,6 +344,7 @@ static bool isFirstAccess = YES;
 - (void) refreshTokenForClientCredentialWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                                  failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
+    [_manager setRequestSerializer:_httpSerializer];
     [_manager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
 
