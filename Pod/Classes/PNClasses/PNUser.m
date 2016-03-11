@@ -146,6 +146,7 @@ static bool isFirstAccess = YES;
 
                                         [self populateObjectFromJSON:[responseObject objectForKey:@"user"]];
                                         [self saveLocally];
+                                        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserReloadFromServerSuccess object:nil];
 
                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                         NSLogDebug(@"%@",error);

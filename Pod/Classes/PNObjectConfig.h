@@ -20,7 +20,7 @@ extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenClientCrede
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenClientCredentialFail;
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenUserSuccess;
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenUserFail;
-
+extern NSString* _Nonnull const PNObjectLocalNotificationUserReloadFromServerSuccess;
 #pragma mark -
 
 extern NSString* _Nonnull const EnvironmentProduction;

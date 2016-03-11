@@ -21,6 +21,8 @@ NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialFail = @"P
 NSString * const PNObjectLocalNotificationRefreshTokenUserSuccess = @"PNObjectLocalNotificationRefreshTokenUserSuccess";
 NSString * const PNObjectLocalNotificationRefreshTokenUserFail = @"PNObjectLocalNotificationRefreshTokenUserFail";
 
+NSString * const PNObjectLocalNotificationUserReloadFromServerSuccess = @"PNObjectLocalNotificationUserReloadFromServerSuccess";
+
 
 NSInteger const minPassLenght = 4;
 
