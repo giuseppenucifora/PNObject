@@ -10,13 +10,12 @@
 #import "PNObject+Protected.h"
 #import "PEARFileManager.h"
 #import "PNObjectConstants.h"
-
-@import RNCryptor;
+#import <NACrypto/NACrypto.h>
 
 @interface PNObjectModel()
 
 @property (nonatomic, strong) PEARFileManager *fileManager;
-
+@property (nonatomic, strong) NAAES *AES;
 @end
 
 @implementation PNObjectModel
@@ -121,6 +120,7 @@ static bool isFirstAccess = YES;
         
         [_fileManager setRootDirectory:k_ROOT_DIR_DOCUMENTS];
         NSLogDebug(@"%@",[_fileManager getRootDirectoryPath]);
+        _AES = [[NAAES alloc] initWithAlgorithm:NAAESAlgorithm256CTR];
     }
     return self;
 }
@@ -148,7 +148,7 @@ static bool isFirstAccess = YES;
 
                 NSError *error = nil;
 
-                NSData *data = [RNCryptor decryptData:[_fileManager fetchFileDataWithPath:className] password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
+                NSData *data = [_AES decrypt:[_fileManager fetchFileDataWithPath:className] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error]; // password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
 
                 return [NSKeyedUnarchiver unarchiveObjectWithData:data];
             }
@@ -162,7 +162,10 @@ static bool isFirstAccess = YES;
     
     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
     
+    NSError *error = nil;
+    
     if(isPNObjectSubclass) {
+        
         
         if ([[object class] conformsToProtocol:@protocol(PNObjectSubclassing)]) {
             
@@ -170,7 +173,7 @@ static bool isFirstAccess = YES;
                 
                 NSDictionary *objectDict = [(PNObject*) object reverseMapping];
                 
-                NSData *objectData = [RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objectDict] password:[[PNObjectConfig sharedInstance] encrypKey]];
+                NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objectDict] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];//[RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objectDict] password:[[PNObjectConfig sharedInstance] encrypKey]];
 
                 if ([self issetPNObjectModelForObject:object]) {
                     if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
@@ -194,9 +197,10 @@ static bool isFirstAccess = YES;
                     
                     //NSData * data = [_fileManager fetchFileDataWithPath:[self objectName:object]];
 
-                    NSError *error = nil;
+                    
 
-					NSData *data = [RNCryptor decryptData:[_fileManager fetchFileDataWithPath:[self objectName:object]] password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
+					NSData *data = [_AES decrypt:[_fileManager fetchFileDataWithPath:[self objectName:object]] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];
+                    //[RNCryptor decryptData:[_fileManager fetchFileDataWithPath:[self objectName:object]] password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
 
                     NSMutableArray *objects = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
                     
@@ -204,7 +208,8 @@ static bool isFirstAccess = YES;
                     
                     [objects addObject:objectDict];
                     
-                    NSData *objectData = [RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
+                    NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objects] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];
+                    //[RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
                     
                     if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
                         
@@ -222,7 +227,8 @@ static bool isFirstAccess = YES;
                     
                     [objects addObject:objectDict];
                     
-                    NSData *objectData = [RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
+                    NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objects] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];
+                    //[RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
                     
                     if ([_fileManager createFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
                         return object;

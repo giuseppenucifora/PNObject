@@ -328,7 +328,7 @@
 		};
 		43252B3B955A9E6FDF55EF8C /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (

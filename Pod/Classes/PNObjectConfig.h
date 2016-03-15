@@ -212,6 +212,8 @@ extern NSString* _Nonnull const Client_Secret;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull , readonly) NSString *encrypKey;
+@property (nonatomic, strong, nonnull, readonly) NSString *encrypKey;
+
+@property (nonatomic, strong, nonnull, readonly) NSString *nonce;
 
 @end

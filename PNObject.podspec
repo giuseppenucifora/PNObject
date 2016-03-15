@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = "PNObject"
-s.version          = "0.3.17"
+s.version          = "0.4.0"
 s.summary          = "PNObject is a simple replica of the more complex ParseObject"
 
 # This description is used to generate tags and improve search results.
@@ -25,16 +25,12 @@ s.author           = { "Giuseppe Nucifora" => "me@giuseppenucifora.com" }
 s.source           = { :git => "https://github.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
 # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-s.platform     = :ios, '7.0'
+s.platform     = :ios, '8.0'
 s.requires_arc = true
 
 s.source_files = 'Pod/Classes/**/*'
-s.resource_bundles = {
-'PNObject' => ['Pod/Assets/*.png']
-}
-
-# s.public_header_files = 'Pod/Classes/**/*.h'
 # s.frameworks = 'UIKit', 'MapKit'
+
 s.dependency 'AFNetworking'
 s.dependency 'PEAR-FileManager-iOS'
 s.dependency 'NSDate_Utils'
@@ -46,7 +42,8 @@ s.dependency 'StrongestPasswordValidator'
 s.dependency 'FBSDKCoreKit'
 s.dependency 'FBSDKShareKit'
 s.dependency 'FBSDKLoginKit'
-s.dependency 'RNCryptor'
+s.dependency 'NACrypto'
+s.dependency 'NSUserDefaults-AESEncryptor'
 
 
 end

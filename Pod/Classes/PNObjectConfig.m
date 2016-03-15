@@ -12,7 +12,9 @@
 #import "AFJSONResponseSerializerWithData.h"
 #import "NSString+Helper.h"
 #import "PNObject+Protected.h"
+#import "NSUserDefaults+AESEncryptor.h"
 
+NSString * const PNObjectNSUserDefaultsAESKey = @"feiGuP5iYZB8cSwHnmCtAWomLcarVoxDe3L8jVSxv6f6dOUtSF";
 
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess = @"PNObjectLocalNotificationRefreshTokenClientCredentialSuccess";
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialFail = @"PNObjectLocalNotificationRefreshTokenClientCredentialFail";
@@ -27,6 +29,7 @@ NSString * const PNObjectLocalNotificationUserReloadFromServerSuccess = @"PNObje
 NSInteger const minPassLenght = 4;
 
 NSString * const PNObjectEncryptionKey = @"PNObjectConfigEncryptionKey";
+NSString * const PNObjectEncryptionNonce = @"PNObjectConfigEncryptionNonce";
 
 NSString * const PNObjectServiceCredentialIdentifier = @"PNObjectServiceCredentialIdentifier";
 
@@ -162,14 +165,18 @@ static bool isFirstAccess = YES;
 
         _headerFields = [[NSMutableDictionary alloc] init];
 
+        [[NSUserDefaults standardUserDefaults] setAESKey:PNObjectNSUserDefaultsAESKey];
+        
         if ([[NSUserDefaults standardUserDefaults] objectForKey:PNObjectEncryptionKey]) {
-            _encrypKey = [[NSUserDefaults standardUserDefaults] objectForKey:PNObjectEncryptionKey];
+            _encrypKey = [[NSUserDefaults standardUserDefaults] decryptedValueForKey:PNObjectEncryptionKey];
+            _nonce = [[NSUserDefaults standardUserDefaults] decryptedValueForKey:PNObjectEncryptionNonce];
         }
         else {
             _encrypKey = [[NSProcessInfo processInfo] globallyUniqueString];
+            _nonce = [[NSProcessInfo processInfo] globallyUniqueString];
 
-            [[NSUserDefaults standardUserDefaults] setObject:_encrypKey forKey:PNObjectEncryptionKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [[NSUserDefaults standardUserDefaults] encryptValue:_encrypKey withKey:PNObjectEncryptionKey];
+            [[NSUserDefaults standardUserDefaults] encryptValue:_nonce withKey:PNObjectEncryptionNonce];
         }
 
     }

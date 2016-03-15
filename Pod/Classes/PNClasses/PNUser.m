@@ -135,8 +135,6 @@ static bool isFirstAccess = YES;
 
 
 - (void) reloadFormServer {
-    ///api/v1/user/profile
-
     [self autoLoginWithBlockSuccess:^(BOOL loginSuccess) {
         [[self class] GETWithEndpointAction:@"user/profile"
                                    progress:nil
@@ -168,7 +166,7 @@ static bool isFirstAccess = YES;
                                          [self saveLocally];
                                      }
                                  } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                                     NSLogDebug(@"error : %ld",[error code]);
+                                     NSLogDebug(@"error : %ld",(long)[error code]);
                                      if (failure) {
                                          failure(error);
                                      }

@@ -1,0 +1,6 @@
+framework module NSUserDefaults_AESEncryptor {
+  umbrella header "NSUserDefaults-AESEncryptor-umbrella.h"
+
+  export *
+  module * { export * }
+}

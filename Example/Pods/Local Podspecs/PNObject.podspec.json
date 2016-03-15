@@ -1,6 +1,6 @@
 {
   "name": "PNObject",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "summary": "PNObject is a simple replica of the more complex ParseObject",
   "homepage": "https://github.com/giuseppenucifora/PNObject",
   "license": "MIT",
@@ -9,18 +9,13 @@
   },
   "source": {
     "git": "https://github.com/giuseppenucifora/PNObject.git",
-    "tag": "0.3.17"
+    "tag": "0.3.18"
   },
   "platforms": {
-    "ios": "7.0"
+    "ios": "8.0"
   },
   "requires_arc": true,
   "source_files": "Pod/Classes/**/*",
-  "resource_bundles": {
-    "PNObject": [
-      "Pod/Assets/*.png"
-    ]
-  },
   "dependencies": {
     "AFNetworking": [
 
@@ -55,7 +50,10 @@
     "FBSDKLoginKit": [
 
     ],
-    "RNCryptor": [
+    "NACrypto": [
+
+    ],
+    "NSUserDefaults-AESEncryptor": [
 
     ]
   }

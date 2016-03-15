@@ -20,7 +20,8 @@ PODS:
   - Bolts/AppLinks (1.6.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.6.0)
-  - CodFis-Helper (0.1.2)
+  - CocoaSecurity (1.2.4)
+  - CodFis-Helper (0.1.3)
   - Expecta (1.0.5)
   - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
@@ -36,28 +37,31 @@ PODS:
   - FBSnapshotTestCase/Core (2.0.7)
   - FBSnapshotTestCase/SwiftSupport (2.0.7):
     - FBSnapshotTestCase/Core
-  - NSDate_Utils (0.1.2)
-  - NSString-Helper (1.0.3)
+  - NACrypto (1.0.6)
+  - NSDate_Utils (0.1.3)
+  - NSString-Helper (1.0.4)
+  - NSUserDefaults-AESEncryptor (0.0.4):
+    - CocoaSecurity (~> 1.2.2)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (0.3.17):
+  - PNObject (0.3.18):
     - AFNetworking
     - CodFis-Helper
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSDKShareKit
+    - NACrypto
     - NSDate_Utils
     - NSString-Helper
+    - NSUserDefaults-AESEncryptor
     - nv-ios-http-status
     - PEAR-FileManager-iOS
-    - RNCryptor
     - StrongestPasswordValidator
     - UIDevice-Utils
   - PureLayout (3.0.1)
-  - RNCryptor (4.0.0)
   - Specta (1.0.5)
-  - StrongestPasswordValidator (0.1.1)
-  - UIDevice-Utils (0.1.4)
+  - StrongestPasswordValidator (0.1.2)
+  - UIDevice-Utils (0.1.5)
 
 DEPENDENCIES:
   - AFNetworking
@@ -85,24 +89,26 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   Bolts: f52a250053bb517ca874523c3913776359ab3def
-  CodFis-Helper: f303810699f22dbcba8fb8c600545ac91fc3ec42
+  CocoaSecurity: d288a6f87e0f363823d2cb83e753814a6944f71a
+  CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
   FBSDKCoreKit: 13bec8373fb3af94d44daf2aa1e0958687897fbd
   FBSDKLoginKit: d3d4a2e9d31954deb00bfea964167a05ca1ea976
   FBSDKShareKit: 54587b4624706ace1e810cf83412a918141f807a
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
-  NSDate_Utils: 6f310af16917c48536836d4c17e1e47bf6fbe8e4
-  NSString-Helper: d4c5459e8142ee6a96b070118009f08637030c2d
+  NACrypto: ce3900f1775f1b0cc27ce7c4953b94c598a74149
+  NSDate_Utils: 68669d2c81f310ee13026c791f4f0ed227b94c65
+  NSString-Helper: b4183f73f0a00c6fcd607edebb6c35a7a461376d
+  NSUserDefaults-AESEncryptor: da02cfef056f1e18ebe2748767915f08b274c9c5
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: ecc91ff0b61392abb7ab87b4d4c0c633f2f8520b
+  PNObject: 9c66f67c7861a646060f8dc7a550eeeb3f8bd924
   PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
-  RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
-  StrongestPasswordValidator: 554de9038705e18904f0337903dfd3b85a6b271b
-  UIDevice-Utils: 0beb5f9d2bd256a3efe05c1e43a2a8b8702199c4
+  StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
+  UIDevice-Utils: a87bbaed53a74d503deb3e25511c9a4d865b92ea
 
 PODFILE CHECKSUM: 2e494b482bc938579e08ab48dab20d64709c3062
 
-COCOAPODS: 1.0.0.beta.5
+COCOAPODS: 1.0.0.beta.6
