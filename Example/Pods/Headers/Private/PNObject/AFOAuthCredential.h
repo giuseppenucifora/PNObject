@@ -1,0 +1,1 @@
+../../../../../Pod/Classes/Vendors/AFOAuth2Manager/AFOAuthCredential.h

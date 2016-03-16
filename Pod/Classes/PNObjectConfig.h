@@ -21,9 +21,13 @@ extern NSString* _Nonnull const PNObjectEncryptionNonce;
 
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess;
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenClientCredentialFail;
+
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenUserSuccess;
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenUserFail;
+
 extern NSString* _Nonnull const PNObjectLocalNotificationUserReloadFromServerSuccess;
+
+extern NSString* _Nonnull const PNObjectLocalNotificationUserLogout;
 #pragma mark -
 
 extern NSString* _Nonnull const EnvironmentProduction;
