@@ -148,7 +148,7 @@ static bool isFirstAccess = YES;
 
                 NSError *error = nil;
 
-                NSData *data = [_AES decrypt:[_fileManager fetchFileDataWithPath:className] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error]; // password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
+                NSData *data = [_AES decrypt:[_fileManager fetchFileDataWithPath:className] nonce:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionNonce] key:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionKey] error:&error]; // password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
 
                 return [NSKeyedUnarchiver unarchiveObjectWithData:data];
             }
@@ -173,7 +173,7 @@ static bool isFirstAccess = YES;
                 
                 NSDictionary *objectDict = [(PNObject*) object reverseMapping];
                 
-                NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objectDict] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];//[RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objectDict] password:[[PNObjectConfig sharedInstance] encrypKey]];
+                NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objectDict] nonce:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionNonce] key:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionKey] error:&error];//[RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objectDict] password:[[PNObjectConfig sharedInstance] encrypKey]];
 
                 if ([self issetPNObjectModelForObject:object]) {
                     if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
@@ -199,7 +199,7 @@ static bool isFirstAccess = YES;
 
                     
 
-					NSData *data = [_AES decrypt:[_fileManager fetchFileDataWithPath:[self objectName:object]] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];
+					NSData *data = [_AES decrypt:[_fileManager fetchFileDataWithPath:[self objectName:object]] nonce:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionNonce] key:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionKey] error:&error];
                     //[RNCryptor decryptData:[_fileManager fetchFileDataWithPath:[self objectName:object]] password:[[PNObjectConfig sharedInstance] encrypKey] error:&error];
 
                     NSMutableArray *objects = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
@@ -208,7 +208,7 @@ static bool isFirstAccess = YES;
                     
                     [objects addObject:objectDict];
                     
-                    NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objects] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];
+                    NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objects] nonce:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionNonce] key:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionKey] error:&error];
                     //[RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
                     
                     if ([_fileManager updateFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {
@@ -227,7 +227,7 @@ static bool isFirstAccess = YES;
                     
                     [objects addObject:objectDict];
                     
-                    NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objects] nonce:[[[PNObjectConfig sharedInstance] nonce] dataUsingEncoding:NSUTF8StringEncoding] key:[[[PNObjectConfig sharedInstance] encrypKey] dataUsingEncoding:NSUTF8StringEncoding] error:&error];
+                    NSData *objectData = [_AES encrypt:[NSKeyedArchiver archivedDataWithRootObject:objects] nonce:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionNonce] key:[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionKey] error:&error];
                     //[RNCryptor encryptData:[NSKeyedArchiver archivedDataWithRootObject:objects] password:[[PNObjectConfig sharedInstance] encrypKey]];
                     
                     if ([_fileManager createFileWithData:objectData filePath:[self objectName:object] permisson:@(0755)]) {

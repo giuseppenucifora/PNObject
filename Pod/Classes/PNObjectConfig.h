@@ -14,6 +14,9 @@
 #import "AFHTTPRequestSerializer+OAuth2.h"
 #import "AFOAuthCredential.h"
 
+extern NSString* _Nonnull const PNObjectEncryptionKey;
+extern NSString* _Nonnull const PNObjectEncryptionNonce;
+
 #pragma mark LocalNotification Keys
 
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess;
@@ -209,11 +212,5 @@ extern NSString* _Nonnull const Client_Secret;
  *  <#Description#>
  */
 @property (nonatomic) NSInteger minPasswordLenght;
-/**
- *  <#Description#>
- */
-@property (nonatomic, strong, nonnull, readonly) NSString *encrypKey;
-
-@property (nonatomic, strong, nonnull, readonly) NSString *nonce;
 
 @end

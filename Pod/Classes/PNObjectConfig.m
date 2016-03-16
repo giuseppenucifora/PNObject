@@ -13,8 +13,8 @@
 #import "NSString+Helper.h"
 #import "PNObject+Protected.h"
 #import "NSUserDefaults+AESEncryptor.h"
-
-NSString * const PNObjectNSUserDefaultsAESKey = @"feiGuP5iYZB8cSwHnmCtAWomLcarVoxDe3L8jVSxv6f6dOUtSF";
+#import "NASecRandom.h"
+#import "NAKeychain.h"
 
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess = @"PNObjectLocalNotificationRefreshTokenClientCredentialSuccess";
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialFail = @"PNObjectLocalNotificationRefreshTokenClientCredentialFail";
@@ -165,20 +165,18 @@ static bool isFirstAccess = YES;
 
         _headerFields = [[NSMutableDictionary alloc] init];
 
-        [[NSUserDefaults standardUserDefaults] setAESKey:PNObjectNSUserDefaultsAESKey];
+        NSLog(@"%@",[NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionKey]);
         
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:PNObjectEncryptionKey]) {
-            _encrypKey = [[NSUserDefaults standardUserDefaults] decryptedValueForKey:PNObjectEncryptionKey];
-            _nonce = [[NSUserDefaults standardUserDefaults] decryptedValueForKey:PNObjectEncryptionNonce];
+        if (![NAKeychain symmetricKeyWithApplicationLabel:PNObjectEncryptionKey]) {
+            NSError *error;
+            
+            NSData *key = [NASecRandom randomData:32 error:&error];
+            [NAKeychain addSymmetricKey:key applicationLabel:PNObjectEncryptionKey tag:nil label:nil];
+            
+            NSData *nonce = [NASecRandom randomData:16 error:&error];
+            [NAKeychain addSymmetricKey:nonce applicationLabel:PNObjectEncryptionNonce tag:nil label:nil];
+        
         }
-        else {
-            _encrypKey = [[NSProcessInfo processInfo] globallyUniqueString];
-            _nonce = [[NSProcessInfo processInfo] globallyUniqueString];
-
-            [[NSUserDefaults standardUserDefaults] encryptValue:_encrypKey withKey:PNObjectEncryptionKey];
-            [[NSUserDefaults standardUserDefaults] encryptValue:_nonce withKey:PNObjectEncryptionNonce];
-        }
-
     }
     return self;
 }
