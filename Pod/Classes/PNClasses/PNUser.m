@@ -274,8 +274,11 @@ static bool isFirstAccess = YES;
     [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
         if (refreshSuccess) {
 
-
-            PNUser *user = [[self class] new];
+            if ([[self class] currentUser]) {
+                [[[self class] currentUser] resetUser];
+            }
+            
+            PNUser *user = [[self class] currentUser];
 
             PNObjcPassword *objectPassword = [PNObjcPassword new];
             [objectPassword setPassword:password];
@@ -285,9 +288,10 @@ static bool isFirstAccess = YES;
             [user setEmail:email];
             [user setPassword:objectPassword];
             [user saveLocally];
+            [user reloadFormServer];
 
             if (success) {
-                success([self currentUser]);
+                success(user);
             }
         }
     } failure:failure];
