@@ -183,6 +183,12 @@ extern NSString* _Nonnull const Client_Secret;
                              password:(NSString * _Nonnull) password
                      withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+
+- (void) refreshTokenForUserWithFacebookID:(NSString * _Nonnull) facebookID
+                             facebookToken:(NSString * _Nonnull) facebookToken
+                          withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                   failure:(nullable void (^)(NSError * _Nonnull error))failure;
 /**
  *  <#Description#>
  */

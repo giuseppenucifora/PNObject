@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "PNObjectConfig.h"
 #import "PNObjectModel.h"
+#import "PNObjectUtilities.h"
 
 #pragma mark MappingSelector Keys
 

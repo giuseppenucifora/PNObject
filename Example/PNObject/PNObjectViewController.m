@@ -135,13 +135,19 @@
 
     //if ([user isAuthenticated]) {
 
-    [User loginCurrentUserWithEmail:@"demo@packman.example" password:@"demo@packman.example" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+    /*[User loginCurrentUserWithEmail:@"demo@packman.example" password:@"demo@packman.example" withBlockSuccess:^(PNUser * _Nullable responseObject) {
 
         NSLog(@"response : %@",responseObject);
 
         NSLog(@"%@",[User currentUser]);
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"response : %@",error);
+    }];*/
+    
+    [User socialLoginWithBlockSuccess:^(PNUser * _Nullable responseObject) {
+        
+    } failure:^(NSError * _Nonnull error) {
+        
     }];
 
 

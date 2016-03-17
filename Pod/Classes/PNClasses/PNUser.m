@@ -176,94 +176,92 @@ static bool isFirstAccess = YES;
 }
 
 
-- (void) socialLoginWithBlockSuccessFromViewController:(UIViewController* _Nonnull) viewController
-                                          blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
-                                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
++ (void) socialLoginFromViewController:(UIViewController* _Nullable) viewController
+                          blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    
+    if (!viewController) {
+        viewController = [PNObjectUtilities topViewController];
+    }
+    
     if ([FBSDKAccessToken currentAccessToken]) {
         //FBSDKProfile *user = [FBSDKProfile currentProfile];
-
-        FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields": @"first_name, last_name, link, birthday, email, gender"}];
-
-        [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-            NSLogDebug(@"%@",result);
-            NSLogDebug(@"%@",error);
-
+        
+        [FBSDKAccessToken refreshCurrentAccessToken:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
             if (error) {
                 if (failure) {
                     failure(error);
                 }
             }
             else {
-                [self setFacebookAccessToken:[FBSDKAccessToken currentAccessToken].tokenString];
-                [self setFirstName:[result objectForKey:@"first_name"]];
-                [self setLastName:[result objectForKey:@"last_name"]];
-                [self setEmail:[result objectForKey:@"email"]];
-                [self setFacebookId:[result objectForKey:@"id"]];
-
-                NSString *gender = [[result objectForKey:@"gender"] isEqualToString:@"male"] ? @"M" : @"F";
-
-                [self setSex:gender];
-
-                NSArray *birthArray = [[result objectForKey:@"birthday" ] componentsSeparatedByString: @"/"];
-
-                //NSMutableString *birthString = [NSMutableString stringWithString:[[[[[birthArray objectAtIndex:1] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:0]] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:2]]];
-
+                
+                FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields": @"first_name, last_name, link, birthday, email, gender"}];
+                
+                [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                    NSLogDebug(@"%@",result);
+                    NSLogDebug(@"%@",error);
+                    
+                    if (error) {
+                        if (failure) {
+                            failure(error);
+                        }
+                    }
+                    else {
+                        [[PNObjectConfig sharedInstance] refreshTokenForUserWithFacebookID:[result objectForKey:@"id"] facebookToken:[FBSDKAccessToken currentAccessToken].tokenString withBlockSuccess:^(BOOL refreshSuccess) {
+                            
+                            PNUser *user = [[self class] new];
+                            
+                            [user setFacebookId:[result objectForKey:@"id"]];
+                            [user setAuthenticated:YES];
+                            [user saveLocally];
+                            [user reloadFormServer];
+                            
+                            USER = user;
+                            
+                            if (success) {
+                                success(user);
+                            }
+                            
+                        } failure:^(NSError * _Nonnull error) {
+                            if (failure) {
+                                failure(error);
+                            }
+                        }];
+                    }
+                }];
+                
             }
-
-            /*[UserDataManager setParameter:DEF_PROFILE_FIRSTNAME withValue:user.firstName];
-             [UserDataManager setParameter:DEF_PROFILE_LASTNAME withValue:user.lastName];
-
-             NSArray *birthArray = [[result objectForKey:@"birthday" ] componentsSeparatedByString: @"/"];
-
-             NSMutableString *birthString = [NSMutableString stringWithString:[[[[[birthArray objectAtIndex:1] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:0]] stringByAppendingString:@"/"] stringByAppendingString:[birthArray objectAtIndex:2]]];
-
-             NSString *gender = [[result objectForKey:@"gender"] isEqualToString:@"male"] ? @"M" : @"F";
-
-             [UserDataManager setParameter:DEF_PROFILE_BIRTH withValue:birthString];
-             [UserDataManager setParameter:DEF_PROFILE_GENDER withValue:gender];
-
-             [UserDataManager setParameter:DEF_PROFILE_EMAIL withValue:[result objectForKey:@"email"]];
-             [UserDataManager setParameter:DEF_PROFILE_AVATAR withValue:[NSNumber numberWithInt:1]];
-             [UserDataManager setParameter:DEF_PROFILE_FB_ID withValue:[result objectForKey:@"id"]];*/
-
-
-            //[self setFacebookId:[user userID]];
         }];
-
-
     }
     else {
         FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-        [login logInWithReadPermissions: @[@"public_profile",@"email"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        [login logInWithReadPermissions: @[@"public_profile",@"email",@"user_birthday"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
                 NSLog(@"Process error");
+                if (failure) {
+                    failure(error);
+                }
             } else if (result.isCancelled) {
                 NSLog(@"Cancelled");
+                if (failure) {
+                    NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Request cancelled", @"") code:kHTTPStatusCodeMethodNotAllowed userInfo:nil];
+                    failure(error);
+                }
             } else {
                 NSLog(@"Logged in");
-
-
+                [self socialLoginFromViewController:viewController blockSuccess:success failure:failure];
             }
         }];
     }
 }
 
-- (void) socialLoginWithBlockSuccess:(void (^)(PNUser * _Nullable))success
-                             failure:(void (^)(NSError * _Nonnull))failure {
+;
 
 
-    /*[self POSTWithEndpointAction:@"registration/register" progress:nil success:^(NSURLSessionDataTask * _Nullable task, PNObject * _Nullable responseObject) {
-     NSLog(@"response %@",responseObject);
-     if(success){
-     success(self);
-     [self saveLocally];
-     }
-     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-     NSLogDebug(@"error : %ld",[error code]);
-     if (failure) {
-     failure(error);
-     }
-     }];*/
++ (void) socialLoginWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                             failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    
+    [self socialLoginFromViewController:nil blockSuccess:success failure:failure];
 }
 
 + (void) loginCurrentUserWithEmail:(NSString * _Nonnull) email

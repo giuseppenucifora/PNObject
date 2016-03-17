@@ -15,6 +15,7 @@
 #import "NSUserDefaults+AESEncryptor.h"
 #import "NASecRandom.h"
 #import "NAKeychain.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess = @"PNObjectLocalNotificationRefreshTokenClientCredentialSuccess";
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialFail = @"PNObjectLocalNotificationRefreshTokenClientCredentialFail";
@@ -347,6 +348,9 @@ static bool isFirstAccess = YES;
             [self refreshTokenForUserWithEmail:[[SINGLETON.userSubClass currentUser] email]  password:[[(PNUser*)[SINGLETON.userSubClass currentUser] password] password]  withBlockSuccess:success failure:failure];
             return;
         }
+        else if ([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] facebookId]){
+            [self refreshTokenForUserWithFacebookID:[[SINGLETON.userSubClass currentUser] facebookId] facebookToken:[[FBSDKAccessToken currentAccessToken] tokenString] withBlockSuccess:success failure:failure];
+        }
         else {
             if (failure) {
 
@@ -392,6 +396,46 @@ static bool isFirstAccess = YES;
         }
     } failure:^(NSError * _Nonnull error) {
 
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void) refreshTokenForUserWithFacebookID:(NSString * _Nonnull) facebookID
+                             facebookToken:(NSString * _Nonnull) facebookToken
+                          withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                   failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    if (!facebookID || [facebookID length] == 0) {
+        if (failure) {
+            NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Facebook id is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+            failure(error);
+            return;
+        }
+    }
+    if (!facebookToken || [facebookToken length] == 0) {
+        if (failure) {
+            NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Facebook token is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+            failure(error);
+            return;
+        }
+    }
+    [_authManager authenticateUsingFacebookOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] facebookID:facebookID facebookToken:facebookToken scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+        _currentOauthCredential = credential;
+        
+        [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
+        
+        [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        
+        if (success) {
+            success(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
         if (failure) {
             failure(error);

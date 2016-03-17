@@ -109,6 +109,23 @@ NS_ASSUME_NONNULL_BEGIN
                                                   success:(void (^)(AFOAuthCredential *credential))success
                                                   failure:(void (^)(NSError *error))failure;
 
+
+/**
+ Creates and enqueues an `NSURLSessionTask` to authenticate against the server using a specified facebook id and facebook token, with a designated scope.
+ 
+ @param URLString The URL string used to create the request URL.
+ @param facebookID The facebook id used for authentication
+ @param facebookToken The facebook token used for authentication
+ @param scope The authorization scope
+ @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
+ @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
+ */
+- (NSURLSessionTask *)authenticateUsingFacebookOAuthWithURLString:(NSString *)URLString
+                                                       facebookID:(NSString *)facebookid
+                                                    facebookToken:(NSString *)facebookToken
+                                                            scope:(NSString *)scope
+                                                          success:(void (^)(AFOAuthCredential * _Nonnull))success
+                                                          failure:(void (^)(NSError * _Nonnull))failure;
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server with a designated scope.
  
