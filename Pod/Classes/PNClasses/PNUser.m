@@ -143,8 +143,8 @@ static bool isFirstAccess = YES;
 
                                         NSLogDebug(@"%@",[responseObject objectForKey:@"user"]);
 
-                                        [self populateObjectFromJSON:[responseObject objectForKey:@"user"]];
-                                        [self saveLocally];
+                                        [[[self class] currentUser] populateObjectFromJSON:[responseObject objectForKey:@"user"]];
+                                        [[[self class] currentUser] saveLocally];
                                         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserReloadFromServerSuccess object:nil];
 
                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -163,8 +163,9 @@ static bool isFirstAccess = YES;
                                  success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
                                      NSLog(@"response %@",responseObject);
                                      if(success){
-                                         success(self);
-                                         [self saveLocally];
+                                         [[[self class] currentUser] saveLocally];
+                                         success([[self class] currentUser]);
+                                         
                                      }
                                  } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                      NSLogDebug(@"error : %ld",(long)[error code]);
@@ -286,7 +287,7 @@ static bool isFirstAccess = YES;
             [user saveLocally];
 
             if (success) {
-                success(user);
+                success([self currentUser]);
             }
         }
     } failure:failure];
@@ -308,8 +309,8 @@ static bool isFirstAccess = YES;
                              if (success) {
                                  success(responseObject);
                              }
-                             [[PNUser currentUser] setProfileImage:avatar];
-                             [[PNUser currentUser] reloadFormServer];
+                             [[self currentUser] setProfileImage:avatar];
+                             [[self currentUser] reloadFormServer];
                          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                              if (failure) {
                                  failure(error);
