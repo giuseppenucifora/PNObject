@@ -26,11 +26,11 @@ PODS:
   - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0.3)
-  - FBSDKCoreKit (4.10.0):
+  - FBSDKCoreKit (4.10.1):
     - Bolts (~> 1.5)
-  - FBSDKLoginKit (4.10.0):
+  - FBSDKLoginKit (4.10.1):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.10.0):
+  - FBSDKShareKit (4.10.1):
     - FBSDKCoreKit
   - FBSnapshotTestCase (2.0.7):
     - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
@@ -44,7 +44,7 @@ PODS:
     - CocoaSecurity (~> 1.2.2)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (0.4.5):
+  - PNObject (0.4.6):
     - AFNetworking
     - CodFis-Helper
     - FBSDKCoreKit
@@ -93,9 +93,9 @@ SPEC CHECKSUMS:
   CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
-  FBSDKCoreKit: 13bec8373fb3af94d44daf2aa1e0958687897fbd
-  FBSDKLoginKit: d3d4a2e9d31954deb00bfea964167a05ca1ea976
-  FBSDKShareKit: 54587b4624706ace1e810cf83412a918141f807a
+  FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
+  FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
+  FBSDKShareKit: 2fd887cce0056bdda91f99b2021d724a4fed8e88
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
   NACrypto: ce3900f1775f1b0cc27ce7c4953b94c598a74149
   NSDate_Utils: 68669d2c81f310ee13026c791f4f0ed227b94c65
@@ -103,7 +103,7 @@ SPEC CHECKSUMS:
   NSUserDefaults-AESEncryptor: da02cfef056f1e18ebe2748767915f08b274c9c5
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: e3104b38e9aa668a992de191cb4630440cce5cf3
+  PNObject: 20b785cb5cbf88322f2c268a5ba80ca3337dec51
   PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7

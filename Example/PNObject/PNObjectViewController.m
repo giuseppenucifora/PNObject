@@ -139,9 +139,7 @@
 
         NSLog(@"response : %@",responseObject);
 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [responseObject reloadFormServer];
-        });
+        NSLog(@"%@",[User currentUser]);
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"response : %@",error);
     }];
