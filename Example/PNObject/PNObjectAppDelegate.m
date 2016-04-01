@@ -17,6 +17,9 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import "UIDevice-Hardware.h"
+
+#import "PNInstallation.h"
 
 
 @implementation PNObjectAppDelegate
@@ -43,6 +46,23 @@
     
     
     PNObjectViewController *viewController = [[PNObjectViewController alloc] init];
+    
+    switch ([[UIDevice currentDevice] deviceFamily]) {
+        case UIDeviceFamilyiPhone:
+        case UIDeviceFamilyiPod:
+        case UIDeviceFamilyiPad: {
+            UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes categories:nil];
+            [application registerUserNotificationSettings:settings];
+            [application registerForRemoteNotifications];
+            break;
+        }
+        case UIDeviceFamilyAppleTV:
+        case UIDeviceFamilyUnknown:
+        default: {
+            break;
+        }
+    }
 
     _window.rootViewController = viewController;
 
@@ -87,5 +107,36 @@
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
 }
+
+
+#pragma mark - Remote Notification
+
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    PNInstallation *installation = [PNInstallation currentInstallation];
+    
+    [installation setDeviceTokenFromData:deviceToken];
+    
+    [installation saveLocally];
+    
+    NSLog(@"%@",installation);
+    
+}
+
+- (void) application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    
+    NSLog(@"%@",notificationSettings);
+}
+
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    NSLog(@"%@",userInfo);
+}
+
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    NSLog(@"%@",userInfo);
+}
+
+#pragma mark -
 
 @end

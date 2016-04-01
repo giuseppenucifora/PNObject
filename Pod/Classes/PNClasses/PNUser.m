@@ -136,6 +136,11 @@ static bool isFirstAccess = YES;
 
 
 - (void) reloadFormServer {
+    [self reloadFormServerWithBlockSuccess:nil failure:nil];
+}
+
+- (void) reloadFormServerWithBlockSuccess:(nullable void (^)(PNUser * _Nullable currentUser))success
+                                  failure:(nullable void (^)(NSError * _Nonnull error))failure {
     [self autoLoginWithBlockSuccess:^(BOOL loginSuccess) {
         [[self class] GETWithEndpointAction:@"user/profile"
                                    progress:nil
@@ -145,13 +150,24 @@ static bool isFirstAccess = YES;
 
                                         [[[self class] currentUser] populateObjectFromJSON:[responseObject objectForKey:@"user"]];
                                         [[[self class] currentUser] saveLocally];
-                                        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserReloadFromServerSuccess object:nil];
+                                        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserReloadFromServerSuccess object:[[self class] currentUser]];
+                                        
+                                        if (success) {
+                                            success([[self class] currentUser]);
+                                        }
+                                        
 
                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                         NSLogDebug(@"%@",error);
+                                        if (failure) {
+                                            failure(error);
+                                        }
                                     }];
     } failure:^(NSError * _Nonnull error) {
         NSLogDebug(@"error : %@",error);
+        if (failure) {
+            failure(error);
+        }
     }];
 }
 

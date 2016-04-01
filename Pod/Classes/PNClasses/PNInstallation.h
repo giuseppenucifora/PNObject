@@ -6,7 +6,7 @@
 //
 //
 
-#import <PNObject/PNObject.h>
+#import "PNObject.h"
 
 @interface PNInstallation : PNObject
 

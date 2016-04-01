@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014, Facebook, Inc.
+ *  Copyright (c) 2015, Facebook, Inc.
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
@@ -8,10 +8,13 @@
  *
  */
 
-#import "Bolts.h"
+#import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@interface UIApplication (StrictKeyWindow)
 
-NSString *const BoltsFrameworkVersionString = @"1.7.0";
+/**
+  @return The receiver's @c keyWindow. Raises an assertion if @c nil.
+ */
+- (UIWindow *)fb_strictKeyWindow;
 
-NS_ASSUME_NONNULL_END
+@end

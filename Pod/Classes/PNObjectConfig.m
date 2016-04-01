@@ -25,6 +25,7 @@ NSString * const PNObjectLocalNotificationRefreshTokenUserSuccess = @"PNObjectLo
 NSString * const PNObjectLocalNotificationRefreshTokenUserFail = @"PNObjectLocalNotificationRefreshTokenUserFail";
 
 NSString * const PNObjectLocalNotificationUserReloadFromServerSuccess = @"PNObjectLocalNotificationUserReloadFromServerSuccess";
+NSString * const PNObjectLocalNotificationUserReloadFromServerFailure = @"PNObjectLocalNotificationUserReloadFromServerFailure";
 
 NSString * const PNObjectLocalNotificationUserLogout = @"PNObjectLocalNotificationUserLogout";
 
