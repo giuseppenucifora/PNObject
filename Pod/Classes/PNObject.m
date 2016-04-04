@@ -222,14 +222,7 @@ NSString * const PNObjectMappingSelector = @"selector";
 
         @try {
             value = [self valueForKey:propertyName];
-        }
-        @catch (NSException *exception) {
-            continue;
-        }
-        @finally {
-
-            //NSLog(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
-
+            
             ((void (^)())@{
                            @"c" : ^{
                 char val = [value charValue];
@@ -261,7 +254,7 @@ NSString * const PNObjectMappingSelector = @"selector";
             },
                            @"NSURL" : ^{
                 NSURL *url = value;
-
+                
                 if (![self isObjNull:url]) {
                     [JSON setValue:[url absoluteString] forKey:propertyName];
                 }
@@ -285,43 +278,50 @@ NSString * const PNObjectMappingSelector = @"selector";
                            @"NSArray" : ^{
                 NSMutableArray *arr = [NSMutableArray array];
                 for(id object in value) {
-
+                    
                     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
                     if(isPNObjectSubclass) {
                         NSDictionary *objectDict = [(PNObject*) object reverseMapping];
-
+                        
                         [arr addObject:objectDict];
                     }
                 }
-
+                
                 [JSON setValue:arr forKey:propertyName];
             },
                            @"NSMutableArray" : ^{
                 NSMutableArray *arr = [NSMutableArray array];
                 for(id object in value) {
-
+                    
                     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
                     if(isPNObjectSubclass) {
                         NSDictionary *objectDict = [(PNObject*) object reverseMapping];
-
+                        
                         [arr addObject:objectDict];
                     }
                 }
-
+                
                 [JSON setValue:arr forKey:propertyName];
             }
                            }[propertyType] ?: ^{
                                BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
                                if(isPNObjectSubclass) {
-
+                                   
                                    NSDictionary *objectDict = [(PNObject*)value reverseMapping];
-
+                                   
                                    [JSON setValue:objectDict forKey:propertyName];
                                }
                                else {
                                    // do nothing
                                }
                            })();
+        }
+        @catch (NSException *exception) {
+            continue;
+        }
+        @finally {
+
+            //NSLog(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
         }
     }
 
