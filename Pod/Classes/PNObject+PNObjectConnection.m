@@ -47,7 +47,7 @@
     else {
         [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
 
-            [self GETWithEndpointAction:endPoint progress:downloadProgress success:success failure:failure];
+            [self GETWithEndpointAction:endPoint parameters:parameters progress:downloadProgress success:success failure:failure];
         } failure:^(NSError * _Nonnull error) {
             if (failure) {
                 failure(nil,error);
@@ -115,9 +115,32 @@
     else {
         [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
 
-            [self POSTWithEndpointAction:endPoint parameters:parameters progress:uploadProgress success:success failure:failure];
+            [self POSTWithEndpointAction:endPoint formData:postFormData parameters:parameters progress:uploadProgress success:success failure:failure];
         } failure:^(NSError * _Nonnull error) {
 
+            if (failure) {
+                failure(nil,error);
+            }
+        }];
+    }
+}
+
++ (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
+                     parameters:(NSDictionary * _Nullable) parameters
+                       progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
+                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
+    
+    if ([[PNObjectConfig sharedInstance] currentOauthCredential] && ![[[PNObjectConfig sharedInstance] currentOauthCredential] isExpired]) {
+        [[[PNObjectConfig sharedInstance] manager] DELETE:[[[PNObjectConfig sharedInstance] baseUrl] stringByAppendingFormat:@"%@",endPoint] parameters:parameters success:success failure:failure];
+         
+    }
+    else {
+        [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
+            
+            [self DELETEWithEndpointAction:endPoint parameters:parameters progress:uploadProgress success:success failure:failure];
+        } failure:^(NSError * _Nonnull error) {
+            
             if (failure) {
                 failure(nil,error);
             }
@@ -148,7 +171,6 @@
 
             PNObjectResponse = resposeArray;
         }
-
     }
     return PNObjectResponse;
 }

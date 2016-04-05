@@ -36,6 +36,12 @@
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
++ (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
+                       parameters:(NSDictionary * _Nullable) parameters
+                         progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                          success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
+                          failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
+
 + (id _Nonnull) parseObjectFromResponse:(id _Nullable) response;
 
 @end
