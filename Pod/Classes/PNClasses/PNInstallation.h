@@ -21,7 +21,14 @@
  */
 + (instancetype _Nonnull)currentInstallation;
 
-- (void)setDeviceTokenFromData:(nullable NSData *)deviceTokenData;
+/**
+ *  <#Description#>
+ *
+ *  @param deviceTokenData <#deviceTokenData description#>
+ *
+ *  @return RETURN YES if token is not set o token changes, NO if token is the same of old token.
+ */
+- (BOOL) setDeviceTokenFromData:(nullable NSData *)deviceTokenData;
 
 ///--------------------------------------
 #pragma mark - PNInstallation Properties
@@ -51,6 +58,10 @@
  *  <#Description#>
  */
 @property (nonatomic, strong, readonly, nullable) NSString *deviceToken;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly, nullable) NSString *oldDeviceToken;
 /**
  *  <#Description#>
  */

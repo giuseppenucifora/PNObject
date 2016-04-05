@@ -7,6 +7,7 @@
 //
 
 #import "PNInstallation.h"
+#import "DJLocalization.h"
 
 @interface PNInstallation() <PNObjectSubclassing>
 
@@ -33,6 +34,7 @@ static bool isFirstAccess = YES;
                               @"deviceName":@"deviceName",
                               @"osVersion":@"osVersion",
                               @"deviceToken":@"deviceToken",
+                              @"oldDeviceToken":@"oldDeviceToken",
                               @"badge":@"badge",
                               @"localeIdentifier":@"localeIdentifier",
                               };
@@ -40,11 +42,11 @@ static bool isFirstAccess = YES;
 }
 
 + (NSString *)objectClassName {
-    return  @"Installation";
+    return  @"PNInstallation";
 }
 
 + (NSString *)objectEndPoint {
-    return @"Installation";
+    return @"PNInstallation";
 }
 
 + (BOOL) singleInstance {
@@ -61,13 +63,15 @@ static bool isFirstAccess = YES;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
         
-        INSTALLATION = [[super allocWithZone:NULL] init];
+        INSTALLATION = [[super allocWithZone:NULL] initForCurrentInstallation];
     });
     
     return INSTALLATION;
 }
 
-- (void)setDeviceTokenFromData:(NSData *)deviceTokenData {
+- (BOOL) setDeviceTokenFromData:(NSData *)deviceTokenData {
+    
+    BOOL response = NO;
     
     _deviceTokenData = deviceTokenData;
     
@@ -76,14 +80,22 @@ static bool isFirstAccess = YES;
                          stringByReplacingOccurrencesOfString:@">" withString:@""]
                         stringByReplacingOccurrencesOfString: @" " withString: @""];
     
+    if (!_deviceToken || (_deviceToken && ![ptoken isEqualToString:_deviceToken])) {
+        
+        response = YES;
+    }
+    
+    _oldDeviceToken = _deviceToken;
     _deviceToken = ptoken;
+    
+    return response;
 }
 
 #pragma mark -
 
 #pragma mark Private Methods
 
-- (id) init
+- (id) initForCurrentInstallation
 {
     if(INSTALLATION){
         return INSTALLATION;
@@ -95,7 +107,10 @@ static bool isFirstAccess = YES;
     NSDictionary *savedInstallation = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
     
     if (savedInstallation) {
-        self = [super initWithLocalJSON:savedInstallation];
+        
+        Class objectClass = NSClassFromString([[self class] PNObjClassName]);
+        
+        self = [[objectClass alloc] initWithLocalJSON:savedInstallation];
     }
     else {
         self = [super init];
@@ -107,9 +122,12 @@ static bool isFirstAccess = YES;
         _deviceModel = [[UIDevice currentDevice] model];
         _osVersion = [[UIDevice currentDevice] systemVersion];
         _deviceName = [[UIDevice currentDevice] name];
+        _localeIdentifier = [[DJLocalizationSystem shared] language];
+        
+        INSTALLATION = self;
         
     }
-    return self;
+    return INSTALLATION;
 }
 
 #pragma mark -
