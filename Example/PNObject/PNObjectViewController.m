@@ -9,7 +9,7 @@
 #import "PNObjectViewController.h"
 #import <PureLayout/PureLayout.h>
 #import "PNObject.h"
-#import "User.h"
+#import "PNUser.h"
 #import "PNAddress.h"
 #import "PNObject+PNObjectConnection.h"
 
@@ -116,7 +116,7 @@
 */
     //[user saveLocally];
 
-    NSLog(@"%@",[[User currentUser] JSONFormObject]);
+    NSLog(@"%@",[[PNUser currentUser] JSONFormObject]);
     //NSLog(@"%@",[user JSONObjectMap]);
     /*[user registerWithBlockSuccess:^(PNUser * _Nullable responseObject) {
 
@@ -144,7 +144,7 @@
         NSLog(@"response : %@",error);
     }];*/
     
-    [User socialLoginWithBlockSuccess:^(PNUser * _Nullable responseObject) {
+    [PNUser socialLoginWithBlockSuccess:^(PNUser * _Nullable responseObject) {
         
     } failure:^(NSError * _Nonnull error) {
         

@@ -10,7 +10,7 @@
 #import "PNObjectViewController.h"
 
 #import "PNObject.h"
-#import "User.h"
+#import "PNUser.h"
 #import "PNAddress.h"
 #import "PNObject+PNObjectConnection.h"
 
@@ -37,7 +37,7 @@
     [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://packman.local/app_dev.php/api/v1/",
                                                         EnvironmentStage : @"https://packman.ppreview.it/app_stage.php/api/v1/",
                                                         EnvironmentProduction : @"http://packman.ppreview.it/app_stage.php/api/v1/"
-                                                        } userSubclass:[User class] withOauth:YES];
+                                                        } userSubclass:[PNUser class] withOauth:YES];
     [[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
     [[PNObjectConfig sharedInstance] setClientID:@"1_pqjo2w5k7j4g8skco408oc048w8so0ws840gcg8k8gwsgk0g4" clientSecret:@"10w0vg2v6eggooc4wks4w4s0wkwok0wkck0w888so0o80g88w8" forEnv:EnvironmentProduction];
 #ifdef DEBUG
