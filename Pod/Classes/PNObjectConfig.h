@@ -28,7 +28,9 @@ extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenUserFail;
 extern NSString* _Nonnull const PNObjectLocalNotificationUserReloadFromServerSuccess;
 extern NSString* _Nonnull const PNObjectLocalNotificationUserReloadFromServerFailure;
 
-extern NSString* _Nonnull const PNObjectLocalNotificationUserLogout;
+extern NSString* _Nonnull const PNObjectLocalNotificationUserWillLogout;
+extern NSString* _Nonnull const PNObjectLocalNotificationUserEndLogout;
+
 #pragma mark -
 
 extern NSString* _Nonnull const EnvironmentProduction;

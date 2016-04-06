@@ -100,9 +100,10 @@ static bool isFirstAccess = YES;
 }
 
 - (void)logout {
+    [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserWillLogout object:nil];
     [self autoRemoveLocally];
     [self resetObject];
-    [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserLogout object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserEndLogout object:nil];
 }
 
 - (BOOL) hasValidEmailAndPasswordData {
