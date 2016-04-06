@@ -96,8 +96,20 @@
              Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
               Success:(nullable void (^)(NSDictionary * _Nullable responseObject))success
               failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
+/**
+ *  <#Description#>
+ */
 - (void) reloadFormServer;
+
+/**
+ *  <#Description#>
+ *
+ *  @param success <#success description#>
+ *  @param failure <#failure description#>
+ */
+- (void) reloadFormServerWithBlockSuccess:(nullable void (^)(PNUser * _Nullable currentUser))success
+                                  failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 /**
  *  <#Description#>
  *
