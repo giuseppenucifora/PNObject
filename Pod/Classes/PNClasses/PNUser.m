@@ -155,7 +155,6 @@ static bool isFirstAccess = YES;
                                         if (success) {
                                             success([[self class] currentUser]);
                                         }
-                                        
 
                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                         NSLogDebug(@"%@",error);
