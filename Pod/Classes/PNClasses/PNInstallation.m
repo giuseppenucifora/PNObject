@@ -69,9 +69,9 @@ static bool isFirstAccess = YES;
     return INSTALLATION;
 }
 
-- (BOOL) setDeviceTokenFromData:(NSData *)deviceTokenData {
+- (PNInstallationType) setDeviceTokenFromData:(NSData *)deviceTokenData {
     
-    BOOL response = NO;
+    PNInstallationType response = PNInstallationTypeNone;
     
     _deviceTokenData = deviceTokenData;
     
@@ -80,9 +80,12 @@ static bool isFirstAccess = YES;
                          stringByReplacingOccurrencesOfString:@">" withString:@""]
                         stringByReplacingOccurrencesOfString: @" " withString: @""];
     
-    if (!_deviceToken || (_deviceToken && ![ptoken isEqualToString:_deviceToken])) {
+    if (!_deviceToken) {
         
-        response = YES;
+        response = PNInstallationTypeNew;
+    }
+    else if (_deviceToken && ![ptoken isEqualToString:_deviceToken]) {
+        response = PNInstallationTypeChange;
     }
     
     _oldDeviceToken = _deviceToken;
