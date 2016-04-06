@@ -8,6 +8,12 @@
 
 #import "PNObject.h"
 
+typedef NS_ENUM(NSInteger, PNInstallationType) {
+    PNInstallationTypeNew = 0,
+    PNInstallationTypeChange,
+    PNInstallationTypeNone,
+};
+
 @interface PNInstallation : PNObject
 
 /**
@@ -28,7 +34,7 @@
  *
  *  @return RETURN YES if token is not set o token changes, NO if token is the same of old token.
  */
-- (BOOL) setDeviceTokenFromData:(nullable NSData *)deviceTokenData;
+- (PNInstallationType) setDeviceTokenFromData:(nullable NSData *)deviceTokenData;
 
 ///--------------------------------------
 #pragma mark - PNInstallation Properties

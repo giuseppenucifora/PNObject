@@ -40,7 +40,8 @@ NSString * const PNObjectMappingSelector = @"selector";
 #pragma mark PNObjectSubclassing
 
 + (NSDictionary *) objcetMapping {
-    NSDictionary *mapping = @{@"objID":@"objID",
+    NSDictionary *mapping = @{@"objID":@"uuid",
+                              @"localObjID":@"localObjID",
                               @"createdAt":@"created_at",
                               };
     return mapping;
@@ -87,7 +88,7 @@ NSString * const PNObjectMappingSelector = @"selector";
 
             NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing");
 
-            _objID = [[NSProcessInfo processInfo] globallyUniqueString];
+            _localObjID = [[NSProcessInfo processInfo] globallyUniqueString];
 
             self.objectModel = [PNObjectModel sharedInstance];
             [self.objectModel setPersistencyDelegate:self];
@@ -146,7 +147,7 @@ NSString * const PNObjectMappingSelector = @"selector";
         if ([[self class] isSubclassOfClass:[PNObject class]]) {
             NSAssert([[self class] conformsToProtocol:@protocol(PNObjectSubclassing)], @"Subclass object must conform to PNObjectSubclassing Protocol");
 
-            _objID = [[NSProcessInfo processInfo] globallyUniqueString];
+            _localObjID = [[NSProcessInfo processInfo] globallyUniqueString];
 
             self.objectModel = [PNObjectModel sharedInstance];
             [self.objectModel setPersistencyDelegate:self];
@@ -454,6 +455,7 @@ NSString * const PNObjectMappingSelector = @"selector";
     _JSON = nil;
     _JSONObjectMap = nil;
     _objID = nil;
+    _localObjID = nil;
     _createdAt = nil;
 }
 

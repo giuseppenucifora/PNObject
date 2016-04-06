@@ -61,10 +61,11 @@ extern NSString* _Nonnull const PNObjectMappingSelector;
 #pragma mark - PNObject Properties
 ///--------------------------------------
 
+@property (nonatomic, strong, nonnull) NSString *objID;
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nonnull) NSString * objID;
+@property (nonatomic, strong, nonnull) NSString * localObjID;
 /**
  *  <#Description#>
  */
