@@ -151,7 +151,7 @@ static bool isFirstAccess = YES;
 
                                         [[[self class] currentUser] populateObjectFromJSON:[responseObject objectForKey:@"user"]];
                                         [[[self class] currentUser] saveLocally];
-                                        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserReloadFromServerSuccess object:[[self class] currentUser]];
+                                        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserReloadFromServerSuccess object:nil];
                                         
                                         if (success) {
                                             success([[self class] currentUser]);

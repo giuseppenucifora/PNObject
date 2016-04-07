@@ -295,6 +295,8 @@ static bool isFirstAccess = YES;
 
 - (BOOL) resetToken {
     if (_currentOauthCredential) {
+        _currentOauthCredential = nil;
+        
         return [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
     }
     return NO;
@@ -323,20 +325,22 @@ static bool isFirstAccess = YES;
         [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] refreshToken:[_currentOauthCredential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
 
+            
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
 
             [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserSuccess object:nil];
             if (success) {
                 success(YES);
             }
             return;
 
         } failure:^(NSError * _Nonnull error) {
-            [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
+            [self resetToken];
 
             [self refreshTokenForUserWithBlockSuccess:success failure:failure];
             return;
@@ -357,7 +361,7 @@ static bool isFirstAccess = YES;
 
                 NSError *error = [NSError errorWithDomain:@"" code:kHTTPStatusCodeBadRequest userInfo:nil];
                 failure(error);
-                [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
+                [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:nil];
             }
         }
     }
@@ -385,6 +389,7 @@ static bool isFirstAccess = YES;
     [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
 
+        
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceCredentialIdentifier];
 
         [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
@@ -392,12 +397,13 @@ static bool isFirstAccess = YES;
         [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserSuccess object:nil];
         if (success) {
             success(YES);
         }
     } failure:^(NSError * _Nonnull error) {
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:nil];
         if (failure) {
             failure(error);
         }
@@ -432,12 +438,13 @@ static bool isFirstAccess = YES;
         [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserSuccess object:nil];
         if (success) {
             success(YES);
         }
     } failure:^(NSError * _Nonnull error) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:error];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:nil];
         if (failure) {
             failure(error);
         }
@@ -464,13 +471,14 @@ static bool isFirstAccess = YES;
             [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
+            [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialSuccess object:nil];
             if (success) {
                 success(YES);
             }
             return;
 
         } failure:^(NSError * _Nonnull error) {
-            [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
+            [self resetToken];
 
             [self refreshTokenForClientCredentialWithBlockSuccess:success failure:failure];
             return;
@@ -487,11 +495,13 @@ static bool isFirstAccess = YES;
             [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
 
+            [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialSuccess object:nil];
             if (success) {
                 success(YES);
             }
+            
         } failure:^(NSError * _Nonnull error) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialFail object:error];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialFail object:nil];
             if (failure) {
                 failure(error);
             }
