@@ -66,8 +66,9 @@
  *  @param success <#success description#>
  *  @param failure <#failure description#>
  */
-- (void) registerWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
-                          failure:(nullable void (^)(NSError * _Nonnull error))failure;
+- (void) registerWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                           Success:(nullable void (^)(PNUser * _Nullable responseObject))success
+                           failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
  *  <#Description#>

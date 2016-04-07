@@ -178,11 +178,12 @@ static bool isFirstAccess = YES;
     }];
 }
 
-- (void) registerWithBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
-                          failure:(nullable void (^)(NSError * _Nonnull error))failure {
+- (void) registerWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                           Success:(nullable void (^)(PNUser * _Nullable responseObject))success
+                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
 
     [[self class] POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
-                                progress:nil
+                                progress:uploadProgress
                                  success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
                                      NSLog(@"response %@",responseObject);
                                      if(success){
