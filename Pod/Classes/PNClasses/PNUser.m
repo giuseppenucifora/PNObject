@@ -77,14 +77,20 @@ static bool isFirstAccess = YES;
     if (savedUser) {
         Class objectClass = NSClassFromString([[self class] PNObjClassName]);
 
-        USER = [[objectClass alloc] initWithLocalJSON:savedUser];
+        self = [[objectClass alloc] initWithLocalJSON:savedUser];
+    }
+    else {
+        self = [super init];
     }
 
-    if (USER) {
-
+    if (self) {
+        
+        USER = self;
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [self autoLogin];
         });
+       
     }
 
     return USER;
