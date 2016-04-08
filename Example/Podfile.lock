@@ -43,12 +43,12 @@ PODS:
   - JRSwizzle (1.0)
   - NACrypto (1.0.6)
   - NSDate_Utils (0.1.3)
-  - NSString-Helper (1.0.4)
+  - NSString-Helper (1.0.5)
   - NSUserDefaults-AESEncryptor (0.0.4):
     - CocoaSecurity (~> 1.2.2)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (0.5.6):
+  - PNObject (0.5.7):
     - AFNetworking
     - CodFis-Helper
     - DJLocalization
@@ -61,9 +61,11 @@ PODS:
     - NSUserDefaults-AESEncryptor
     - nv-ios-http-status
     - PEAR-FileManager-iOS
+    - RZDataBinding
     - StrongestPasswordValidator
     - UIDevice-Utils
   - PureLayout (3.0.1)
+  - RZDataBinding (2.0.3)
   - Specta (1.0.5)
   - StrongestPasswordValidator (0.1.2)
   - UIDevice-Utils (0.1.5)
@@ -106,12 +108,13 @@ SPEC CHECKSUMS:
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   NACrypto: ce3900f1775f1b0cc27ce7c4953b94c598a74149
   NSDate_Utils: 68669d2c81f310ee13026c791f4f0ed227b94c65
-  NSString-Helper: b4183f73f0a00c6fcd607edebb6c35a7a461376d
+  NSString-Helper: 459e1b6a62b3bf7db10f01b0d102548608e945c4
   NSUserDefaults-AESEncryptor: da02cfef056f1e18ebe2748767915f08b274c9c5
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: 2bb4603ecbce2116013d23c6bd7f16da73c0e57b
+  PNObject: 9567f1c80c154eb17798e2b9f572a707c407d7b5
   PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
+  RZDataBinding: 00d468ebe667f02c2bd5416f87b4b5d826188c4d
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
   UIDevice-Utils: a87bbaed53a74d503deb3e25511c9a4d865b92ea

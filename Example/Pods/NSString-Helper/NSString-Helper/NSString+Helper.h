@@ -10,6 +10,8 @@
 
 @interface NSString (Helper)
 
++ (NSString *) getRandString: (int) length;
+
 - (BOOL) isValidEmail;
 
 - (BOOL) isNumeric;
@@ -19,5 +21,13 @@
 - (BOOL) isValidUrl;
 
 - (BOOL) isValidTaxCode;
+
+- (NSString *) md5;
+
+- (NSString*) sha1;
+
+- (NSString*) sha256;
+
+- (NSString*) sha512;
 
 @end

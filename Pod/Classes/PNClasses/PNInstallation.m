@@ -20,7 +20,7 @@
 
 @implementation PNInstallation
 
-static PNInstallation *INSTALLATION = nil;
+static id INSTALLATION = nil;
 
 static bool isFirstAccess = YES;
 
@@ -73,7 +73,7 @@ static bool isFirstAccess = YES;
     
     PNInstallationType response = PNInstallationTypeNone;
     
-    _deviceTokenData = deviceTokenData;
+    self.deviceTokenData = deviceTokenData;
     
     NSString *ptoken = [[[[deviceTokenData description]
                           stringByReplacingOccurrencesOfString:@"<"withString:@""]
@@ -88,6 +88,9 @@ static bool isFirstAccess = YES;
         response = PNInstallationTypeChange;
     }
     
+    /*[self setValue:_deviceToken forKey:VariableName(oldDeviceToken)];
+     [self setValue:ptoken forKey:VariableName(deviceToken)];
+     */
     _oldDeviceToken = _deviceToken;
     _deviceToken = ptoken;
     
@@ -121,16 +124,21 @@ static bool isFirstAccess = YES;
     
     if (self) {
         
+        /*[super setValue:@"iOS" forKey:VariableName(deviceType)];
+         [super setValue:[[UIDevice currentDevice] model] forKey:VariableName(deviceModel)];
+         [super setValue:[[UIDevice currentDevice] systemVersion] forKey:VariableName(osVersion)];
+         [self setValue:[[UIDevice currentDevice] name] forKey:VariableName(deviceName)];
+         [self setValue:[[DJLocalizationSystem shared] language] forKey:VariableName(localeIdentifier)];
+         */
         _deviceType = @"iOS";
         _deviceModel = [[UIDevice currentDevice] model];
         _osVersion = [[UIDevice currentDevice] systemVersion];
         _deviceName = [[UIDevice currentDevice] name];
         _localeIdentifier = [[DJLocalizationSystem shared] language];
         
-        INSTALLATION = self;
         
     }
-    return INSTALLATION;
+    return self;
 }
 
 #pragma mark -

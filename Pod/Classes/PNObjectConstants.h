@@ -28,5 +28,6 @@
 #define NSLogDebug(format, ...)
 #endif
 
+#define VariableName(arg) ([[[@""#arg stringByReplacingOccurrencesOfString:@"_" withString:@""] componentsSeparatedByString:@"."] lastObject])
 
 #endif

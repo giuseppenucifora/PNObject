@@ -10,6 +10,7 @@
 #import "PNObjectConfig.h"
 #import "PNObjectModel.h"
 #import "PNObjectUtilities.h"
+#import "PNObjectConstants.h"
 
 #pragma mark MappingSelector Keys
 

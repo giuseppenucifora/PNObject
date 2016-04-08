@@ -86,15 +86,12 @@ static bool isFirstAccess = YES;
 
     if (self) {
         
-        USER = self;
-        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [self autoLogin];
         });
-       
     }
 
-    return USER;
+    return self;
 }
 
 - (void) setEmail:(NSString *)email {

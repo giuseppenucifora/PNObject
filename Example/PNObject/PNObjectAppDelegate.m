@@ -120,6 +120,8 @@
     
     NSLog(@"%@",installation);
     
+    NSLog(@"%@",[installation JSONFormObject]);
+    
 }
 
 - (void) application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
