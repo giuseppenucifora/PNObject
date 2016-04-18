@@ -291,6 +291,9 @@ NSString * const PNObjectMappingSelector = @"selector";
                         
                         [arr addObject:objectDict];
                     }
+                    else {
+                        [arr addObject:object];
+                    }
                 }
                 
                 [JSON setValue:arr forKey:propertyName];
@@ -304,6 +307,9 @@ NSString * const PNObjectMappingSelector = @"selector";
                         NSDictionary *objectDict = [(PNObject*) object reverseMapping];
                         
                         [arr addObject:objectDict];
+                    }
+                    else {
+                        [arr addObject:object];
                     }
                 }
                 
@@ -319,6 +325,7 @@ NSString * const PNObjectMappingSelector = @"selector";
                                }
                                else {
                                    // do nothing
+                                   [JSON setValue:value forKey:propertyName];
                                }
                            })();
         }

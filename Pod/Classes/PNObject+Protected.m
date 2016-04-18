@@ -128,7 +128,7 @@
                        @"NSArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
-                if([[JSONObject class] isSubclassOfClass:[PNObject class]]) {
+                if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
                     PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
                     [arr addObject:val];
                 }
@@ -142,7 +142,7 @@
                        @"NSMutableArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
-                if([[JSONObject class] isSubclassOfClass:[PNObject class]]) {
+                if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
                     PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
                     [arr addObject:val];
                 }
