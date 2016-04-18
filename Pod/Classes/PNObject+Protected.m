@@ -29,36 +29,36 @@
 }
 
 - (void) populateObjectFromJSON:(id _Nullable)JSON fromLocal:(BOOL) fromLocal {
-
+    
     NSDictionary *properties = [PNObject propertiesForClass:self.class];
-
+    
     for(NSString *propertyName in properties) {
-
+        
         if([propertyName isEqualToString:@"mappingError"])
             continue;
-
+        
         NSString *mappedJSONKey;
         NSString *mappedJSONType;
-
+        
         NSString *propertyType = [properties valueForKey:propertyName];
-
+        
         id mappingValue = [[[self class] objcetMapping] valueForKey:propertyName];
-
+        
         if([mappingValue isKindOfClass:NSDictionary.class]) {
             mappedJSONKey = [mappingValue valueForKey:PNObjectMappingKey];
             mappedJSONType = [mappingValue valueForKey:PNObjectMappingType];
         } else {
             mappedJSONKey = mappingValue;
         }
-
+        
         /*if (fromLocal) {
-            propertyName = mappedJSONKey;
-        }*/
-
+         propertyName = mappedJSONKey;
+         }*/
+        
         if ([[PNObject protectedProperties] containsObject:propertyName] || [self isObjNull:mappedJSONKey]) {
             continue;
         }
-
+        
         // Get JSON value for the mapped key
         id value;
         if (fromLocal) {
@@ -67,12 +67,12 @@
         else {
             value = [JSON valueForKeyPath:mappedJSONKey];
         }
-
-
+        
+        
         if([self isObjNull:value]) {
             continue;
         }
-
+        
         ((void (^)())@{
                        @"c" : ^{
             char val = [value charValue];
@@ -106,11 +106,11 @@
             if (![self isObjNull:value]) {
                 [self setValue:value forKey:propertyName];
             }
-
+            
         },
                        @"NSNumber" : ^{
             NSInteger val =  [value integerValue];
-
+            
             [self setValue:@(val) forKey:propertyName];
         },
                        @"NSDate" : ^{
@@ -128,27 +128,37 @@
                        @"NSArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
-                PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
-                [arr addObject:val];
+                if([[JSONObject class] isSubclassOfClass:[PNObject class]]) {
+                    PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    [arr addObject:val];
+                }
+                else {
+                    [arr addObject:JSONObject];
+                }
             }
-
+            
             [self setValue:arr forKey:propertyName];
         },
                        @"NSMutableArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
-                PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
-                [arr addObject:val];
+                if([[JSONObject class] isSubclassOfClass:[PNObject class]]) {
+                    PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    [arr addObject:val];
+                }
+                else {
+                    [arr addObject:JSONObject];
+                }
             }
-
+            
             [self setValue:arr forKey:propertyName];
         }
                        }[propertyType] ?: ^{
-
+                           
                            BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
-
+                           
                            if(isPNObjectSubclass) {
-
+                               
                                PNObject *val = [[NSClassFromString(propertyType) alloc] initWithJSON:value fromLocal:fromLocal];
                                [self setValue:val forKey:propertyName];
                            }
@@ -163,35 +173,35 @@
 - (void)resetObject
 {
     NSDictionary *properties = [PNObject propertiesForClass:self.class];
-
+    
     for(NSString *propertyName in properties) {
-
+        
         if([propertyName isEqualToString:@"mappingError"])
             continue;
-
+        
         NSString *mappedJSONKey;
         NSString *mappedJSONType;
-
+        
         NSString *propertyType = [properties valueForKey:propertyName];
-
+        
         id mappingValue = [self.JSONObjectMap valueForKey:propertyName];
-
+        
         if([mappingValue isKindOfClass:NSDictionary.class]) {
             mappedJSONKey = [mappingValue valueForKey:@"key"];
             mappedJSONType = [mappingValue valueForKey:@"type"];
         } else {
             mappedJSONKey = mappingValue;
         }
-
-
+        
+        
         if ([[PNObject protectedProperties] containsObject:propertyName]
             || [propertyName isEqualToString:@"description"]
             || [propertyName isEqualToString:@"debugDescription"]) {
             continue;
         }
-
+        
         // Get JSON value for the mapped key
-
+        
         ((void (^)())@{
                        @"c" : ^{
             char val = '\0';
@@ -251,34 +261,34 @@
 - (NSDictionary* _Nonnull) getFormObject:(SEL _Nonnull) dictionaryMappingSelector
 {
     NSMutableDictionary *JSON = [NSMutableDictionary dictionary];
-
+    
     if ([[self class] respondsToSelector:dictionaryMappingSelector]) {
-
+        
         NSDictionary *properties = [PNObject propertiesForClass:self.class];
-
+        
         NSDictionary *formMapping = [[self class] performSelector:dictionaryMappingSelector];
-
+        
         for (NSString *formMappingKey in formMapping) {
-
+            
             if ([[properties allKeys] containsObject:formMappingKey] && [properties objectForKey:formMappingKey]) {
-
+                
                 id property = [self valueForKey:formMappingKey];
-
+                
                 id formMappingValue = [formMapping objectForKey:formMappingKey];
-
+                
                 NSString *mappedKey;
                 NSString *mappedType;
                 NSDictionary *mappedValues;
-
+                
                 if ([formMappingValue isKindOfClass:[NSDictionary class]]) {
                     mappedKey = [formMappingValue valueForKey:@"key"];
                     mappedType = [formMappingValue valueForKey:@"type"];
                     mappedValues = [formMappingValue valueForKey:@"values"];
                 }
                 else {
-					mappedKey = formMappingKey;
+                    mappedKey = formMappingKey;
                 }
-
+                
                 ((void (^)())@{
                                @"c" : ^{
                     char val = [property charValue];
@@ -308,14 +318,14 @@
                     BOOL val = [property boolValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-
+                               
                                @"UIImage" : ^{
                     UIImage *image = [UIImage imageWithData:property];
                     [JSON setValue:image forKey:mappedKey];
                 },
                                @"NSURL" : ^{
                     NSURL *url = property;
-
+                    
                     if (![self isObjNull:url]) {
                         [JSON setValue:[url absoluteString] forKey:mappedKey];
                     }
@@ -339,29 +349,29 @@
                                @"NSArray" : ^{
                     NSMutableArray *arr = [NSMutableArray array];
                     for(id object in property) {
-
+                        
                         BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
                         if(isPNObjectSubclass) {
                             NSDictionary *objectDict = [(PNObject*) object getFormObject:dictionaryMappingSelector];
-
+                            
                             [arr addObject:objectDict];
                         }
                     }
-
+                    
                     [JSON setValue:arr forKey:mappedKey];
                 },
                                @"NSMutableArray" : ^{
                     NSMutableArray *arr = [NSMutableArray array];
                     for(id object in property) {
-
+                        
                         BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
                         if(isPNObjectSubclass) {
                             NSDictionary *objectDict = [(PNObject*) object getFormObject:dictionaryMappingSelector];
-
+                            
                             [arr addObject:objectDict];
                         }
                     }
-
+                    
                     [JSON setValue:arr forKey:mappedKey];
                 }
                                }[[property class]] ?: ^{
@@ -395,15 +405,15 @@ static BOOL property_getTypeString( objc_property_t property, char *buffer )
     const char * attrs = property_getAttributes( property );
     if ( attrs == NULL )
         return NO;
-
+    
     const char * e = strchr( attrs, ',' );
     if ( e == NULL )
         return NO;
-
+    
     int len = (int)(e - attrs);
     memcpy( buffer, attrs, len );
     buffer[len] = '\0';
-
+    
     return YES;
 }
 
@@ -414,13 +424,13 @@ static BOOL property_getTypeString( objc_property_t property, char *buffer )
     if (PNObjClass == NULL) {
         return nil;
     }
-
+    
     NSMutableDictionary *results = [NSMutableDictionary dictionary];
     if ([PNObjClass isSubclassOfClass:[PNObject class]] &&  PNObjClass != [PNObject class]) {
-
+        
         [results addEntriesFromDictionary:[self propertiesForClass:class_getSuperclass(PNObjClass)]];
     }
-
+    
     unsigned int outCount, i;
     objc_property_t *properties = class_copyPropertyList(PNObjClass, &outCount);
     for (i = 0; i < outCount; i++) {
@@ -434,7 +444,7 @@ static BOOL property_getTypeString( objc_property_t property, char *buffer )
             }
             NSString *propertyName = [NSString stringWithUTF8String:propName];
             NSString *propertyType = [NSString stringWithUTF8String:propType];
-
+            
             NSRange range = [propertyType rangeOfString:@"T@\""];
             NSRange range2 = [propertyType rangeOfString:@"T"];
             if (range.location != NSNotFound) {
