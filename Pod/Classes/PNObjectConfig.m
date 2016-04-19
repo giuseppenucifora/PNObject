@@ -304,12 +304,17 @@ static bool isFirstAccess = YES;
 
 - (void) refreshToken {
 
+    [self refreshTokenWithBlockSuccess:nil failure:nil];
+    
+}
 
+- (void) refreshTokenWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                              failure:(nullable void (^)(NSError * _Nonnull error))failure {
     if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
-        [self refreshTokenForUser];
+        [self refreshTokenForUserWithBlockSuccess:success failure:failure];
     }
     else {
-        [self refreshTokenForClientCredential];
+        [self refreshTokenForClientCredentialWithBlockSuccess:success failure:failure];
     }
 }
 
