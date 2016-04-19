@@ -146,6 +146,21 @@ extern NSString* _Nonnull const Client_Secret;
  */
 - (void) setAcceptablePasswordLenght:(NSUInteger) passLenght;
 
+
+/**
+ *  This method refresh current token and automanage if token type is client credential or user token
+ */
+- (void) refreshToken;
+
+/**
+ *  This method refresh current token and automanage if token type is client credential or user token and returns block success and failure
+ *
+ *  @param success <#success description#>
+ *  @param failure <#failure description#>
+ */
+- (void) refreshTokenWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                              failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 /**
  *  <#Description#>
  */
