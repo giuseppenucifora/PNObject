@@ -33,7 +33,7 @@
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
-    return [self GETWithEndpointAction:endPoint parameters:nil retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
+    return [self GETWithEndpointAction:endPoint parameters:parameters retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
