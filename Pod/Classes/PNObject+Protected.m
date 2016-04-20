@@ -42,7 +42,7 @@
         
         NSString *propertyType = [properties valueForKey:propertyName];
         
-        id mappingValue = [[[self class] objcetMapping] valueForKey:propertyName];
+        id mappingValue = [self.JSONObjectMap valueForKey:propertyName];
         
         if([mappingValue isKindOfClass:NSDictionary.class]) {
             mappedJSONKey = [mappingValue valueForKey:PNObjectMappingKey];
