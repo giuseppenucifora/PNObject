@@ -154,6 +154,7 @@ static bool isFirstAccess = YES;
                                         NSLogDebug(@"%@",[responseObject objectForKey:@"user"]);
 
                                         [[[self class] currentUser] populateObjectFromJSON:[responseObject objectForKey:@"user"]];
+                                        [[[self class] currentUser] updateFacebookData];
                                         [[[self class] currentUser] saveLocally];
                                         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationUserReloadFromServerSuccess object:nil];
                                         
@@ -234,6 +235,7 @@ static bool isFirstAccess = YES;
                             
                             [user setFacebookId:[result objectForKey:@"id"]];
                             [user setAuthenticated:YES];
+                            [user setFacebookUser:YES];
                             [user saveLocally];
                             [user reloadFormServer];
                             
@@ -342,6 +344,24 @@ static bool isFirstAccess = YES;
 - (BOOL) isAuthenticated {
     return self.authenticated;
 }
+
+- (BOOL) isFacebookUser {
+    [self updateFacebookData];
+    
+    return self.facebookUser;
+}
+
+
+- (void) updateFacebookData {
+    
+    if (self.facebookId || self.facebookAccessToken) {
+        self.facebookUser = YES;
+    }
+    else {
+        self.facebookUser = NO;
+    }
+}
+
 
 - (UIImage* _Nonnull) userProfileImage {
     return [self userProfileImage:NO];

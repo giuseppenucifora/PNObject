@@ -122,6 +122,8 @@
 
 - (UIImage* _Nonnull) userProfileImage:(BOOL) forceReload;
 
+- (BOOL) isFacebookUser;
+
 //- (void) setPassword:(NSString * _Nonnull)password inBackGroundWithBlock:(nullable void (^)(BOOL saveStatus, id responseObject, NSError * error)) responseBlock;
 
 ///--------------------------------------
@@ -200,10 +202,8 @@
  *  <#Description#>
  */
 @property (nonatomic, strong, nullable) NSNumber * loginCount;
-/**
- *  <#Description#>
- */
-@property (nonatomic) BOOL isFacebookUser;
+
+@property (nonatomic) BOOL facebookUser;
 /**
  *  <#Description#>
  */
