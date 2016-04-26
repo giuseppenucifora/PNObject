@@ -25,8 +25,3 @@ target 'PNObject_Tests' do
     pod 'FBSnapshotTestCase'
     pod 'Expecta+Snapshots'
 end
-
-post_install do |installer|
-    `find Pods -regex 'Pods/FBSDKShareKit.*\\.h' -print0 | xargs -0 sed -i '' 's/\\(<\\)FBSDKShareKit\\/\\(.*\\)\\(>\\)/\\"\\2\\"/'`
-    #`find Pods -regex 'Pods/Google.*\\.h' -print0 | xargs -0 sed -i '' 's/\\(<\\)GoogleInteractiveMediaAds\\/\\(.*\\)\\(>\\)/\\"\\2\\"/'`
-end
