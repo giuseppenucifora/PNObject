@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = "PNObject"
-s.version          = "0.7.3"
+s.version          = "0.7.4"
 s.summary          = "PNObject is a simple replica of the more complex ParseObject"
 
 # This description is used to generate tags and improve search results.
@@ -30,6 +30,7 @@ s.requires_arc = true
 
 s.source_files = 'Pod/Classes/**/*'
 # s.frameworks = 'UIKit', 'MapKit'
+
 
 s.dependency 'AFNetworking'
 s.dependency 'PEAR-FileManager-iOS'

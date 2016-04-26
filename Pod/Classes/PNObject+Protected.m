@@ -109,9 +109,9 @@
             
         },
                        @"NSNumber" : ^{
-            NSInteger val =  [value integerValue];
+            NSNumber *val =  [NSNumber numberWithDouble:[value doubleValue]];
             
-            [self setValue:@(val) forKey:propertyName];
+            [self setValue:val forKey:propertyName];
         },
                        @"NSDate" : ^{
             NSString *str = [NSString stringWithFormat:@"%@", value];
@@ -266,7 +266,15 @@
         
         NSDictionary *properties = [PNObject propertiesForClass:self.class];
         
-        NSDictionary *formMapping = [[self class] performSelector:dictionaryMappingSelector];
+        //NSDictionary *formMapping = [[self class] performSelector:dictionaryMappingSelector];
+        
+        NSDictionary *formMapping;
+        
+        NSMethodSignature *methodSig = [[self class] instanceMethodSignatureForSelector:dictionaryMappingSelector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+        [invocation setSelector:dictionaryMappingSelector];
+        [invocation setTarget:formMapping];
+        [invocation invoke];
         
         for (NSString *formMappingKey in formMapping) {
             
@@ -337,8 +345,8 @@
                     }
                 },
                                @"NSNumber" : ^{
-                    NSInteger val = [property integerValue];
-                    [JSON setValue:@(val) forKey:mappedKey];
+                    NSNumber *val =  [NSNumber numberWithDouble:[property doubleValue]];
+                    [JSON setValue:val forKey:mappedKey];
                 },
                                @"NSDate" : ^{
                     NSDate *val = [property toLocalTime];
@@ -356,6 +364,9 @@
                             
                             [arr addObject:objectDict];
                         }
+                        else {
+                            [arr addObject:object];
+                        }
                     }
                     
                     [JSON setValue:arr forKey:mappedKey];
@@ -370,6 +381,9 @@
                             
                             [arr addObject:objectDict];
                         }
+                        else {
+                            [arr addObject:object];
+                        }
                     }
                     
                     [JSON setValue:arr forKey:mappedKey];
@@ -383,7 +397,9 @@
                                        [JSON setValue:objectDict forKey:mappedKey];
                                    }
                                    else {
-                                       // do nothing
+                                   
+                                       NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", property];
+                                       NSLogDebug(@"%@",errorStr);
                                    }
                                })();
             }

@@ -2,7 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target 'PNObject_Example' do
-    pod "PNObject", :path => "../"
+    pod 'PNObject', :path => '../'
     pod 'PEAR-FileManager-iOS'
     pod 'NSDate_Utils'
     pod 'UIDevice-Utils'
@@ -19,10 +19,14 @@ target 'PNObject_Example' do
 end
 
 target 'PNObject_Tests' do
-    pod "PNObject", :path => "../"
-    
+    pod 'PNObject', :path => '../'
     pod 'Specta'
     pod 'Expecta'
     pod 'FBSnapshotTestCase'
     pod 'Expecta+Snapshots'
+end
+
+post_install do |installer|
+    `find Pods -regex 'Pods/FBSDKShareKit.*\\.h' -print0 | xargs -0 sed -i '' 's/\\(<\\)FBSDKShareKit\\/\\(.*\\)\\(>\\)/\\"\\2\\"/'`
+    #`find Pods -regex 'Pods/Google.*\\.h' -print0 | xargs -0 sed -i '' 's/\\(<\\)GoogleInteractiveMediaAds\\/\\(.*\\)\\(>\\)/\\"\\2\\"/'`
 end

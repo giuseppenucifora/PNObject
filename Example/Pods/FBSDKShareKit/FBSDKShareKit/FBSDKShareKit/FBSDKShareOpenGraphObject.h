@@ -20,7 +20,7 @@
 
 #import <FBSDKCoreKit/FBSDKCopying.h>
 
-#import <FBSDKShareKit/FBSDKShareOpenGraphValueContainer.h>
+#import "FBSDKShareOpenGraphValueContainer.h"
 
 /*!
  @abstract An Open Graph Object for sharing.

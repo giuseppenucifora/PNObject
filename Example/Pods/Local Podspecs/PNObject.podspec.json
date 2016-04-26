@@ -1,6 +1,6 @@
 {
   "name": "PNObject",
-  "version": "0.7.2",
+  "version": "0.7.4",
   "summary": "PNObject is a simple replica of the more complex ParseObject",
   "homepage": "https://github.com/giuseppenucifora/PNObject",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/giuseppenucifora/PNObject.git",
-    "tag": "0.7.2"
+    "tag": "0.7.4"
   },
   "platforms": {
     "ios": "8.0"

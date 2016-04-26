@@ -20,7 +20,7 @@
 
 #import <FBSDKCoreKit/FBSDKButton.h>
 
-#import <FBSDKShareKit/FBSDKSharingButton.h>
+#import "FBSDKSharingButton.h"
 
 /*!
  @abstract A button to share content.

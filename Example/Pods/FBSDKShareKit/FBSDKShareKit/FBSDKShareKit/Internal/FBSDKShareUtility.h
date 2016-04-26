@@ -18,16 +18,16 @@
 
 #import <Foundation/Foundation.h>
 
-#import <FBSDKShareKit/FBSDKShareLinkContent.h>
-#import <FBSDKShareKit/FBSDKShareMediaContent.h>
-#import <FBSDKShareKit/FBSDKShareOpenGraphContent.h>
-#import <FBSDKShareKit/FBSDKSharePhotoContent.h>
-#import <FBSDKShareKit/FBSDKShareVideoContent.h>
-#import <FBSDKShareKit/FBSDKSharingContent.h>
+#import "FBSDKShareLinkContent.h"
+#import "FBSDKShareMediaContent.h"
+#import "FBSDKShareOpenGraphContent.h"
+#import "FBSDKSharePhotoContent.h"
+#import "FBSDKShareVideoContent.h"
+#import "FBSDKSharingContent.h"
 
 #if !TARGET_OS_TV
-#import <FBSDKShareKit/FBSDKAppInviteContent.h>
-#import <FBSDKShareKit/FBSDKGameRequestContent.h>
+#import "FBSDKAppInviteContent.h"
+#import "FBSDKGameRequestContent.h"
 #endif
 
 @interface FBSDKShareUtility : NSObject
