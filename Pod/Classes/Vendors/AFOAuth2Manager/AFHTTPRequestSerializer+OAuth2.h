@@ -33,4 +33,6 @@
  */
 - (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthCredential *)credential;
 
+- (BOOL) hasAuthorizationHeaderField;
+
 @end

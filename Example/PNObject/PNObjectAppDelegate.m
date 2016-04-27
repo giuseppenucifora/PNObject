@@ -68,6 +68,22 @@
 
     _window.backgroundColor = [UIColor whiteColor];
     [_window makeKeyAndVisible];
+    
+    /*[PNUser loginCurrentUserWithEmail:@"socials2@giuseppenucifora.com" password:@"asdasdasd" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+        
+    } failure:^(NSError * _Nonnull error) {
+        
+    }];*/
+    
+    if ([PNUser currentUser] && [[PNUser currentUser] isAuthenticated]) {
+        NSLogDebug(@"Login in corso...");
+        [[PNUser currentUser] reloadFormServerWithBlockSuccess:^(PNUser * _Nullable currentUser) {
+            NSLogDebug(@"Login Success...");
+            
+        } failure:^(NSError * _Nonnull error) {
+            NSLogDebug(@"Login in error...");
+        }];
+    }
 
     return YES;
 }

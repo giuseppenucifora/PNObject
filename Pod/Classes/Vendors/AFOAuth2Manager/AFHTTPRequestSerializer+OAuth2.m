@@ -32,4 +32,13 @@
     }
 }
 
+- (BOOL) hasAuthorizationHeaderField {
+    NSString *token = [self valueForHTTPHeaderField:@"Authorization"];
+    
+    if ([token containsString:@"Bearer"]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end
