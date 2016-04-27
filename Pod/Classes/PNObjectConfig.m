@@ -66,7 +66,7 @@ NSString*  const Client_Secret = @"client_secret";
 @synthesize manager = _manager;
 
 
-static PNObjectConfig *SINGLETON = nil;
+static PNObjectConfig *SINGLETON_PNObjectConfig = nil;
 
 static bool isFirstAccess = YES;
 
@@ -77,10 +77,10 @@ static bool isFirstAccess = YES;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
-        SINGLETON = [[super allocWithZone:NULL] init];
+        SINGLETON_PNObjectConfig = [[super allocWithZone:NULL] init];
     });
 
-    return SINGLETON;
+    return SINGLETON_PNObjectConfig;
 }
 
 #pragma mark - Life Cycle
@@ -99,26 +99,29 @@ static bool isFirstAccess = YES;
 }
 
 + (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withOauth:(BOOL) oauthEnabled {
-    SINGLETON = [self sharedInstance];
-
-    if (SINGLETON) {
-        SINGLETON.oauthEnabled = oauthEnabled;
-        SINGLETON.userSubClass = userSubClass;
-        for (NSString *key in [endpointUrlsForEnvironments allKeys]) {
-
-            NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
-            if (endpointUrl) {
-                [SINGLETON.configuration setValue:[NSDictionary dictionaryWithObjectsAndKeys:[endpointUrl absoluteString],BaseUrl, nil] forKey:key];
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        isFirstAccess = NO;
+        SINGLETON_PNObjectConfig = [[super allocWithZone:NULL] init];
+        
+        if (SINGLETON_PNObjectConfig) {
+            SINGLETON_PNObjectConfig.oauthEnabled = oauthEnabled;
+            SINGLETON_PNObjectConfig.userSubClass = userSubClass;
+            for (NSString *key in [endpointUrlsForEnvironments allKeys]) {
+                
+                NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
+                if (endpointUrl) {
+                    [SINGLETON_PNObjectConfig.configuration setValue:[NSDictionary dictionaryWithObjectsAndKeys:[endpointUrl absoluteString],BaseUrl, nil] forKey:key];
+                }
+                
             }
-
+            NSAssert([SINGLETON_PNObjectConfig.configuration objectForKey:EnvironmentProduction], @"EnvironmentProduction must be valid endpoint url");
+            [SINGLETON_PNObjectConfig setEnvironment:EnvironmentProduction];
         }
-        NSAssert([SINGLETON.configuration objectForKey:EnvironmentProduction], @"EnvironmentProduction must be valid endpoint url");
-        [SINGLETON setEnvironment:EnvironmentProduction];
-
-
-
-    }
-    return SINGLETON;
+    });
+    
+    return SINGLETON_PNObjectConfig;
 }
 
 + (id) allocWithZone:(NSZone *)zone
@@ -148,8 +151,8 @@ static bool isFirstAccess = YES;
 
 - (id) init
 {
-    if(SINGLETON){
-        return SINGLETON;
+    if(SINGLETON_PNObjectConfig){
+        return SINGLETON_PNObjectConfig;
     }
     if (isFirstAccess) {
         [self doesNotRecognizeSelector:_cmd];
@@ -310,7 +313,7 @@ static bool isFirstAccess = YES;
 
 - (void) refreshTokenWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
-    if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
+    if([SINGLETON_PNObjectConfig.userSubClass currentUser] && [[SINGLETON_PNObjectConfig.userSubClass currentUser] hasValidEmailAndPasswordData]) {
         [self refreshTokenForUserWithBlockSuccess:success failure:failure];
     }
     else {
@@ -353,13 +356,13 @@ static bool isFirstAccess = YES;
 
     }
     else {
-        if([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] hasValidEmailAndPasswordData]) {
+        if([SINGLETON_PNObjectConfig.userSubClass currentUser] && [[SINGLETON_PNObjectConfig.userSubClass currentUser] hasValidEmailAndPasswordData]) {
            
-            [self refreshTokenForUserWithEmail:[[SINGLETON.userSubClass currentUser] email]  password:[[(PNUser*)[SINGLETON.userSubClass currentUser] password] password]  withBlockSuccess:success failure:failure];
+            [self refreshTokenForUserWithEmail:[[SINGLETON_PNObjectConfig.userSubClass currentUser] email]  password:[[(PNUser*)[SINGLETON_PNObjectConfig.userSubClass currentUser] password] password]  withBlockSuccess:success failure:failure];
             return;
         }
-        else if ([SINGLETON.userSubClass currentUser] && [[SINGLETON.userSubClass currentUser] facebookId]){
-            [self refreshTokenForUserWithFacebookID:[[SINGLETON.userSubClass currentUser] facebookId] facebookToken:[[FBSDKAccessToken currentAccessToken] tokenString] withBlockSuccess:success failure:failure];
+        else if ([SINGLETON_PNObjectConfig.userSubClass currentUser] && [[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId]){
+            [self refreshTokenForUserWithFacebookID:[[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId] facebookToken:[[FBSDKAccessToken currentAccessToken] tokenString] withBlockSuccess:success failure:failure];
         }
         else {
             if (failure) {
@@ -384,7 +387,7 @@ static bool isFirstAccess = YES;
             return;
         }
     }
-    if (![SINGLETON.userSubClass isValidPassword:password]) {
+    if (![SINGLETON_PNObjectConfig.userSubClass isValidPassword:password]) {
         if (failure) {
             NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Password is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
             failure(error);

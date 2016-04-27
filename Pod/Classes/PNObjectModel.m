@@ -20,7 +20,7 @@
 
 @implementation PNObjectModel
 
-static PNObjectModel *SINGLETON = nil;
+static PNObjectModel *SINGLETON_PNObjectModel = nil;
 
 static bool isFirstAccess = YES;
 
@@ -31,10 +31,10 @@ static bool isFirstAccess = YES;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
-        SINGLETON = [[super allocWithZone:NULL] init];
+        SINGLETON_PNObjectModel = [[super allocWithZone:NULL] init];
     });
     
-    return SINGLETON;
+    return SINGLETON_PNObjectModel;
 }
 
 - (NSString * _Nullable) objectName:(id _Nonnull) object {
@@ -107,8 +107,8 @@ static bool isFirstAccess = YES;
 
 - (id) init
 {
-    if(SINGLETON){
-        return SINGLETON;
+    if(SINGLETON_PNObjectModel){
+        return SINGLETON_PNObjectModel;
     }
     if (isFirstAccess) {
         [self doesNotRecognizeSelector:_cmd];
