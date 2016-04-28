@@ -317,7 +317,7 @@ static bool isFirstAccess = YES;
 
 - (void) refreshTokenWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
-    if([SINGLETON_PNObjectConfig.userSubClass currentUser] && [[SINGLETON_PNObjectConfig.userSubClass currentUser] hasValidEmailAndPasswordData]) {
+    if([SINGLETON_PNObjectConfig.userSubClass currentUser] && ([[SINGLETON_PNObjectConfig.userSubClass currentUser] hasValidEmailAndPasswordData] || [[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId])) {
         [self refreshTokenForUserWithBlockSuccess:success failure:failure];
     }
     else {
