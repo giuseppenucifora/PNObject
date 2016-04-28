@@ -403,7 +403,7 @@ static bool isFirstAccess = YES;
                               @"lastName":@"lastName",
                               @"profileImageUrl":@"profileImage",
                               @"sex":@"sex",
-                              @"birthDate":@"birthYear",
+                              @"birthDate":@"birthDate",
                               @"phone":@"phone",
                               @"password":@{@"key":@"password",@"type":@"PNObjcPassword"},
                               @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",

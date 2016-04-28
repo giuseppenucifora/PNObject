@@ -117,7 +117,7 @@ static bool isFirstAccess = YES;
                 
             }
             NSAssert([SINGLETON_PNObjectConfig.configuration objectForKey:EnvironmentProduction], @"EnvironmentProduction must be valid endpoint url");
-            [SINGLETON_PNObjectConfig setEnvironment:EnvironmentProduction];
+            
         }
     });
     
@@ -164,7 +164,7 @@ static bool isFirstAccess = YES;
         _userSubClass = userSubClass;
         _configuration = [[NSMutableDictionary alloc] init];
         _minPasswordLenght = minPassLenght;
-        
+        _currentEnv = EnvironmentProduction;
         _jsonSerializer = [AFJSONRequestSerializer serializer];
         _httpSerializer = [AFHTTPRequestSerializer serializer];
         
@@ -218,10 +218,11 @@ static bool isFirstAccess = YES;
     
     NSAssert(_currentEndPointBaseUrl,@"Selected environment generate error. Please check configuration");
     
-    [self manager];
-    
-    [self authManager];
-    
+    if (_currentOAuthClientID && _currentOAuthClientSecret) {
+        [self authManager];
+        
+        [self manager];
+    }
 }
 
 - (NSString *) baseUrl {
@@ -232,29 +233,26 @@ static bool isFirstAccess = YES;
     
     if (!_manager) {
         _manager = [AFHTTPSessionManager manager];
-    }
-    
-    //_currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
-    
-    
-    for (NSString *key in [_headerFields allKeys]) {
         
-        [_httpSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
-        [_jsonSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
-    }
-    
-    if (_currentOauthCredential && ![_currentOauthCredential isExpired] && ![[_manager requestSerializer] hasAuthorizationHeaderField]) {
+        for (NSString *key in [_headerFields allKeys]) {
+            
+            [_httpSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
+            [_jsonSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
+        }
         
-        [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-        [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-        [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        if (_currentOauthCredential && ![_currentOauthCredential isExpired] && ![[_manager requestSerializer] hasAuthorizationHeaderField]) {
+            
+            [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+        }
+        else {
+            [self refreshToken];
+        }
+        
+        _manager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
+        _manager.requestSerializer = _jsonSerializer;
     }
-    else {
-        [self refreshToken];
-    }
-    
-    _manager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
-    _manager.requestSerializer = _jsonSerializer;
     
     return _manager;
 }
@@ -265,41 +263,39 @@ static bool isFirstAccess = YES;
     
     if (!_authManager) {
         _authManager = [AFOAuth2Manager manager];
-    }
-    
-    //_currentOauthCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceCredentialIdentifier];
-    
-    if (_oauthEnabled && _currentOAuthClientID && _currentOAuthClientSecret) {
         
-        if (![_authManager clientID]) {
-            _authManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointBaseUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
-        }
-        
-        [_authManager setUseHTTPBasicAuthentication:NO];
-        
-        canTryRefreh = YES;
-    }
-    
-    for (NSString *key in [_headerFields allKeys]) {
-        
-        [_httpSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
-        [_jsonSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
-    }
-    
-    if (canTryRefreh) {
-        
-        if (_currentOauthCredential && ![_currentOauthCredential isExpired] && ![[_manager requestSerializer] hasAuthorizationHeaderField]) {
+        if (_oauthEnabled && _currentOAuthClientID && _currentOAuthClientSecret) {
             
-            [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-            [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
-            [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            if (![_authManager clientID]) {
+                _authManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointBaseUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
+            }
+            
+            [_authManager setUseHTTPBasicAuthentication:NO];
+            
+            canTryRefreh = YES;
         }
-        else {
-            [self refreshToken];
+        
+        for (NSString *key in [_headerFields allKeys]) {
+            
+            [_httpSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
+            [_jsonSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
         }
+        
+        if (canTryRefreh) {
+            
+            if (_currentOauthCredential && ![_currentOauthCredential isExpired] && ![[_manager requestSerializer] hasAuthorizationHeaderField]) {
+                
+                [_httpSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+                [_jsonSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+                [_authManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthCredential];
+            }
+            else {
+                [self refreshToken];
+            }
+        }
+        
+        _authManager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
     }
-    
-    _authManager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
     
     return _authManager;
 }
@@ -370,7 +366,16 @@ static bool isFirstAccess = YES;
             return;
         }
         else if ([SINGLETON_PNObjectConfig.userSubClass currentUser] && [[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId]){
-            [self refreshTokenForUserWithFacebookID:[[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId] facebookToken:[[FBSDKAccessToken currentAccessToken] tokenString] withBlockSuccess:success failure:failure];
+            [FBSDKAccessToken refreshCurrentAccessToken:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                if (error) {
+                    if (failure) {
+                        failure(error);
+                    }
+                }
+                else {
+                    [self refreshTokenForUserWithFacebookID:[[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId] facebookToken:[[FBSDKAccessToken currentAccessToken] tokenString] withBlockSuccess:success failure:failure];
+                }
+            }];
         }
         else {
             if (failure) {
