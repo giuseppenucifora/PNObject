@@ -11,11 +11,11 @@
 @implementation PNLocation
 
 + (NSString *) objectClassName {
-    return @"Location";
+    return @"PNLocation";
 }
 
 +(NSString *)objectEndPoint {
-    return @"Location";
+    return @"PNLocation";
 }
 
 + (NSDictionary *) objcetMapping {

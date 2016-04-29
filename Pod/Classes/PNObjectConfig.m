@@ -58,7 +58,7 @@ NSString*  const Client_Secret = @"client_secret";
 @property (nonatomic, strong) NSString *currentOAuthClientSecret;
 @property (nonatomic, strong) AFOAuth2Manager *authManager;
 
-@property (nonatomic)  Class userSubClass;
+
 
 @end
 

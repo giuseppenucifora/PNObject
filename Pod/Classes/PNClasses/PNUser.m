@@ -55,12 +55,16 @@ static bool isFirstAccess = YES;
 
 - (instancetype)copy
 {
-    return [[PNUser alloc] init];
+    Class objectClass = NSClassFromString([[self class] PNObjClassName]);
+    
+    return [[objectClass alloc] init];
 }
 
 - (instancetype)mutableCopy
 {
-    return [[PNUser alloc] init];
+    Class objectClass = NSClassFromString([[self class] PNObjClassName]);
+    
+    return [[objectClass alloc] init];
 }
 
 - (instancetype) initForCurrentUser
@@ -405,7 +409,7 @@ static bool isFirstAccess = YES;
                               @"sex":@"sex",
                               @"birthDate":@"birthDate",
                               @"phone":@"phone",
-                              @"password":@{@"key":@"password",@"type":@"PNObjcPassword"},
+                              @"password":@{@"key":@"password",@"type":[PNObjcPassword PNObjClassName]},
                               @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
                               @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
                               @"hasVerifiedEmail":@"hasVerifiedEmail",

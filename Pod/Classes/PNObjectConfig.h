@@ -216,6 +216,7 @@ extern NSString* _Nonnull const Client_Secret;
 #pragma mark - PNObjectConfig Properties
 ///--------------------------------------
 
+@property (nonatomic, readonly, nonnull)  Class userSubClass;
 /**
  *  <#Description#>
  */

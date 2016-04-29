@@ -11,11 +11,11 @@
 @implementation PNAddress
 
 + (NSString *) objectClassName {
-    return @"Address";
+    return @"PNAddress";
 }
 
 + (NSString *)objectEndPoint {
-    return @"Address";
+    return @"PNAddress";
 }
 
 + (NSDictionary *) objcetMapping {

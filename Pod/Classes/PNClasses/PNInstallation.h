@@ -7,6 +7,7 @@
 //
 
 #import "PNObject.h"
+#import "PNUser.h"
 
 typedef NS_ENUM(NSInteger, PNInstallationType) {
     PNInstallationTypeNew = 0,
@@ -48,7 +49,7 @@ typedef NS_ENUM(NSInteger, PNInstallationType) {
 ///--------------------------------------
 #pragma mark - PNInstallation Properties
 ///--------------------------------------
-
+@property (nonatomic, strong, nullable) PNUser *user;
 /**
  *  <#Description#>
  */

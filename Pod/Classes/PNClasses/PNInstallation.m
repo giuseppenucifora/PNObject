@@ -8,6 +8,10 @@
 
 #import "PNInstallation.h"
 #import "DJLocalization.h"
+#import "PNObjectConfig.h"
+
+
+
 
 @interface PNInstallation() <PNObjectSubclassing>
 
@@ -28,7 +32,7 @@ static bool isFirstAccess = YES;
 
 + (NSDictionary *)objcetMapping {
     
-    NSDictionary *mapping = @{
+    NSDictionary *mapping = @{@"user":@{@"key":@"user",@"type":[[[PNObjectConfig sharedInstance] userSubClass] PNObjClassName]},
                               @"deviceType":@"deviceType",
                               @"deviceModel":@"deviceModel",
                               @"deviceName":@"deviceName",

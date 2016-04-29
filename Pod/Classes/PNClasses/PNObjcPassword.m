@@ -13,11 +13,11 @@
 @implementation PNObjcPassword
 
 + (NSString *) objectClassName {
-    return @"Password";
+    return @"PNObjcPassword";
 }
 
 +(NSString *)objectEndPoint {
-    return @"Password";
+    return @"PNObjcPassword";
 }
 
 + (NSDictionary *) objcetMapping {
