@@ -41,6 +41,10 @@ typedef NS_ENUM(NSInteger, PNInstallationType) {
  */
 - (void) resetBadge;
 
+- (void) setRegistered;
+
+- (void) setUpdated;
+
 ///--------------------------------------
 #pragma mark - PNInstallation Properties
 ///--------------------------------------
@@ -80,6 +84,14 @@ typedef NS_ENUM(NSInteger, PNInstallationType) {
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, readonly, nullable) NSDate *lastUpdate;
+@property (nonatomic, strong, readonly, nullable) NSDate *registeredAt;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly, nullable) NSDate *updatedAt;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly, nullable) NSDate *lastTokenUpdate;
 
 @end

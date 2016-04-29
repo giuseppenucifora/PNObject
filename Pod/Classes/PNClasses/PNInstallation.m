@@ -37,7 +37,9 @@ static bool isFirstAccess = YES;
                               @"oldDeviceToken":@"oldDeviceToken",
                               @"badge":@"badge",
                               @"localeIdentifier":@"localeIdentifier",
-                              @"lastUpdate":@"lastUpdate",
+                              @"registeredAt":@"registeredAt",
+                              @"updatedAt":@"updatedAt",
+                              @"lastTokenUpdate":@"lastTokenUpdate",
                               };
     return mapping;
 }
@@ -95,7 +97,7 @@ static bool isFirstAccess = YES;
     _oldDeviceToken = _deviceToken;
     _deviceToken = ptoken;
     if (response != PNInstallationTypeNone) {
-        _lastUpdate = [NSDate date];
+        _lastTokenUpdate = [NSDate date];
     }
     
     return response;
@@ -111,6 +113,14 @@ static bool isFirstAccess = YES;
 
 - (void) resetBadge {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+
+- (void) setRegistered {
+    _registeredAt = [NSDate date];
+}
+
+- (void) setUpdated {
+    _updatedAt = [NSDate date];
 }
 
 #pragma mark -
