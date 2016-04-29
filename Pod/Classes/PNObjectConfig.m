@@ -30,6 +30,10 @@ NSString * const PNObjectLocalNotificationUserReloadFromServerFailure = @"PNObje
 NSString * const PNObjectLocalNotificationUserWillLogout = @"PNObjectLocalNotificationUserLogout";
 NSString * const PNObjectLocalNotificationUserEndLogout = @"PNObjectLocalNotificationUserLogout";
 
+NSString * const PNObjectLocalNotificationPNInstallationUserNew = @"PNObjectLocalNotificationPNInstallationUserNew";
+NSString * const PNObjectLocalNotificationPNInstallationUserChange = @"PNObjectLocalNotificationPNInstallationUserChange";
+NSString * const PNObjectLocalNotificationPNInstallationUserDelete = @"PNObjectLocalNotificationPNInstallationUserDelete";
+
 NSInteger const minPassLenght = 4;
 
 NSString * const PNObjectEncryptionKey = @"PNObjectConfigEncryptionKey";

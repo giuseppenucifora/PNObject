@@ -9,10 +9,10 @@
 #import "PNObject.h"
 #import "PNUser.h"
 
-typedef NS_ENUM(NSInteger, PNInstallationType) {
-    PNInstallationTypeNew = 0,
-    PNInstallationTypeChange,
-    PNInstallationTypeNone,
+typedef NS_ENUM(NSInteger, PNInstallationStatus) {
+    PNInstallationStatusNew = 0,
+    PNInstallationStatusChange,
+    PNInstallationStatusNone,
 };
 
 @interface PNInstallation : PNObject
@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, PNInstallationType) {
  *
  *  @return RETURN YES if token is not set o token changes, NO if token is the same of old token.
  */
-- (PNInstallationType) setDeviceTokenFromData:(nullable NSData *)deviceTokenData;
+- (PNInstallationStatus) setDeviceTokenFromData:(nullable NSData *)deviceTokenData;
 
 /**
  *  <#Description#>
@@ -82,6 +82,10 @@ typedef NS_ENUM(NSInteger, PNInstallationType) {
  *  <#Description#>
  */
 @property (nonatomic, assign) NSInteger badge;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, readonly) PNInstallationStatus installationStatus;
 /**
  *  <#Description#>
  */

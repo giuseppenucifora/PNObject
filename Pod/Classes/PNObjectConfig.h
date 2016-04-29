@@ -31,6 +31,10 @@ extern NSString* _Nonnull const PNObjectLocalNotificationUserReloadFromServerFai
 extern NSString* _Nonnull const PNObjectLocalNotificationUserWillLogout;
 extern NSString* _Nonnull const PNObjectLocalNotificationUserEndLogout;
 
+extern NSString* _Nonnull const PNObjectLocalNotificationPNInstallationUserNew;
+extern NSString* _Nonnull const PNObjectLocalNotificationPNInstallationUserChange;
+extern NSString* _Nonnull const PNObjectLocalNotificationPNInstallationUserDelete;
+
 #pragma mark -
 
 extern NSString* _Nonnull const EnvironmentProduction;

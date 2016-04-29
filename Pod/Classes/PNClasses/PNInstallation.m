@@ -76,9 +76,12 @@ static bool isFirstAccess = YES;
     return INSTALLATION;
 }
 
-- (PNInstallationType) setDeviceTokenFromData:(NSData *)deviceTokenData {
+- (PNInstallationStatus) setDeviceTokenFromData:(NSData *)deviceTokenData {
     
-    PNInstallationType response = PNInstallationTypeNone;
+    if(!deviceTokenData){
+        _installationStatus = PNInstallationStatusNone;
+        return _installationStatus;
+    }
     
     self.deviceTokenData = deviceTokenData;
     
@@ -89,10 +92,10 @@ static bool isFirstAccess = YES;
     
     if (!_deviceToken) {
         
-        response = PNInstallationTypeNew;
+        _installationStatus = PNInstallationStatusNew;
     }
     else if (_deviceToken && ![ptoken isEqualToString:_deviceToken]) {
-        response = PNInstallationTypeChange;
+        _installationStatus = PNInstallationStatusChange;
     }
     
     /*[self setValue:_deviceToken forKey:VariableName(oldDeviceToken)];
@@ -100,11 +103,11 @@ static bool isFirstAccess = YES;
      */
     _oldDeviceToken = _deviceToken;
     _deviceToken = ptoken;
-    if (response != PNInstallationTypeNone) {
+    if (_installationStatus != PNInstallationStatusNone) {
         _lastTokenUpdate = [NSDate date];
     }
     
-    return response;
+    return _installationStatus;
 }
 
 - (void) setBadge:(NSInteger)badge {
@@ -125,6 +128,21 @@ static bool isFirstAccess = YES;
 
 - (void) setUpdated {
     _updatedAt = [NSDate date];
+}
+
+- (void) setUser:(PNUser *)user {
+    if (!self.user) {
+        self.user = user;
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserNew object:nil];
+    }
+    else if(self.user.objID != user.objID) {
+        self.user = user;
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserChange object:nil];
+    }
+    else if (user == nil){
+        self.user = nil;
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserDelete object:nil];
+    }
 }
 
 #pragma mark -
@@ -160,6 +178,7 @@ static bool isFirstAccess = YES;
          [self setValue:[[UIDevice currentDevice] name] forKey:VariableName(deviceName)];
          [self setValue:[[DJLocalizationSystem shared] language] forKey:VariableName(localeIdentifier)];
          */
+        _installationStatus = PNInstallationStatusNone;
         _deviceType = @"iOS";
         _deviceModel = [[UIDevice currentDevice] model];
         _osVersion = [[UIDevice currentDevice] systemVersion];
