@@ -37,6 +37,7 @@ static bool isFirstAccess = YES;
                               @"oldDeviceToken":@"oldDeviceToken",
                               @"badge":@"badge",
                               @"localeIdentifier":@"localeIdentifier",
+                              @"lastUpdate":@"lastUpdate",
                               };
     return mapping;
 }
@@ -93,6 +94,9 @@ static bool isFirstAccess = YES;
      */
     _oldDeviceToken = _deviceToken;
     _deviceToken = ptoken;
+    if (response != PNInstallationTypeNone) {
+        _lastUpdate = [NSDate date];
+    }
     
     return response;
 }

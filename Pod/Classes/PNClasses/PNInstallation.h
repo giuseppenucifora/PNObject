@@ -72,5 +72,9 @@ typedef NS_ENUM(NSInteger, PNInstallationType) {
  *  <#Description#>
  */
 @property (nonatomic, assign) NSInteger badge;
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong) NSDate *lastUpdate;
 
 @end
