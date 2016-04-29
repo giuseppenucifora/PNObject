@@ -101,6 +101,18 @@ static bool isFirstAccess = YES;
     return response;
 }
 
+- (void) setBadge:(NSInteger)badge {
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badge];
+}
+
+- (NSInteger) badge {
+    return [[UIApplication sharedApplication] applicationIconBadgeNumber];
+}
+
+- (void) resetBadge {
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+
 #pragma mark -
 
 #pragma mark Private Methods
