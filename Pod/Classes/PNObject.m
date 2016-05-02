@@ -353,12 +353,24 @@ NSString * const PNObjectMappingSelector = @"selector";
     
     for (NSString *key in JSONMap) {
         
+        NSString *mappedJSONKey;
+        NSString *mappedJSONType;
+        
+        id mappingValue = [JSONMap objectForKey:key];
+        
+        if([mappingValue isKindOfClass:NSDictionary.class]) {
+            mappedJSONKey = [mappingValue valueForKey:@"key"];
+            mappedJSONType = [mappingValue valueForKey:@"type"];
+        } else {
+            mappedJSONKey = mappingValue;
+        }
+        
         if ([self.JSON objectForKey:[JSONMap objectForKey:key]]) {
             if ([[self.JSON objectForKey:[JSONMap objectForKey:key]] isKindOfClass:[NSDate class]]) {
-                 [JSONFormObject setObject:[[[self.JSON objectForKey:[JSONMap objectForKey:key]] toGlobalTime] stringWithFormat:kNSDateHelperFormatSQLDateWithTime] forKey:[JSONMap objectForKey:key]];
+                [JSONFormObject setObject:[[[self.JSON objectForKey:[JSONMap objectForKey:key]] toGlobalTime] stringWithFormat:kNSDateHelperFormatSQLDateWithTime] forKey:mappedJSONKey];
             }
             else {
-            [JSONFormObject setObject:[self.JSON objectForKey:[JSONMap objectForKey:key]] forKey:[JSONMap objectForKey:key]];
+                [JSONFormObject setObject:[self.JSON objectForKey:[JSONMap objectForKey:key]] forKey:mappedJSONKey];
             }
         }
     }
