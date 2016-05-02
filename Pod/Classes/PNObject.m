@@ -348,13 +348,18 @@ NSString * const PNObjectMappingSelector = @"selector";
     NSDictionary *JSONMap = [[self class] objcetMapping];
     
     if (self.JSON && [[self.JSON allKeys] count] == 0) {
-        self.JSON = [self reverseMapping];
+        self.JSON = [[NSMutableDictionary alloc] initWithDictionary:[self reverseMapping]];
     }
     
     for (NSString *key in JSONMap) {
         
         if ([self.JSON objectForKey:[JSONMap objectForKey:key]]) {
+            if ([[self.JSON objectForKey:[JSONMap objectForKey:key]] isKindOfClass:[NSDate class]]) {
+                 [JSONFormObject setObject:[[[self.JSON objectForKey:[JSONMap objectForKey:key]] toGlobalTime] stringWithFormat:kNSDateHelperFormatSQLDateWithTime] forKey:[JSONMap objectForKey:key]];
+            }
+            else {
             [JSONFormObject setObject:[self.JSON objectForKey:[JSONMap objectForKey:key]] forKey:[JSONMap objectForKey:key]];
+            }
         }
     }
     return JSONFormObject;
