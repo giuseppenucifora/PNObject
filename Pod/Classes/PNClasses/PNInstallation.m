@@ -139,7 +139,7 @@ static bool isFirstAccess = YES;
         _user = user;
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserChange object:nil];
     }
-    else if (user == nil){
+    else if (user == nil && _user){
         _user = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserDelete object:nil];
     }
