@@ -131,16 +131,16 @@ static bool isFirstAccess = YES;
 }
 
 - (void) setUser:(PNUser *)user {
-    if (!self.user) {
-        self.user = user;
+    if (!_user) {
+        _user = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserNew object:nil];
     }
-    else if(self.user.objID != user.objID) {
-        self.user = user;
+    else if(_user.objID != user.objID) {
+        _user = user;
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserChange object:nil];
     }
     else if (user == nil){
-        self.user = nil;
+        _user = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserDelete object:nil];
     }
 }
