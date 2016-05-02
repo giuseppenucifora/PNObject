@@ -131,8 +131,8 @@ static bool isFirstAccess = YES;
 }
 
 - (void) setUser:(PNUser *)user {
-    if (!_user) {
-        _user = nil;
+    if (!_user && user) {
+        _user = user;
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationPNInstallationUserNew object:nil];
     }
     else if(_user.objID != user.objID) {
