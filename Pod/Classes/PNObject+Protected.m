@@ -102,11 +102,14 @@
             BOOL val = [value boolValue];
             [self setValue:@(val) forKey:propertyName];
         },
+                       @"q" : ^{
+            NSInteger val = [value integerValue];
+            [self setValue:@(val) forKey:propertyName];
+        },
                        @"NSString" : ^{
             if (![self isObjNull:value]) {
                 [self setValue:value forKey:propertyName];
             }
-            
         },
                        @"NSNumber" : ^{
             NSNumber *val =  [NSNumber numberWithDouble:[value doubleValue]];
@@ -227,6 +230,10 @@
             short val = 0;
             [self setValue:@(val) forKey:propertyName];
         },
+                       @"q" : ^{
+            NSInteger val = 0;
+            [self setValue:@(val) forKey:propertyName];
+        },
                        @"B" : ^{
             [self setValue:@(NO) forKey:propertyName];
         },
@@ -324,6 +331,10 @@
                 },
                                @"B" : ^{
                     BOOL val = [property boolValue];
+                    [JSON setValue:@(val) forKey:mappedKey];
+                },
+                               @"q" : ^{
+                    NSInteger val = [property integerValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
                                

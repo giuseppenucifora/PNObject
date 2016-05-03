@@ -258,6 +258,10 @@ NSString * const PNObjectMappingSelector = @"selector";
                 BOOL val = [value boolValue];
                 [JSON setValue:@(val) forKey:propertyName];
             },
+                           @"q" : ^{
+                NSInteger val = [value integerValue];
+                [JSON setValue:@(val) forKey:propertyName];
+            },
                            @"NSURL" : ^{
                 NSURL *url = value;
                 
