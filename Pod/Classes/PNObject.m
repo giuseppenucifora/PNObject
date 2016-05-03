@@ -206,6 +206,7 @@ NSString * const PNObjectMappingSelector = @"selector";
     
     NSString *mappedJSONKey;
     NSString *mappedJSONType;
+    NSString *type;
     
     if (self.JSON && [[self.JSON allKeys] count] == 0) {
         self.JSON = [[NSMutableDictionary alloc] initWithDictionary:[self reverseMapping]];
@@ -217,14 +218,17 @@ NSString * const PNObjectMappingSelector = @"selector";
         id mappingValue = [self.JSONObjectMap objectForKey:propertyName];
         
         if([mappingValue isKindOfClass:NSDictionary.class]) {
-            mappedJSONKey = [mappingValue valueForKey:@"key"];
-            mappedJSONType = [mappingValue valueForKey:@"type"];
+            mappedJSONKey = [mappingValue valueForKey:PNObjectMappingKey];
+            mappedJSONType = [mappingValue valueForKey:PNObjectMappingType];
+            
         } else {
             mappedJSONKey = mappingValue;
             mappedJSONType = [properties valueForKey:propertyName];
         }
         
-        NSLog(@"PropertyName PropertyType: %@ - %@",propertyName,mappedJSONType);
+        type = [properties valueForKey:propertyName];
+        
+        NSLog(@"PropertyName MappedJsonType PropertyType: %@ - %@ - %@",propertyName,mappedJSONType,type);
         
         id value;
         
@@ -321,7 +325,7 @@ NSString * const PNObjectMappingSelector = @"selector";
                 
                 [JSON setValue:arr forKey:propertyName];
             }
-                           }[mappedJSONType] ?: ^{
+                           }[type] ?: ^{
                                BOOL isPNObjectSubclass = [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]];
                                if(isPNObjectSubclass) {
                                    

@@ -190,8 +190,8 @@
         id mappingValue = [self.JSONObjectMap valueForKey:propertyName];
         
         if([mappingValue isKindOfClass:NSDictionary.class]) {
-            mappedJSONKey = [mappingValue valueForKey:@"key"];
-            mappedJSONType = [mappingValue valueForKey:@"type"];
+            mappedJSONKey = [mappingValue valueForKey:PNObjectMappingKey];
+            mappedJSONType = [mappingValue valueForKey:PNObjectMappingType];
         } else {
             mappedJSONKey = mappingValue;
         }

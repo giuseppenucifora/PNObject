@@ -32,7 +32,7 @@ static bool isFirstAccess = YES;
 
 + (NSDictionary *)objcetMapping {
     
-    NSDictionary *mapping = @{@"user":@{@"key":@"user",@"type":[[[PNObjectConfig sharedInstance] userSubClass] PNObjClassName]},
+    NSDictionary *mapping = @{@"user":@{PNObjectMappingKey:@"user",PNObjectMappingType:[[[PNObjectConfig sharedInstance] userSubClass] PNObjClassName]},
                               @"deviceType":@"deviceType",
                               @"deviceModel":@"deviceModel",
                               @"deviceName":@"deviceName",

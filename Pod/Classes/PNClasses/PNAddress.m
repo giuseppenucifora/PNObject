@@ -25,7 +25,7 @@
                               @"street":@"street",
                               @"number":@"number",
                               @"zip":@"zip",
-                              @"location":@{@"key":@"location",@"type":@"PNLocation"},
+                              @"location":@{PNObjectMappingKey:@"location",PNObjectMappingType:@"PNLocation"},
                               };
     return mapping;
 }

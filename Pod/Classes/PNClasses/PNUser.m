@@ -409,7 +409,7 @@ static bool isFirstAccess = YES;
                               @"sex":@"sex",
                               @"birthDate":@"birthDate",
                               @"phone":@"phone",
-                              @"password":@{@"key":@"password",@"type":[PNObjcPassword PNObjClassName]},
+                              @"password":@{PNObjectMappingKey:@"password",PNObjectMappingType:[PNObjcPassword PNObjClassName]},
                               @"hasAcceptedPrivacy":@"hasAcceptedPrivacy",
                               @"hasAcceptedNewsletter":@"hasAcceptedNewsletter",
                               @"hasVerifiedEmail":@"hasVerifiedEmail",
