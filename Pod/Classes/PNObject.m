@@ -217,12 +217,10 @@ NSString * const PNObjectMappingSelector = @"selector";
             mappedJSONType = [mappingValue valueForKey:@"type"];
         } else {
             mappedJSONKey = mappingValue;
+            mappedJSONType = [properties valueForKey:propertyName];
         }
         
-        
-        NSString *propertyType = [properties valueForKey:propertyName];
-        
-        NSLog(@"PropertyName PropertyType: %@ - %@",propertyName,propertyType);
+        NSLog(@"PropertyName PropertyType: %@ - %@",propertyName,mappedJSONType);
         
         id value;
         
@@ -319,8 +317,8 @@ NSString * const PNObjectMappingSelector = @"selector";
                 
                 [JSON setValue:arr forKey:propertyName];
             }
-                           }[propertyType] ?: ^{
-                               BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
+                           }[mappedJSONType] ?: ^{
+                               BOOL isPNObjectSubclass = [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]];
                                if(isPNObjectSubclass) {
                                    
                                    NSDictionary *objectDict = [(PNObject*)value reverseMapping];
@@ -349,33 +347,139 @@ NSString * const PNObjectMappingSelector = @"selector";
     
     NSMutableDictionary *JSONFormObject = [[NSMutableDictionary alloc] init];
     
-    NSDictionary *JSONMap = [[self class] objcetMapping];
+    NSString *mappedJSONKey;
+    NSString *mappedJSONType;
     
-    if (self.JSON && [[self.JSON allKeys] count] == 0) {
-        self.JSON = [[NSMutableDictionary alloc] initWithDictionary:[self reverseMapping]];
-    }
+    NSDictionary *properties = [PNObject propertiesForClass:self.class];
     
-    for (NSString *key in JSONMap) {
-        
-        NSString *mappedJSONKey;
-        NSString *mappedJSONType;
-        
-        id mappingValue = [JSONMap objectForKey:key];
+    for (NSString* propertyName in self.JSONObjectMap) {
+        id mappingValue = [self.JSONObjectMap objectForKey:propertyName];
         
         if([mappingValue isKindOfClass:NSDictionary.class]) {
             mappedJSONKey = [mappingValue valueForKey:@"key"];
             mappedJSONType = [mappingValue valueForKey:@"type"];
         } else {
             mappedJSONKey = mappingValue;
+            mappedJSONType = [properties valueForKey:propertyName];
         }
         
-        if ([self.JSON objectForKey:[JSONMap objectForKey:key]]) {
-            if ([[self.JSON objectForKey:[JSONMap objectForKey:key]] isKindOfClass:[NSDate class]]) {
-                [JSONFormObject setObject:[[[self.JSON objectForKey:[JSONMap objectForKey:key]] toGlobalTime] stringWithFormat:kNSDateHelperFormatSQLDateWithTime] forKey:mappedJSONKey];
+        NSLog(@"PropertyName PropertyType: %@ - %@",propertyName,mappedJSONType);
+        
+        id value;
+        
+        @try {
+            value = [self valueForKey:propertyName];
+            
+            ((void (^)())@{
+                           @"c" : ^{
+                char val = [value charValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"d" : ^{
+                double val = [value doubleValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"f" : ^{
+                float val = [value floatValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"i" : ^{
+                int val = [value intValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"l" : ^{
+                long val = [value longValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"s" : ^{
+                short val = [value shortValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"B" : ^{
+                BOOL val = [value boolValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"q" : ^{
+                NSInteger val = [value integerValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"NSURL" : ^{
+                NSURL *url = value;
+                
+                if (![self isObjNull:url]) {
+                    [JSONFormObject setValue:[url absoluteString] forKey:propertyName];
+                }
+            },
+                           @"NSString" : ^{
+                NSString *val = [NSString stringWithFormat:@"%@", value];
+                if (![self isObjNull:val]) {
+                    [JSONFormObject setValue:val forKey:propertyName];
+                }
+            },
+                           @"NSNumber" : ^{
+                NSInteger val = [value integerValue];
+                [JSONFormObject setValue:@(val) forKey:propertyName];
+            },
+                           @"NSDate" : ^{
+                NSString *val = [[value toLocalTime] stringWithFormat:kNSDateHelperFormatSQLDateWithTime];
+                if (![self isObjNull:val]) {
+                    [JSONFormObject setValue:val forKey:propertyName];
+                }
+            },
+                           @"NSArray" : ^{
+                NSMutableArray *arr = [NSMutableArray array];
+                for(id object in value) {
+                    
+                    BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
+                    if(isPNObjectSubclass) {
+                        NSDictionary *objectDict = [(PNObject*) object JSONFormObject];
+                        
+                        [arr addObject:objectDict];
+                    }
+                    else {
+                        [arr addObject:object];
+                    }
+                }
+                
+                [JSONFormObject setValue:arr forKey:mappedJSONKey];
+            },
+                           @"NSMutableArray" : ^{
+                NSMutableArray *arr = [NSMutableArray array];
+                for(id object in value) {
+                    
+                    BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
+                    if(isPNObjectSubclass) {
+                        NSDictionary *objectDict = [(PNObject*) object JSONFormObject];
+                        
+                        [arr addObject:objectDict];
+                    }
+                    else {
+                        [arr addObject:object];
+                    }
+                }
+                
+                [JSONFormObject setValue:arr forKey:mappedJSONKey];
             }
-            else {
-                [JSONFormObject setObject:[self.JSON objectForKey:[JSONMap objectForKey:key]] forKey:mappedJSONKey];
-            }
+                           }[mappedJSONType] ?: ^{
+                               BOOL isPNObjectSubclass = [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]];
+                               if(isPNObjectSubclass) {
+                                   
+                                   NSDictionary *objectDict = [(PNObject*)value JSONFormObject];
+                                   
+                                   [JSONFormObject setValue:objectDict forKey:mappedJSONKey];
+                               }
+                               else {
+                                   // do nothing
+                                   [JSONFormObject setValue:value forKey:propertyName];
+                               }
+                           })();
+        }
+        @catch (NSException *exception) {
+            continue;
+        }
+        @finally {
+            
+            //NSLog(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
         }
     }
     return JSONFormObject;
@@ -468,54 +572,9 @@ NSString * const PNObjectMappingSelector = @"selector";
         }
     }
 }
-/*
- - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
- {
- @try {
- if ([change objectForKey:@"new"]) {
- if ([[[change objectForKey:@"new"] class] isSubclassOfClass:[PNObject class]]) {
- 
- NSDictionary *objectDict = [(PNObject*)[change objectForKey:@"new"] reverseMapping];
- 
- [self.JSON setValue:objectDict forKey:[[[self class] objcetMapping] objectForKey:keyPath]];
- }
- else {
- [self.JSON setObject:[change objectForKey:@"new"] forKey:[[[self class] objcetMapping] objectForKey:keyPath]];
- }
- }
- else {
- [self.JSON removeObjectForKey:[[[self class] objcetMapping] objectForKey:keyPath]];
- }
- }
- @catch (NSException *exception) {
- 
- }
- @finally {
- 
- }
- }
- */
-
 
 - (void)dealloc
 {
-    /*NSDictionary *properties = [PNObject propertiesForClass:self.class];
-     
-     for (NSString *propertyName in properties) {
-     if ([propertyName isEqualToString:@"description"] || [propertyName isEqualToString:@"debugDescription"])  {
-     continue;
-     }
-     
-     @try {
-     [self removeObserver:self forKeyPath:propertyName];
-     }
-     @catch (NSException *exception) {
-     
-     }
-     @finally {
-     
-     }
-     }*/
     
     _JSON = nil;
     _JSONObjectMap = nil;
