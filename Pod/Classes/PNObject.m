@@ -208,9 +208,7 @@ NSString * const PNObjectMappingSelector = @"selector";
     NSString *mappedJSONType;
     NSString *type;
     
-    if (self.JSON && [[self.JSON allKeys] count] == 0) {
-        self.JSON = [[NSMutableDictionary alloc] initWithDictionary:[self reverseMapping]];
-    }
+    
     
     NSDictionary *properties = [PNObject propertiesForClass:self.class];
     
@@ -346,6 +344,10 @@ NSString * const PNObjectMappingSelector = @"selector";
             
             //NSLog(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
         }
+    }
+    
+    if (self.JSON && [[self.JSON allKeys] count] == 0) {
+        self.JSON = JSON;
     }
     
     return JSON;
