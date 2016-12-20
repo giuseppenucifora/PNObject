@@ -11,13 +11,12 @@
 @interface DJLocalizationSystem (Private)
 
 /*!
- *	Special version that tries to load a storyboard string from all the tables
- *	except Localizable and InfoPlist. Defaults to comment if not found.
+ * Special version that tries to load a storyboard string from all the tables
+ * except Localizable and InfoPlist. Defaults to comment if not found.
  *
- *	@param key		The localization key
- *	@param comment	The localization value
- *
- *	@return The localized string
+ * @param key The localization key
+ * @param comment The localization value
+ * @return The localized string
  */
 - (NSString *)localizedStoryboardStringForKey:(NSString *)key value:(NSString *)comment;
 

@@ -16,7 +16,7 @@ install_framework()
     local source="$1"
   fi
 
-  local destination="${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
+  local destination="${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 
   if [ -L "${source}" ]; then
       echo "Symlinked..."
@@ -59,8 +59,13 @@ code_sign_if_enabled() {
   if [ -n "${EXPANDED_CODE_SIGN_IDENTITY}" -a "${CODE_SIGNING_REQUIRED}" != "NO" -a "${CODE_SIGNING_ALLOWED}" != "NO" ]; then
     # Use the current code_sign_identitiy
     echo "Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}"
-    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \"$1\""
-    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements "$1"
+    local code_sign_cmd="/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements "$1""
+
+    if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+      code_sign_cmd="$code_sign_cmd &"
+    fi
+    echo "$code_sign_cmd"
+    eval "$code_sign_cmd"
   fi
 }
 
@@ -84,46 +89,47 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-PNObject_Example/AFNetworking.framework"
-  install_framework "Pods-PNObject_Example/Bolts.framework"
-  install_framework "Pods-PNObject_Example/CocoaSecurity.framework"
-  install_framework "Pods-PNObject_Example/CodFis_Helper.framework"
-  install_framework "Pods-PNObject_Example/DJLocalization.framework"
-  install_framework "Pods-PNObject_Example/FBSDKCoreKit.framework"
-  install_framework "Pods-PNObject_Example/FBSDKLoginKit.framework"
-  install_framework "Pods-PNObject_Example/FBSDKShareKit.framework"
-  install_framework "Pods-PNObject_Example/JRSwizzle.framework"
-  install_framework "Pods-PNObject_Example/NACrypto.framework"
-  install_framework "Pods-PNObject_Example/NSDate_Utils.framework"
-  install_framework "Pods-PNObject_Example/NSString_Helper.framework"
-  install_framework "Pods-PNObject_Example/NSUserDefaults_AESEncryptor.framework"
-  install_framework "Pods-PNObject_Example/PEAR_FileManager_iOS.framework"
-  install_framework "Pods-PNObject_Example/PNObject.framework"
-  install_framework "Pods-PNObject_Example/PureLayout.framework"
-  install_framework "Pods-PNObject_Example/RZDataBinding.framework"
-  install_framework "Pods-PNObject_Example/StrongestPasswordValidator.framework"
-  install_framework "Pods-PNObject_Example/UIDevice_Utils.framework"
-  install_framework "Pods-PNObject_Example/nv_ios_http_status.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaSecurity/CocoaSecurity.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NACrypto/NACrypto.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSUserDefaults-AESEncryptor/NSUserDefaults_AESEncryptor.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PEAR-FileManager-iOS/PEAR_FileManager_iOS.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PNObject/PNObject.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/RZDataBinding/RZDataBinding.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/StrongestPasswordValidator/StrongestPasswordValidator.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIDevice-Utils/UIDevice_Utils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/nv-ios-http-status/nv_ios_http_status.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-PNObject_Example/AFNetworking.framework"
-  install_framework "Pods-PNObject_Example/Bolts.framework"
-  install_framework "Pods-PNObject_Example/CocoaSecurity.framework"
-  install_framework "Pods-PNObject_Example/CodFis_Helper.framework"
-  install_framework "Pods-PNObject_Example/DJLocalization.framework"
-  install_framework "Pods-PNObject_Example/FBSDKCoreKit.framework"
-  install_framework "Pods-PNObject_Example/FBSDKLoginKit.framework"
-  install_framework "Pods-PNObject_Example/FBSDKShareKit.framework"
-  install_framework "Pods-PNObject_Example/JRSwizzle.framework"
-  install_framework "Pods-PNObject_Example/NACrypto.framework"
-  install_framework "Pods-PNObject_Example/NSDate_Utils.framework"
-  install_framework "Pods-PNObject_Example/NSString_Helper.framework"
-  install_framework "Pods-PNObject_Example/NSUserDefaults_AESEncryptor.framework"
-  install_framework "Pods-PNObject_Example/PEAR_FileManager_iOS.framework"
-  install_framework "Pods-PNObject_Example/PNObject.framework"
-  install_framework "Pods-PNObject_Example/PureLayout.framework"
-  install_framework "Pods-PNObject_Example/RZDataBinding.framework"
-  install_framework "Pods-PNObject_Example/StrongestPasswordValidator.framework"
-  install_framework "Pods-PNObject_Example/UIDevice_Utils.framework"
-  install_framework "Pods-PNObject_Example/nv_ios_http_status.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaSecurity/CocoaSecurity.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NACrypto/NACrypto.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSUserDefaults-AESEncryptor/NSUserDefaults_AESEncryptor.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PEAR-FileManager-iOS/PEAR_FileManager_iOS.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PNObject/PNObject.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/RZDataBinding/RZDataBinding.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/StrongestPasswordValidator/StrongestPasswordValidator.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UIDevice-Utils/UIDevice_Utils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/nv-ios-http-status/nv_ios_http_status.framework"
+fi
+if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+  wait
 fi

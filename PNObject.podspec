@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = "PNObject"
-s.version          = "0.8.2"
+s.version          = "0.9.0"
 s.summary          = "PNObject is a simple replica of the more complex ParseObject"
 
 # This description is used to generate tags and improve search results.
@@ -18,11 +18,11 @@ s.summary          = "PNObject is a simple replica of the more complex ParseObje
 #   * Finally, don't worry about the indent, CocoaPods strips it!  
 # s.description      = <<-DESC DESC
 
-s.homepage         = "https://github.com/giuseppenucifora/PNObject"
+s.homepage         = "https://git.giuseppenucifora.com/giuseppenucifora/PNObject"
 # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
 s.license          = 'MIT'
 s.author           = { "Giuseppe Nucifora" => "me@giuseppenucifora.com" }
-s.source           = { :git => "https://github.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
+s.source           = { :git => "https://git.giuseppenucifora.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
 # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
 s.platform     = :ios, '8.0'

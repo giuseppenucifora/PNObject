@@ -14,33 +14,33 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - Bolts (1.7.0):
-    - Bolts/AppLinks (= 1.7.0)
-    - Bolts/Tasks (= 1.7.0)
-  - Bolts/AppLinks (1.7.0):
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.7.0)
+  - Bolts/Tasks (1.8.4)
   - CocoaSecurity (1.2.4)
   - CodFis-Helper (0.1.3)
-  - DJLocalization (1.2.0):
-    - JRSwizzle
+  - DJLocalization (1.2.2):
+    - DJLocalization/Core (= 1.2.2)
+  - DJLocalization/Core (1.2.2)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
-  - FBSDKCoreKit (4.11.0):
+  - FBSDKCoreKit (4.18.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.11.0):
+  - FBSDKLoginKit (4.18.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.11.0):
+  - FBSDKShareKit (4.18.0):
     - FBSDKCoreKit
-  - FBSnapshotTestCase (2.1.0):
-    - FBSnapshotTestCase/SwiftSupport (= 2.1.0)
-  - FBSnapshotTestCase/Core (2.1.0)
-  - FBSnapshotTestCase/SwiftSupport (2.1.0):
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - JRSwizzle (1.0)
   - NACrypto (1.0.6)
   - NSDate_Utils (0.1.3)
   - NSString-Helper (1.0.5)
@@ -48,7 +48,7 @@ PODS:
     - CocoaSecurity (~> 1.2.2)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (0.8.0):
+  - PNObject (0.9.0):
     - AFNetworking
     - CodFis-Helper
     - DJLocalization
@@ -64,11 +64,11 @@ PODS:
     - RZDataBinding
     - StrongestPasswordValidator
     - UIDevice-Utils
-  - PureLayout (3.0.1)
-  - RZDataBinding (2.0.3)
+  - PureLayout (3.0.2)
+  - RZDataBinding (2.1.0)
   - Specta (1.0.5)
   - StrongestPasswordValidator (0.1.2)
-  - UIDevice-Utils (0.1.5)
+  - UIDevice-Utils (0.1.6)
 
 DEPENDENCIES:
   - AFNetworking
@@ -91,32 +91,33 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   PNObject:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   CocoaSecurity: d288a6f87e0f363823d2cb83e753814a6944f71a
   CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
-  DJLocalization: 55ab1d1ee4ac2eb3ec4e3a8a93145fd9d10ae6eb
+  DJLocalization: 0c84029af375647d4104a42ae36be87194c46c47
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
-  FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
-  FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
-  FBSDKShareKit: 2d1746144cfc8a9dbbd24997c34ee0471be51b6a
-  FBSnapshotTestCase: 366ecd378511d7716c79991cd8067d1eed23578d
-  JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
+  FBSDKCoreKit: 15fef8804a4629f98c6f4e55e81a76c9d725d85e
+  FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
+  FBSDKShareKit: 0b8d6cc3f103c75297eb3c62caec284a2ccf1b9e
+  FBSnapshotTestCase: '094f9f314decbabe373b87cc339bea235a63e07a'
   NACrypto: ce3900f1775f1b0cc27ce7c4953b94c598a74149
   NSDate_Utils: 68669d2c81f310ee13026c791f4f0ed227b94c65
   NSString-Helper: 459e1b6a62b3bf7db10f01b0d102548608e945c4
   NSUserDefaults-AESEncryptor: da02cfef056f1e18ebe2748767915f08b274c9c5
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: f907e7f4623a24495a2f8aa743dbe58a48f90069
-  PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
-  RZDataBinding: 00d468ebe667f02c2bd5416f87b4b5d826188c4d
+  PNObject: f8d8116d0f72252552bddcbc3703d6d1e4719354
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  RZDataBinding: 6981e90ddaae2f5e02028323b1043f8c31013109
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
-  UIDevice-Utils: a87bbaed53a74d503deb3e25511c9a4d865b92ea
+  UIDevice-Utils: 11c10b18d3c6489b45a97436e5ae6064a3622820
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 7c7096ec3fa75c9e7a1d2b538e5719592b9f5e60
+
+COCOAPODS: 1.2.0.beta.1

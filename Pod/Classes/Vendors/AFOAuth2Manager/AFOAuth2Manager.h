@@ -123,7 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionTask *)authenticateUsingFacebookOAuthWithURLString:(NSString *)URLString
                                                        facebookID:(NSString *)facebookid
                                                     facebookToken:(NSString *)facebookToken
-                                                            scope:(NSString *)scope
+                                                            scope:(nullable NSString *)scope
                                                           success:(void (^)(AFOAuthCredential * _Nonnull))success
                                                           failure:(void (^)(NSError * _Nonnull))failure;
 /**

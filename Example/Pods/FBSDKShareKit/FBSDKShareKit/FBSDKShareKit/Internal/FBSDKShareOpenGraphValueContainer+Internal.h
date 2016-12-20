@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "FBSDKShareOpenGraphValueContainer.h"
+#import <FBSDKShareKit/FBSDKShareOpenGraphValueContainer.h>
 
 @interface FBSDKShareOpenGraphValueContainer ()
 

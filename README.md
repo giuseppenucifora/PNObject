@@ -20,46 +20,90 @@ it, simply add the following line to your Podfile:
 pod "PNObject"
 ```
 
-##Usage Example
+#Usage Example
 
-PNObject Subclass
+##PNObject Subclass
 
-```ruby
-Customer.h
+```
+//Customer.h
+
 
 #import <PNObject/PNObject.h>
 
 @interface Customer : PNObject <PNObjectSubclassing>
 
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *lastName;
-@property (nonatomic, strong) NSString *email;
-@property (nonatomic, strong) NSDate *birthDate;
-@property (nonatomic, strong) PNAddress *address;
+    @property (nonatomic, strong) NSString *name;
+    @property (nonatomic, strong) NSString *lastName;
+    @property (nonatomic, strong) NSString *email;
+    @property (nonatomic, strong) NSDate *birthDate;
+    @property (nonatomic, strong) PNAddress *address;
 
 @end
 ```
 
-```ruby
+```
 #import "Customer.h"
 
 @implementation Customer
 
 + (NSString *) objectClassName {
-return @"Customer";
+    return @"Customer";
 }
 
 
 + (NSDictionary *) objcetMapping {
-NSDictionary *mapping = @{
-@"name":@"first_name",
-@"surname":@"last_name",
-@"email":@"email",
-@"birthDate":@"birth_date",
-@"address":@{@"key":@"address",@"type":@"PNAddress"},
-};
-return mapping;
+    
+    NSDictionary *mapping = @{
+        @"name":@"first_name",
+        @"surname":@"last_name",
+        @"email":@"email",
+        @"birthDate":@"birth_date",
+        @"address":@{
+            @"key":@"address",
+            @"type":@"PNAddress"
+        },
+    };
+    
+    return mapping;
 }
+```
+
+##Configure endpoints
+
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [PNObjectConfig initSharedInstanceForEnvironments:
+        @{
+            EnvironmentDevelopment : @"http://domain.local/api/v1/",
+            EnvironmentStage : @"https://domain.stage/api/v1/",
+            EnvironmentProduction : @"http://domain.prod/api/v1/"
+        } 
+        userSubclass:[PNUser class] 
+        withOauth:YES
+        ];
+        
+        ...
+}
+```
+###Set custom header
+```
+    [[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
+```
+
+###Set clients ID e client Secret for environments
+```
+    [[PNObjectConfig sharedInstance] setClientID:@"XXXXXXXX" clientSecret:@"XXXXXXX" forEnv:EnvironmentProduction];
+    [[PNObjectConfig sharedInstance] setClientID:@"XXXXXXXX" clientSecret:@"XXXXXXX" forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"XXXXXXXX" clientSecret:@"XXXXXXX" forEnv:EnvironmentDevelopment];
+```
+
+###Enable specific Environment
+```
+#ifdef DEBUG
+    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+#endif
 ```
 
 

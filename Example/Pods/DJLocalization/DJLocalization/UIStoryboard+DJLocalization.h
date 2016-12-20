@@ -16,6 +16,6 @@
  * @param name The storyboard's name
  * @return The desired storyboard
  */
-+ (instancetype)dj_storyboardWithName:(NSString *)name;
++ (nonnull instancetype)dj_storyboardWithName:(nonnull NSString *)name;
 
 @end

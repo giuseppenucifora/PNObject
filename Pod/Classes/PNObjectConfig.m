@@ -453,6 +453,7 @@ static bool isFirstAccess = YES;
             return;
         }
     }
+    
     [_authManager authenticateUsingFacebookOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] facebookID:facebookID facebookToken:facebookToken scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
         

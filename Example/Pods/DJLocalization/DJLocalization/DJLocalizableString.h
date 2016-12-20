@@ -10,7 +10,4 @@
 
 @interface DJLocalizableString : NSString
 
-- (NSUInteger)length;
-- (unichar)characterAtIndex:(NSUInteger)index;
-
 @end

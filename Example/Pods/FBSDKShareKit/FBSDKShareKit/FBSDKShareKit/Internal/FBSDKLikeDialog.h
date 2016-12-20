@@ -19,7 +19,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "FBSDKLikeObjectType.h"
+#import <FBSDKShareKit/FBSDKLikeObjectType.h>
 
 @protocol FBSDKLikeDialogDelegate;
 

@@ -3,6 +3,4 @@ framework module DJLocalization {
 
   export *
   module * { export * }
-
-  private header "DJLocalizationSystem+Private.h"
 }

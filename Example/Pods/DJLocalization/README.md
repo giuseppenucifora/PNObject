@@ -25,6 +25,11 @@ it, simply add the following line to your Podfile:
 
     pod "DJLocalization"
 
+For Swift, use:
+
+    pod "DJLocalization/Swift"
+
+
 ### Manually
 
 _**Important note if your project doesn't use ARC**: you must add the `-fobjc-arc` compiler flag to all 'DJLocalization' files in Target Settings > Build Phases > Compile Sources._
@@ -37,10 +42,16 @@ _**Important note if your project doesn't use ARC**: you must add the `-fobjc-ar
 
 Then simply add the following import to your prefix header, or any file where you use the NSLocalizedString macro (or variants).
 
-    #import <DJLocalization/DJLocalization.h>
+    @import DJLocalization;
 
 #####*Important:*
 You must import the header wherever you use the NSLocalizedString macro, as this header replaces the default NSLocalizedString macro with a custom one. If you don't, runtime switching of languages won't work.
+
+### Localization
+
+Use your normal localization workflow and everything should work correctly. For code strings use `NSLocalizedString`, for storyboards use Base Internationalization.
+
+As mentioned before, `NSLocalizedString` will only work correctly if you first include the correct headers. If you want a bit more safety, the library provides some extra macros `DJLocalizedString` that provide the same functionality as the overridden `NSLocalizedString` macros. This way you'll get a compilation error if you forget to include the headers.
 
 ### Switching languages
 
