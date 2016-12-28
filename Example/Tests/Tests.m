@@ -2,8 +2,8 @@
 //  PNObjectTests.m
 //  PNObjectTests
 //
-//  Created by Giuseppe Nucifora on 12/28/2015.
-//  Copyright (c) 2015 Giuseppe Nucifora. All rights reserved.
+//  Created by Giuseppe Nucifora on 12/28/2016.
+//  Copyright (c) 2016 Giuseppe Nucifora. All rights reserved.
 //
 
 // https://github.com/Specta/Specta

@@ -139,6 +139,11 @@ static NSDateFormatter *_displayFormatter = nil;
     return -[self timeIntervalSinceDate:anotherDate];
 }
 
+- (NSString *) monthSymbol {
+    
+    return [[[NSDate sharedDateFormatter] monthSymbols] objectAtIndex:([self month]-1)];
+}
+
 -(NSDate *) toLocalTime
 {
     NSTimeZone *tz = [NSTimeZone defaultTimeZone];

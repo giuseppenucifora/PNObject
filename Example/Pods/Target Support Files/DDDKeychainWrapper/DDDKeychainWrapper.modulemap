@@ -1,0 +1,6 @@
+framework module DDDKeychainWrapper {
+  umbrella header "DDDKeychainWrapper-umbrella.h"
+
+  export *
+  module * { export * }
+}

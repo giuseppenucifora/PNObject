@@ -22,40 +22,35 @@ PODS:
   - Bolts/Tasks (1.8.4)
   - CocoaSecurity (1.2.4)
   - CodFis-Helper (0.1.3)
+  - DDDKeychainWrapper (1.0.0)
   - DJLocalization (1.2.2):
     - DJLocalization/Core (= 1.2.2)
   - DJLocalization/Core (1.2.2)
   - Expecta (1.0.5)
-  - Expecta+Snapshots (3.0.0):
-    - Expecta (~> 1.0)
-    - FBSnapshotTestCase/Core (~> 2.0)
-    - Specta (~> 1.0)
   - FBSDKCoreKit (4.18.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.18.0):
     - FBSDKCoreKit
   - FBSDKShareKit (4.18.0):
     - FBSDKCoreKit
-  - FBSnapshotTestCase (2.1.4):
-    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
-  - FBSnapshotTestCase/Core (2.1.4)
-  - FBSnapshotTestCase/SwiftSupport (2.1.4):
-    - FBSnapshotTestCase/Core
-  - NACrypto (1.0.6)
-  - NSDate_Utils (0.1.3)
+  - libsodium (1.0.11)
+  - NAChloride (2.2.1):
+    - libsodium
+  - NSDate_Utils (1.0.0)
   - NSString-Helper (1.0.5)
   - NSUserDefaults-AESEncryptor (0.0.4):
     - CocoaSecurity (~> 1.2.2)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (0.9.0):
+  - PNObject (1.0.0):
     - AFNetworking
     - CodFis-Helper
+    - DDDKeychainWrapper
     - DJLocalization
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSDKShareKit
-    - NACrypto
+    - NAChloride
     - NSDate_Utils
     - NSString-Helper
     - NSUserDefaults-AESEncryptor
@@ -71,23 +66,10 @@ PODS:
   - UIDevice-Utils (0.1.6)
 
 DEPENDENCIES:
-  - AFNetworking
-  - CodFis-Helper
   - Expecta
-  - Expecta+Snapshots
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - FBSDKShareKit
-  - FBSnapshotTestCase
-  - NSDate_Utils
-  - NSString-Helper
-  - nv-ios-http-status
-  - PEAR-FileManager-iOS
   - PNObject (from `../`)
   - PureLayout
   - Specta
-  - StrongestPasswordValidator
-  - UIDevice-Utils
 
 EXTERNAL SOURCES:
   PNObject:
@@ -98,26 +80,26 @@ SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   CocoaSecurity: d288a6f87e0f363823d2cb83e753814a6944f71a
   CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
+  DDDKeychainWrapper: e681a4daba6448786fa83b4941f58102a33b1897
   DJLocalization: 0c84029af375647d4104a42ae36be87194c46c47
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   FBSDKCoreKit: 15fef8804a4629f98c6f4e55e81a76c9d725d85e
   FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
   FBSDKShareKit: 0b8d6cc3f103c75297eb3c62caec284a2ccf1b9e
-  FBSnapshotTestCase: '094f9f314decbabe373b87cc339bea235a63e07a'
-  NACrypto: ce3900f1775f1b0cc27ce7c4953b94c598a74149
-  NSDate_Utils: 68669d2c81f310ee13026c791f4f0ed227b94c65
+  libsodium: 9aba161d2ee096977ecbdcce1ada69ffe511970c
+  NAChloride: 8f3d4f9a20df6b68840789a22a70aa4fcc437b0c
+  NSDate_Utils: 45d47afab329001ccafe056308d0cc05460e5298
   NSString-Helper: 459e1b6a62b3bf7db10f01b0d102548608e945c4
   NSUserDefaults-AESEncryptor: da02cfef056f1e18ebe2748767915f08b274c9c5
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: f8d8116d0f72252552bddcbc3703d6d1e4719354
+  PNObject: 34839792d6fcc437b3123d0770b4d45e845bf2c9
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   RZDataBinding: 6981e90ddaae2f5e02028323b1043f8c31013109
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
   UIDevice-Utils: 11c10b18d3c6489b45a97436e5ae6064a3622820
 
-PODFILE CHECKSUM: 7c7096ec3fa75c9e7a1d2b538e5719592b9f5e60
+PODFILE CHECKSUM: 57090c7ea88a91b49ca8dd73d9e7c6b866e772ba
 
 COCOAPODS: 1.2.0.beta.1

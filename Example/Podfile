@@ -1,27 +1,13 @@
-source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target 'PNObject_Example' do
-    pod 'PNObject', :path => '../'
-    pod 'PEAR-FileManager-iOS'
-    pod 'NSDate_Utils'
-    pod 'UIDevice-Utils'
-    pod 'AFNetworking'
-    pod 'nv-ios-http-status'
-    pod 'NSString-Helper'
-    pod 'CodFis-Helper'
-    pod 'StrongestPasswordValidator'
-    pod 'PureLayout'
-    pod 'FBSDKCoreKit'
-    pod 'FBSDKShareKit'
-    pod 'FBSDKLoginKit'
+  pod 'PNObject', :path => '../'
+  pod 'PureLayout'
 
-end
+  target 'PNObject_Tests' do
+    inherit! :search_paths
 
-target 'PNObject_Tests' do
-    pod 'PNObject', :path => '../'
     pod 'Specta'
-    pod 'Expecta'
-    pod 'FBSnapshotTestCase'
-    pod 'Expecta+Snapshots'
+  pod 'Expecta'
+  end
 end

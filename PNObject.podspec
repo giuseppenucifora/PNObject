@@ -7,30 +7,27 @@
 #
 
 Pod::Spec.new do |s|
-s.name             = "PNObject"
-s.version          = "0.9.0"
-s.summary          = "PNObject is a simple replica of the more complex ParseObject"
+  s.name             = 'PNObject'
+  s.version          = '1.0.0'
+  s.summary          = 'PNObject is a simple replica of the more complex ParseObject'
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!  
-# s.description      = <<-DESC DESC
 
-s.homepage         = "https://git.giuseppenucifora.com/giuseppenucifora/PNObject"
-# s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
-s.license          = 'MIT'
-s.author           = { "Giuseppe Nucifora" => "me@giuseppenucifora.com" }
-s.source           = { :git => "https://git.giuseppenucifora.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
-# s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+#s.description      = <<-DESC TODO: Add long description of the pod here. DESC
 
-s.platform     = :ios, '8.0'
-s.requires_arc = true
+  s.homepage         = "https://git.giuseppenucifora.com/giuseppenucifora/PNObject"
+  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.author           = { 'Giuseppe Nucifora' => 'me@giuseppenucifora.com' }
+  s.source           = { :git => "https://git.giuseppenucifora.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
+  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-s.source_files = 'Pod/Classes/**/*'
-# s.frameworks = 'UIKit', 'MapKit'
+  s.ios.deployment_target = '8.0'
 
+  s.source_files = 'PNObject/Classes/**/*'
+  
+  # s.resource_bundles = {
+  #   'PNObject' => ['PNObject/Assets/*.png']
+  # }
 
 s.dependency 'AFNetworking'
 s.dependency 'PEAR-FileManager-iOS'
@@ -43,10 +40,9 @@ s.dependency 'StrongestPasswordValidator'
 s.dependency 'FBSDKCoreKit'
 s.dependency 'FBSDKShareKit'
 s.dependency 'FBSDKLoginKit'
-s.dependency 'NACrypto'
+s.dependency 'NAChloride'
+s.dependency 'DDDKeychainWrapper'
 s.dependency 'NSUserDefaults-AESEncryptor'
 s.dependency 'DJLocalization'
 s.dependency 'RZDataBinding'
-
-
 end

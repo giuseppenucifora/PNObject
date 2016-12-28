@@ -99,6 +99,7 @@ static NSString *kNSDateHelperFormatSQLDateWithTimeEN_shashSeparated        = @"
 + (NSString *) stringForDisplayFromDate:(NSDate *) date;
 + (NSString *) stringForDisplayFromDate:(NSDate *) date prefixed:(BOOL) prefixed;
 + (NSString *) stringForDisplayFromDate:(NSDate *) date prefixed:(BOOL) prefixed alwaysDisplayTime:(BOOL)displayTime;
+- (NSString *) monthSymbol;
 - (NSString *) string;
 - (NSString *) stringWithFormat:(NSString *) format;
 - (NSString *) stringWithFormat:(NSString *) format timeZone:(NSTimeZone*) timezone;

@@ -93,11 +93,12 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CocoaSecurity/CocoaSecurity.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DDDKeychainWrapper/DDDKeychainWrapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NACrypto/NACrypto.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NAChloride/NAChloride.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSUserDefaults-AESEncryptor/NSUserDefaults_AESEncryptor.framework"
@@ -107,6 +108,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/RZDataBinding/RZDataBinding.framework"
   install_framework "$BUILT_PRODUCTS_DIR/StrongestPasswordValidator/StrongestPasswordValidator.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIDevice-Utils/UIDevice_Utils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/libsodium/libsodium.framework"
   install_framework "$BUILT_PRODUCTS_DIR/nv-ios-http-status/nv_ios_http_status.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -114,11 +116,12 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CocoaSecurity/CocoaSecurity.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DDDKeychainWrapper/DDDKeychainWrapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NACrypto/NACrypto.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NAChloride/NAChloride.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSUserDefaults-AESEncryptor/NSUserDefaults_AESEncryptor.framework"
@@ -128,6 +131,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/RZDataBinding/RZDataBinding.framework"
   install_framework "$BUILT_PRODUCTS_DIR/StrongestPasswordValidator/StrongestPasswordValidator.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIDevice-Utils/UIDevice_Utils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/libsodium/libsodium.framework"
   install_framework "$BUILT_PRODUCTS_DIR/nv-ios-http-status/nv_ios_http_status.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
