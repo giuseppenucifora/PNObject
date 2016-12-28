@@ -320,7 +320,6 @@ static bool isFirstAccess = YES;
                         [user setLastName:[result objectForKey:@"last_name"]];
                         [user setEmail:[result objectForKey:@"email"]];
                         [user setFacebookId:[result objectForKey:@"id"]];
-                        [user setAuthenticated:YES];
                         [user setFacebookUser:YES];
                         [user saveLocally];
                         
