@@ -144,7 +144,16 @@
      NSLog(@"response : %@",error);
      }];*/
     
-    [PNUser socialLoginWithBlockSuccess:^(PNUser * _Nullable responseObject) {
+    /*[PNUser socialLoginWithBlockSuccess:^(PNUser * _Nullable responseObject) {
+        
+    } failure:^(NSError * _Nonnull error) {
+        
+    }];*/
+    
+    [PNUser socialUserFromViewController:self blockSuccess:^(PNUser * _Nullable responseObject) {
+        
+        NSLog(@"%@",[[PNUser currentUser] JSONFormObject]);
+
         
     } failure:^(NSError * _Nonnull error) {
         

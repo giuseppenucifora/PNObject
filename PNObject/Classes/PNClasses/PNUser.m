@@ -39,10 +39,10 @@ static bool isFirstAccess = YES;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
-
+        
         USER = [[super allocWithZone:NULL] initForCurrentUser];
     });
-
+    
     return USER;
 }
 
@@ -76,26 +76,26 @@ static bool isFirstAccess = YES;
     if (isFirstAccess) {
         [self doesNotRecognizeSelector:_cmd];
     }
-
+    
     NSDictionary *savedUser = [[PNObjectModel sharedInstance] fetchObjectsWithClass:[self class]];
-
+    
     Class objectClass = NSClassFromString([[self class] PNObjClassName]);
     
     if (savedUser) {
-
+        
         self = [[objectClass alloc] initWithLocalJSON:savedUser];
     }
     else {
         self = [[objectClass alloc] init];
     }
-
+    
     if (self) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [self autoLogin];
         });
     }
-
+    
     return self;
 }
 
@@ -119,7 +119,7 @@ static bool isFirstAccess = YES;
     if(self.email && [self.email isValidEmail] && self.password && [self.password isValid]){
         return YES;
     }
-
+    
     return NO;
 }
 
@@ -155,9 +155,9 @@ static bool isFirstAccess = YES;
         [[self class] GETWithEndpointAction:@"user/profile"
                                    progress:nil
                                     success:^(NSURLSessionDataTask * _Nullable task, id  _Nullable responseObject) {
-
+                                        
                                         NSLogDebug(@"%@",[responseObject objectForKey:@"user"]);
-
+                                        
                                         [[[self class] currentUser] populateObjectFromJSON:[responseObject objectForKey:@"user"]];
                                         [[[self class] currentUser] updateFacebookData];
                                         [[[self class] currentUser] saveLocally];
@@ -166,7 +166,7 @@ static bool isFirstAccess = YES;
                                         if (success) {
                                             success([[self class] currentUser]);
                                         }
-
+                                        
                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                         NSLogDebug(@"%@",error);
                                         if (failure) {
@@ -184,7 +184,7 @@ static bool isFirstAccess = YES;
 - (void) registerWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                            Success:(nullable void (^)(PNUser * _Nullable responseObject))success
                            failure:(nullable void (^)(NSError * _Nonnull error))failure {
-
+    
     [[self class] POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
                                 progress:uploadProgress
                                  success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
@@ -284,8 +284,8 @@ static bool isFirstAccess = YES;
 }
 
 + (void) socialUserFromViewController:(UIViewController* _Nullable) viewController
-                          blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
-                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
+                         blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                              failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
     if (!viewController) {
         viewController = [PNObjectUtilities topViewController];
@@ -314,27 +314,21 @@ static bool isFirstAccess = YES;
                         }
                     }
                     else {
-                        [[PNObjectConfig sharedInstance] refreshTokenForUserWithFacebookID:[result objectForKey:@"id"] facebookToken:[FBSDKAccessToken currentAccessToken].tokenString withBlockSuccess:^(BOOL refreshSuccess) {
-                            
-                            PNUser *user = [[self class] new];
-                            
-                            [user setFacebookId:[result objectForKey:@"id"]];
-                            [user setAuthenticated:YES];
-                            [user setFacebookUser:YES];
-                            [user saveLocally];
-                            [user reloadFormServer];
-                            
-                            USER = user;
-                            
-                            if (success) {
-                                success(user);
-                            }
-                            
-                        } failure:^(NSError * _Nonnull error) {
-                            if (failure) {
-                                failure(error);
-                            }
-                        }];
+                        
+                        PNUser *user = [[self class] new];
+                        [user setFirstName:[result objectForKey:@"first_name"]];
+                        [user setLastName:[result objectForKey:@"last_name"]];
+                        [user setEmail:[result objectForKey:@"email"]];
+                        [user setFacebookId:[result objectForKey:@"id"]];
+                        [user setAuthenticated:YES];
+                        [user setFacebookUser:YES];
+                        [user saveLocally];
+                        
+                        USER = user;
+                        
+                        if (success) {
+                            success(user);
+                        }
                     }
                 }];
                 
@@ -345,18 +339,18 @@ static bool isFirstAccess = YES;
         FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
         [login logInWithReadPermissions: @[@"public_profile",@"email",@"user_birthday"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
-                NSLog(@"Process error");
+                NSLogDebug(@"Process error");
                 if (failure) {
                     failure(error);
                 }
             } else if (result.isCancelled) {
-                NSLog(@"Cancelled");
+                NSLogDebug(@"Cancelled");
                 if (failure) {
                     NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Request cancelled", @"") code:kHTTPStatusCodeMethodNotAllowed userInfo:nil];
                     failure(error);
                 }
             } else {
-                NSLog(@"Logged in");
+                NSLogDebug(@"Logged in");
                 [self socialUserFromViewController:viewController blockSuccess:success failure:failure];
             }
         }];
@@ -374,16 +368,16 @@ static bool isFirstAccess = YES;
                           password:(NSString * _Nonnull) password
                   withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                            failure:(nullable void (^)(NSError * _Nonnull error))failure {
-
+    
     [[PNObjectConfig sharedInstance] refreshTokenForUserWithEmail:email password:password withBlockSuccess:^(BOOL refreshSuccess) {
         if (refreshSuccess) {
-
+            
             PNUser *user = [[self class] new];
-
+            
             PNObjcPassword *objectPassword = [PNObjcPassword new];
             [objectPassword setPassword:password];
             [objectPassword setConfirmPassword:password];
-
+            
             [user setAuthenticated:YES];
             [user setEmail:email];
             [user setPassword:objectPassword];
@@ -391,22 +385,22 @@ static bool isFirstAccess = YES;
             [user reloadFormServer];
             
             USER = user;
-
+            
             if (success) {
                 success(user);
             }
         }
     } failure:failure];
-
+    
 }
 
 + (void) uploadAvatar:(UIImage * _Nonnull) avatar
              Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
               Success:(nullable void (^)(NSDictionary * _Nullable responseObject))success
               failure:(nullable void (^)(NSError * _Nonnull error))failure {
-
+    
     PNObjectFormData *formData = [PNObjectFormData formDataFromUIImage:avatar compression:1 name:@"file" fileName:@"avatar.jpg" mimeType:@"image/jpeg"];
-
+    
     [self POSTWithEndpointAction:@"user/avatar"
                         formData:@[formData]
                       parameters:nil
@@ -452,11 +446,11 @@ static bool isFirstAccess = YES;
 
 
 - (UIImage* _Nonnull) userProfileImage:(BOOL) forceReload {
-
+    
     if (!_profileImage || forceReload) {
-
+        
         if (_profileImageUrl) {
-
+            
             NSError* error = nil;
             NSData* data = [NSData dataWithContentsOfURL:_profileImageUrl options:NSDataReadingUncached error:&error];
             if (error) {
@@ -468,18 +462,18 @@ static bool isFirstAccess = YES;
             }
         }
         else {
-			return [UIImage imageNamed:@"userProfileAvatar"];
+            return [UIImage imageNamed:@"userProfileAvatar"];
         }
     }
     else {
-		return _profileImage;
+        return _profileImage;
     }
 }
 
 #pragma mark PNObjectSubclassing Protocol
 
 + (NSDictionary *)objcetMapping {
-
+    
     NSDictionary *mapping = @{
                               @"userId":@"uuid",
                               @"firstName":@"firstName",
