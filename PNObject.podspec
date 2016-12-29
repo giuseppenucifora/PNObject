@@ -22,7 +22,6 @@ s.source           = { :git => "https://git.giuseppenucifora.com/giuseppenucifor
 # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
 s.ios.deployment_target = '8.0'
-s.ios.frameworks = 'Security'
 
 s.source_files = 'PNObject/Classes/**/*'
 
