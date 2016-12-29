@@ -12,7 +12,6 @@
 #import "AFJSONResponseSerializerWithData.h"
 #import "NSString+Helper.h"
 #import "PNObject+Protected.h"
-#import "NSUserDefaults+AESEncryptor.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <NAChloride/NAChloride.h>
 #import <DDDKeychainWrapper/DDDKeychainWrapper.h>
