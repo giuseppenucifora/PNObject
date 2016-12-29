@@ -1,6 +1,0 @@
-framework module NSString_Helper {
-  umbrella header "NSString-Helper-umbrella.h"
-
-  export *
-  module * { export * }
-}

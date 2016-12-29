@@ -1,4 +1,6 @@
 PODS:
+  - AeroGear-Crypto (0.2.3):
+    - libsodium-ios (~> 0.4.5)
   - AFNetworking (3.1.0):
     - AFNetworking/NSURLSession (= 3.1.0)
     - AFNetworking/Reachability (= 3.1.0)
@@ -32,14 +34,13 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.18.0):
     - FBSDKCoreKit
-  - libsodium (1.0.11)
-  - NAChloride (2.2.1):
-    - libsodium
+  - libsodium-ios (0.4.5)
   - NSDate_Utils (1.0.0)
   - NSString-Helper (1.0.5)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (1.0.1):
+  - PNObject (1.0.2):
+    - AeroGear-Crypto
     - AFNetworking
     - CodFis-Helper
     - DDDKeychainWrapper
@@ -47,7 +48,6 @@ PODS:
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSDKShareKit
-    - NAChloride
     - NSDate_Utils
     - NSString-Helper
     - nv-ios-http-status
@@ -72,6 +72,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  AeroGear-Crypto: d97389c7aa9b25360fecd5938f051ab9027d67cc
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
@@ -81,19 +82,18 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 15fef8804a4629f98c6f4e55e81a76c9d725d85e
   FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
   FBSDKShareKit: 0b8d6cc3f103c75297eb3c62caec284a2ccf1b9e
-  libsodium: 9aba161d2ee096977ecbdcce1ada69ffe511970c
-  NAChloride: 8f3d4f9a20df6b68840789a22a70aa4fcc437b0c
+  libsodium-ios: c3fc6b66b8c67315710ae0dc4c95e496b4f18533
   NSDate_Utils: 45d47afab329001ccafe056308d0cc05460e5298
   NSString-Helper: 459e1b6a62b3bf7db10f01b0d102548608e945c4
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: 29dddced794646b5f5c59c0654c8211d5e45b18c
+  PNObject: ef6217847529a71128e2041c2146c7b1410ad20f
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   RZDataBinding: 6981e90ddaae2f5e02028323b1043f8c31013109
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
   UIDevice-Utils: 11c10b18d3c6489b45a97436e5ae6064a3622820
 
-PODFILE CHECKSUM: 57090c7ea88a91b49ca8dd73d9e7c6b866e772ba
+PODFILE CHECKSUM: db08ccdd0a68e33d4a1cceb1843643fbab2f2a8e
 
 COCOAPODS: 1.2.0.beta.3

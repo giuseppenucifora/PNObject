@@ -87,49 +87,6 @@ strip_invalid_archs() {
   fi
 }
 
-
-if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DDDKeychainWrapper/DDDKeychainWrapper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NAChloride/NAChloride.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PEAR-FileManager-iOS/PEAR_FileManager_iOS.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PNObject/PNObject.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/RZDataBinding/RZDataBinding.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/StrongestPasswordValidator/StrongestPasswordValidator.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/UIDevice-Utils/UIDevice_Utils.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/libsodium/libsodium.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/nv-ios-http-status/nv_ios_http_status.framework"
-fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DDDKeychainWrapper/DDDKeychainWrapper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NAChloride/NAChloride.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PEAR-FileManager-iOS/PEAR_FileManager_iOS.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PNObject/PNObject.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/RZDataBinding/RZDataBinding.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/StrongestPasswordValidator/StrongestPasswordValidator.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/UIDevice-Utils/UIDevice_Utils.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/libsodium/libsodium.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/nv-ios-http-status/nv_ios_http_status.framework"
-fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
 fi

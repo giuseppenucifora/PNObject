@@ -13,7 +13,7 @@
 #import "NSString+Helper.h"
 #import "PNObject+Protected.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <NAChloride/NAChloride.h>
+#import <AeroGear-Crypto/AeroGearCrypto.h>
 #import <DDDKeychainWrapper/DDDKeychainWrapper.h>
 #import "HTTPStatusCodes.h"
 
@@ -177,8 +177,12 @@ static bool isFirstAccess = YES;
         
         
         if(![DDDKeychainWrapper dataForKey:PNObjectEncryptionKey]){
-            NSData *key = [NARandom randomData:NASecretBoxKeySize];
-            NSData *nonce = [NARandom randomData:NASecretBoxNonceSize];
+            
+            AGPBKDF2 *pbkdf2 = [[AGPBKDF2 alloc] init];
+            
+            NSData *key = [pbkdf2 deriveKey:[NSString getRandString:256]];
+            
+            NSData *nonce = [AGRandomGenerator randomBytes:128];
             
             [DDDKeychainWrapper setData:key forKey:PNObjectEncryptionKey];
             

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PNObject'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = 'PNObject is a simple replica of the more complex ParseObject'
 
 
@@ -40,7 +40,7 @@ s.dependency 'StrongestPasswordValidator'
 s.dependency 'FBSDKCoreKit'
 s.dependency 'FBSDKShareKit'
 s.dependency 'FBSDKLoginKit'
-s.dependency 'NAChloride'
+s.dependency 'AeroGear-Crypto'
 s.dependency 'DDDKeychainWrapper'
 s.dependency 'DJLocalization'
 s.dependency 'RZDataBinding'

@@ -1,6 +1,0 @@
-framework module CodFis_Helper {
-  umbrella header "CodFis-Helper-umbrella.h"
-
-  export *
-  module * { export * }
-}
