@@ -13,7 +13,7 @@
 #import "NSString+Helper.h"
 #import "PNObject+Protected.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <AeroGear-Crypto/AeroGearCrypto.h>
+#import <NSDataAES/NSData+AES.h>
 #import <DDDKeychainWrapper/DDDKeychainWrapper.h>
 #import "HTTPStatusCodes.h"
 
@@ -37,7 +37,6 @@ NSString * const PNObjectLocalNotificationPNInstallationUserDelete = @"PNObjectL
 NSInteger const minPassLenght = 4;
 
 NSString * const PNObjectEncryptionKey = @"PNObjectConfigEncryptionKey";
-NSString * const PNObjectEncryptionNonce = @"PNObjectConfigEncryptionNonce";
 
 NSString * const PNObjectServiceClientCredentialIdentifier = @"PNObjectServiceClientCredentialIdentifier";
 NSString * const PNObjectServiceUserCredentialIdentifier = @"PNObjectServiceUserCredentialIdentifier";
@@ -178,15 +177,10 @@ static bool isFirstAccess = YES;
         
         if(![DDDKeychainWrapper dataForKey:PNObjectEncryptionKey]){
             
-            AGPBKDF2 *pbkdf2 = [[AGPBKDF2 alloc] init];
-            
-            NSData *key = [pbkdf2 deriveKey:[NSString getRandString:256]];
-            
-            NSData *nonce = [AGRandomGenerator randomBytes:128];
+            NSData *key = [[NSString getRandString:256] dataUsingEncoding:NSUTF8StringEncoding];
             
             [DDDKeychainWrapper setData:key forKey:PNObjectEncryptionKey];
-            
-            [DDDKeychainWrapper setData:nonce forKey:PNObjectEncryptionNonce];
+
         }
         
         

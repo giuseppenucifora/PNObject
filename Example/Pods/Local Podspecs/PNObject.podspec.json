@@ -17,6 +17,9 @@
   "platforms": {
     "ios": "8.0"
   },
+  "ios": {
+    "frameworks": "Security"
+  },
   "source_files": "PNObject/Classes/**/*",
   "dependencies": {
     "AFNetworking": [
@@ -52,7 +55,7 @@
     "FBSDKLoginKit": [
 
     ],
-    "AeroGear-Crypto": [
+    "NSDataAES": [
 
     ],
     "DDDKeychainWrapper": [
