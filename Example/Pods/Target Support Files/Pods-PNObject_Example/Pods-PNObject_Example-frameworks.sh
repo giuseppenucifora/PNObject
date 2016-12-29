@@ -91,7 +91,6 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CocoaSecurity/CocoaSecurity.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DDDKeychainWrapper/DDDKeychainWrapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
@@ -101,7 +100,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/NAChloride/NAChloride.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NSUserDefaults-AESEncryptor/NSUserDefaults_AESEncryptor.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PEAR-FileManager-iOS/PEAR_FileManager_iOS.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PNObject/PNObject.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
@@ -114,7 +112,6 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CocoaSecurity/CocoaSecurity.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CodFis-Helper/CodFis_Helper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DDDKeychainWrapper/DDDKeychainWrapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DJLocalization/DJLocalization.framework"
@@ -124,7 +121,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/NAChloride/NAChloride.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSDate_Utils/NSDate_Utils.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSString-Helper/NSString_Helper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NSUserDefaults-AESEncryptor/NSUserDefaults_AESEncryptor.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PEAR-FileManager-iOS/PEAR_FileManager_iOS.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PNObject/PNObject.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
