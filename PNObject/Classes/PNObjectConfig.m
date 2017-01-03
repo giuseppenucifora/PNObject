@@ -219,7 +219,7 @@ static bool isFirstAccess = YES;
         _currentEndPointBaseUrl = [[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl];
         _currentOAuthClientID = [[_configuration objectForKey:_currentEnv] objectForKey:Client_ID];
         _currentOAuthClientSecret = [[_configuration objectForKey:_currentEnv] objectForKey:Client_Secret];
-        if ([[_configuration objectForKey:_currentEnv] containsValueForKey:Client_Username] && [[_configuration objectForKey:_currentEnv] containsValueForKey:Client_Password]) {
+        if ([[_configuration objectForKey:_currentEnv] objectForKey:Client_Username] && [[_configuration objectForKey:_currentEnv] objectForKey:Client_Password]) {
             _currentOAuthUserName = [[_configuration objectForKey:_currentEnv] objectForKey:Client_Username];
             _currentOAuthPassword = [[_configuration objectForKey:_currentEnv] objectForKey:Client_Password];
         }

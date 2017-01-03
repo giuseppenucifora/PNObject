@@ -52,6 +52,7 @@
     
     [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
    
+    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
     
     //[[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"XMLHttpRequest" forKey:@"X-Request-With"];
     
