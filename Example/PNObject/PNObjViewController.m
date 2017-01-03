@@ -150,14 +150,14 @@
         
     }];*/
     
-    [PNUser socialUserFromViewController:self blockSuccess:^(PNUser * _Nullable responseObject) {
+    /*[PNUser socialUserFromViewController:self blockSuccess:^(PNUser * _Nullable responseObject) {
         
         NSLog(@"%@",[[PNUser currentUser] JSONFormObject]);
 
         
     } failure:^(NSError * _Nonnull error) {
         
-    }];
+    }];*/
     
     
     

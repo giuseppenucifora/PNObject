@@ -44,13 +44,19 @@ extern NSString* _Nonnull const EnvironmentDevelopment;
 extern NSString* _Nonnull const Client_ID;
 extern NSString* _Nonnull const Client_Secret;
 
+typedef NS_ENUM(NSInteger, OAuthMode) {
+    OAuthModeNo = 0,
+    OAuthModeClientCredential,
+    OAuthModePassword
+};
+
 @interface PNObjectConfig : NSObject
 
 /**
  * gets singleton object.
  * @return singleton
  */
-+ (instancetype _Nonnull) sharedInstance;
++ (instancetype _Nullable) sharedInstance;
 
 /**
  *	Oauth is NO by default
@@ -90,11 +96,11 @@ extern NSString* _Nonnull const Client_Secret;
  *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
  *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
  *   }
- *  @param oauthEnabled                <#oauthEnabled description#>
+ *  @param oauthMode                <#oauthEnabled description#>
  *
  *  @return singleton
  */
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments withOauth:(BOOL) oauthEnabled;
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments withOauthMode:(OAuthMode) oauthMode;
 
 /**
  *  <#Description#>
@@ -106,11 +112,11 @@ extern NSString* _Nonnull const Client_Secret;
  *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
  *   }
  *  @param userSubClass                <#userSubClass description#>
- *  @param oauthEnabled                <#oauthEnabled description#>
+ *  @param oauthMode                <#oauthEnabled description#>
  *
  *  @return <#return value description#>
  */
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withOauth:(BOOL) oauthEnabled;
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withOauthMode:(OAuthMode) oauthMode;
 /**
  *  <#Description#>
  *
@@ -134,7 +140,12 @@ extern NSString* _Nonnull const Client_Secret;
  */
 - (void) removeHTTPHeaderValueForKey:(NSString * _Nonnull) key;
 
+
+
 - (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret forEnv:(NSString * _Nonnull) environment;
+
+
+- (void) setOauthUserName:(NSString * _Nonnull)oauthUserName oauthPassword:(NSString* _Nonnull) oauthPassword forEnv:(NSString *) environment;
 
 /**
  *  <#Description#>

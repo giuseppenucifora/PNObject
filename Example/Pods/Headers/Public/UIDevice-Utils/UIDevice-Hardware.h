@@ -1,0 +1,1 @@
+../../../UIDevice-Utils/Pod/Classes/UIDevice-Hardware.h

@@ -1,6 +1,0 @@
-framework module PNObject {
-  umbrella header "PNObject-umbrella.h"
-
-  export *
-  module * { export * }
-}

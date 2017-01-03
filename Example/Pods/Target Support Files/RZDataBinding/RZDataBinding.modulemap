@@ -1,6 +1,0 @@
-framework module RZDataBinding {
-  umbrella header "RZDataBinding-umbrella.h"
-
-  export *
-  module * { export * }
-}

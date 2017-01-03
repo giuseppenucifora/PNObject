@@ -1,6 +1,0 @@
-framework module PEAR_FileManager_iOS {
-  umbrella header "PEAR-FileManager-iOS-umbrella.h"
-
-  export *
-  module * { export * }
-}
