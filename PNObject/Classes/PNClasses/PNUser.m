@@ -182,7 +182,7 @@ static bool isFirstAccess = YES;
 }
 
 - (void) registerWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                           Success:(nullable void (^)(PNUser * _Nullable responseObject))success
+                           Success:(nullable void (^)(PNUser * _Nullable user))success
                            failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
     [[self class] POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
@@ -204,7 +204,7 @@ static bool isFirstAccess = YES;
 
 
 + (void) socialLoginFromViewController:(UIViewController* _Nullable) viewController
-                          blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                          blockSuccess:(nullable void (^)(PNUser * _Nullable user))success
                                failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
     if (!viewController) {
@@ -284,7 +284,7 @@ static bool isFirstAccess = YES;
 }
 
 + (void) socialUserFromViewController:(UIViewController* _Nullable) viewController
-                         blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                         blockSuccess:(nullable void (^)(PNUser * _Nullable user))success
                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
     if (!viewController) {

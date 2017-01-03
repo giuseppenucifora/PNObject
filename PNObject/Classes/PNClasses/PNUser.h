@@ -78,7 +78,7 @@
  *  @param failure        <#failure description#>
  */
 + (void) socialLoginFromViewController:(UIViewController* _Nullable) viewController
-                          blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                          blockSuccess:(nullable void (^)(PNUser * _Nullable user))success
                                failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 
@@ -87,7 +87,7 @@
 
 
 + (void) socialUserFromViewController:(UIViewController* _Nullable) viewController
-                         blockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                         blockSuccess:(nullable void (^)(PNUser * _Nullable user))success
                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**

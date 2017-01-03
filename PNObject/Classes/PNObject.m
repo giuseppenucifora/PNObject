@@ -13,7 +13,7 @@
 #import "PNObjectConstants.h"
 #import "PNObject+Protected.h"
 #import "objc/runtime.h"
-#import "PNObject+PNObjectConnection.m"
+#import "PNObject+PNObjectConnection.h"
 #import <RZDataBinding/RZDataBinding.h>
 #import "HTTPStatusCodes.h"
 

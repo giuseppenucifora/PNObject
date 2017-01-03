@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = 'PNObject'
-s.version          = '1.0.2'
+s.version          = '1.0.5'
 s.summary          = 'PNObject is a simple replica of the more complex ParseObject'
 
 
