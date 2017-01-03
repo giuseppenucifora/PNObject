@@ -33,7 +33,7 @@ PODS:
   - FBSDKShareKit (4.18.0):
     - FBSDKCoreKit
   - NSDataAES (0.2.2)
-  - NSDate_Utils (1.0.0)
+  - NSDate_Utils (1.0.1)
   - NSString-Helper (1.0.5)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
@@ -80,7 +80,7 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
   FBSDKShareKit: 0b8d6cc3f103c75297eb3c62caec284a2ccf1b9e
   NSDataAES: 967ea3337476a80e9838a533c25d570a06855ed0
-  NSDate_Utils: 45d47afab329001ccafe056308d0cc05460e5298
+  NSDate_Utils: b451375dcbf9099a444c32de029c4498a5e7d58e
   NSString-Helper: 459e1b6a62b3bf7db10f01b0d102548608e945c4
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3

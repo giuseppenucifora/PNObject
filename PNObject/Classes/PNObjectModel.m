@@ -146,8 +146,6 @@ static bool isFirstAccess = YES;
             
             if ([_fileManager checkPath:className]) {
                 
-                NSError *error = nil;
-                
                 NSData *data = [[_fileManager fetchFileDataWithPath:className] aes_decrypt:[DDDKeychainWrapper dataForKey: PNObjectEncryptionKey]];
                 
                 return [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -161,8 +159,6 @@ static bool isFirstAccess = YES;
 - (id _Nonnull) saveLocally:(id _Nonnull) object {
     
     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
-    
-    NSError *error = nil;
     
     if(isPNObjectSubclass) {
         

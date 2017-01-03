@@ -145,7 +145,7 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 - (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret forEnv:(NSString * _Nonnull) environment;
 
 
-- (void) setOauthUserName:(NSString * _Nonnull)oauthUserName oauthPassword:(NSString* _Nonnull) oauthPassword forEnv:(NSString *) environment;
+- (void) setOauthUserName:(NSString * _Nonnull)oauthUserName oauthPassword:(NSString* _Nonnull) oauthPassword forEnv:(NSString * _Nonnull) environment;
 
 /**
  *  <#Description#>

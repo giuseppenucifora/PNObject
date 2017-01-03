@@ -523,12 +523,10 @@ static NSDateFormatter *_displayFormatter = nil;
         
         [dateFormatter setDateFormat:dateFormat];
         
-        NSDate *theDate = nil;
-        NSError *error = nil;
-        if (![dateFormatter getObjectValue:&theDate forString:dateString range:nil error:&error]) {
-            NSLog(@"Date '%@' could not be parsed: %@", dateString, error);
-        }
-        else {
+        NSDate *theDate = [NSDate dateFromString:dateString withFormat:dateFormat];
+        
+        if (theDate) {
+            
             return dateFormat;
         }
     }

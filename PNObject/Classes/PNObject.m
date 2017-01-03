@@ -432,9 +432,21 @@ NSString * const PNObjectMappingSelector = @"selector";
                 [JSONFormObject setValue:@(val) forKey:propertyName];
             },
                            @"NSDate" : ^{
-                NSString *val = [[value toLocalTime] stringWithFormat:kNSDateHelperFormatSQLDateWithTime];
-                if (![self isObjNull:val]) {
-                    [JSONFormObject setValue:val forKey:propertyName];
+                NSDate *val;
+                
+                if ([value isKindOfClass:[NSString class]]) {
+                    
+                    NSString *str = [NSString stringWithFormat:@"%@", value];
+                    NSString *dateFormat = [NSDate parseDateFormatFromString:str];
+                    
+                    if (dateFormat == nil) {
+                        dateFormat = kNSDateHelperFormatSQLDateWithTime;
+                    }
+                    
+                    val = [[NSDate dateFromString:str withFormat:dateFormat] toLocalTime];
+                }
+                else {
+                    val = [value toLocalTime];
                 }
             },
                            @"NSArray" : ^{
