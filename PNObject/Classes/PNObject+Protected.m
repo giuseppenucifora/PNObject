@@ -118,7 +118,13 @@
         },
                        @"NSDate" : ^{
             NSString *str = [NSString stringWithFormat:@"%@", value];
-            NSDate *val = [[NSDate dateFromString:str withFormat:kNSDateHelperFormatSQLDateWithTime] toLocalTime];
+            NSString *dateFormat = [NSDate parseDateFormatFromString:str];
+            
+            if (dateFormat == nil) {
+                dateFormat = kNSDateHelperFormatSQLDateWithTime;
+            }
+            
+            NSDate *val = [[NSDate dateFromString:str withFormat:dateFormat] toLocalTime];
             if (![self isObjNull:val]) {
                 [self setValue:val forKey:propertyName];
             }
