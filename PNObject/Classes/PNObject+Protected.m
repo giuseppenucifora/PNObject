@@ -125,6 +125,10 @@
             }
             
             NSDate *val = [[NSDate dateFromString:str withFormat:dateFormat] toLocalTime];
+            
+            if (!val) {
+                val = [NSDate dateFromISO8601String:str];
+            }
             if (![self isObjNull:val]) {
                 [self setValue:val forKey:propertyName];
             }

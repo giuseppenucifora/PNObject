@@ -13,76 +13,108 @@
 #define kMoonRiseMinutes        17*60
 #define kMoonSetMinutes         7*60
 
-static NSString *kNSDateHelperFormatFullDateWithTime                = @"MMM d, yyyy h:mm a";
-static NSString *kNSDateHelperFormatFullDate                        = @"MMM d, yyyy";
-static NSString *kNSDateHelperFormatShortDateWithTime               = @"MMM d h:mm a";
-static NSString *kNSDateHelperFormatShortDate                       = @"MMM d";
-static NSString *kNSDateHelperFormatWeekday                         = @"EEEE";
-static NSString *kNSDateHelperFormatWeekdayWithTime                 = @"EEEE h:mm a";
-static NSString *kNSDateHelperFormatTime                            = @"h:mm a";
-static NSString *kNSDateHelperFormatTimeWithPrefix                  = @"'at' h:mm a";
+static NSString * _Nonnull kNSDateHelperFormatFullDateWithTime                = @"MMM d, yyyy h:mm a";
+static NSString * _Nonnull kNSDateHelperFormatFullDate                        = @"MMM d, yyyy";
+static NSString * _Nonnull kNSDateHelperFormatShortDateWithTime               = @"MMM d h:mm a";
+static NSString * _Nonnull kNSDateHelperFormatShortDate                       = @"MMM d";
+static NSString * _Nonnull kNSDateHelperFormatWeekday                         = @"EEEE";
+static NSString * _Nonnull kNSDateHelperFormatWeekdayWithTime                 = @"EEEE h:mm a";
+static NSString * _Nonnull kNSDateHelperFormatTime                            = @"h:mm a";
+static NSString * _Nonnull kNSDateHelperFormatTimeWithPrefix                  = @"'at' h:mm a";
 
-static NSString *kNSDateHelperFormatSQLTime                         = @"HH:mm:ss";
+static NSString * _Nonnull kNSDateHelperFormatSQLTime                         = @"HH:mm:ss";
 
-static NSString *kNSDateHelperFormatSQLDate                         = @"yyyy-MM-dd";
-static NSString *kNSDateHelperFormatSQLDate_shashSeparated          = @"yyyy/MM/dd";
-static NSString *kNSDateHelperFormatSQLDate_notSlashSeparated 		= @"yyyy-MM-dd";
+static NSString * _Nonnull kNSDateHelperFormatSQLDate                         = @"yyyy-MM-dd";
+static NSString * _Nonnull kNSDateHelperFormatSQLDate_shashSeparated          = @"yyyy/MM/dd";
 
-static NSString *kNSDateHelperFormatSQLDateIT                       = @"dd-MM-yyyy";
-static NSString *kNSDateHelperFormatSQLDateIT_shashSeparated        = @"dd/MM/yyyy";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateIT                       = @"dd-MM-yyyy";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateIT_shashSeparated        = @"dd/MM/yyyy";
 
-static NSString *kNSDateHelperFormatSQLDateEN                       = @"MM-dd-yyyy";
-static NSString *kNSDateHelperFormatSQLDateEN_shashSeparated        = @"MM/dd/yyyy";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateEN                       = @"MM-dd-yyyy";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateEN_shashSeparated        = @"MM/dd/yyyy";
 
-static NSString *kNSDateHelperFormatSQLDateWithTime                 = @"yyyy-MM-dd HH:mm:ss";
-static NSString *kNSDateHelperFormatSQLDateWithTime_shashSeparated  = @"yyyy/MM/dd HH:mm:ss";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTime                 = @"yyyy-MM-dd HH:mm:ss";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTime_shashSeparated  = @"yyyy/MM/dd HH:mm:ss";
 
-static NSString *kNSDateHelperFormatSQLDateWithTimeIT                       = @"dd-MM-yyyy HH:mm:ss";
-static NSString *kNSDateHelperFormatSQLDateWithTimeIT_shashSeparated        = @"dd/MM/yyyy HH:mm:ss";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeIT                       = @"dd-MM-yyyy HH:mm:ss";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeIT_shashSeparated        = @"dd/MM/yyyy HH:mm:ss";
 
-static NSString *kNSDateHelperFormatSQLDateWithTimeEN                       = @"MM-dd-yyyy HH:mm:ss";
-static NSString *kNSDateHelperFormatSQLDateWithTimeEN_shashSeparated        = @"MM/dd/yyyy HH:mm:ss";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeEN                       = @"MM-dd-yyyy HH:mm:ss";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeEN_shashSeparated        = @"MM/dd/yyyy HH:mm:ss";
+
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone_shashSeparated = @"yyyy/MM/dd'T'HH:mm:ss'Z'";
+
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneEN = @"MM-dd-yyyy'T'HH:mm:ss'Z'";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneEN_shashSeparated = @"MM/dd/yyyy'T'HH:mm:ss'Z'";
+
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT = @"dd-MM-yyyy'T'HH:mm:ss'Z'";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT_shashSeparated = @"dd/MM/yyyy'T'HH:mm:ss'Z'";
 
 @interface NSDate (NSDate_Util)
 
 + (void)initializeStatics;
 
-+ (NSCalendar *) sharedCalendar;
-+ (NSDateFormatter *) sharedDateFormatter;
++ (NSCalendar * _Nonnull) sharedCalendar;
++ (NSDateFormatter * _Nonnull) sharedDateFormatter;
 
-- (NSDate *) dateToNearestMinutes:(NSInteger)minutes;
++ (NSDate * _Nullable) dateFromString:(NSString * _Nonnull) string;
++ (NSDate * _Nullable) dateFromString:(NSString * _Nonnull) string withFormat:(NSString * _Nonnull) format;
++ (NSDate * _Nullable) dateFromString:(NSString * _Nonnull) string withFormat:(NSString * _Nonnull) format withTimeZone:(NSTimeZone * _Nonnull) timeZone;
++ (NSDate * _Nullable) dateFromISO8601String:(NSString * _Nonnull) string;
 
-- (NSDate *) dateByAddingMinutes:(NSInteger) dMinutes;
-- (NSDate *) dateByAddingHours:(NSInteger) hours;
-- (NSDate*) dateByAddingDays:(NSInteger) days;
-- (NSDate*) dateByAddingYears:(NSInteger) years;
++ (NSString * _Nonnull) stringFromDate:(NSDate * _Nonnull) date withFormat:(NSString * _Nonnull) string;
++ (NSString * _Nonnull) stringFromDate:(NSDate * _Nonnull) date;
++ (NSString * _Nonnull) stringForDisplayFromDate:(NSDate * _Nonnull) date;
++ (NSString * _Nonnull) stringForDisplayFromDate:(NSDate * _Nonnull) date prefixed:(BOOL) prefixed;
++ (NSString * _Nonnull) stringForDisplayFromDate:(NSDate * _Nonnull) date prefixed:(BOOL) prefixed alwaysDisplayTime:(BOOL)displayTime;
 
-- (NSDate *) dateBySubtractingMinutes:(NSInteger) dMinutes;
-- (NSDate *) dateBySubtractingHours:(NSInteger) hours;
-- (NSDate *) dateBySubtractingDays:(NSInteger) days;
-- (NSDate *) dateBySubtractingYears:(NSInteger) years;
++ (NSString * _Nonnull) dateFormatString;
++ (NSString * _Nonnull) timeFormatString;
++ (NSString * _Nonnull) timestampFormatString;
++ (NSString * _Nonnull) dbFormatString;
 
-- (NSDate *) dateAtStartOfDay;
-- (NSDate *) dateAtEndOfDay;
++ (NSString * _Nonnull) parseDateFormatFromString:(NSString * _Nonnull) dateString;
 
-- (NSInteger) minutesAfterDate:(NSDate *) aDate;
-- (CGFloat) distanceInWeeksToDate:(NSDate *) anotherDate;
-- (CGFloat) distanceInDaysToDate:(NSDate *) anotherDate;
-- (CGFloat) distanceInHoursToDate:(NSDate *) anotherDate;
-- (CGFloat) distanceInMinutesToDate:(NSDate *) anotherDate;
-- (CGFloat) distanceInSeconsToDate:(NSDate *) anotherDate;
++ (NSString * _Nonnull) WCFStringFromDate:(NSDate * _Nonnull) date;
 
-- (NSDate *) toLocalTime;
-- (NSDate *) toGlobalTime;
++ (NSArray * _Nullable) getSlotTimesFromDate:(NSDate * _Nonnull) date distanceMinutes:(NSInteger) minutes;
 
-- (BOOL) isSameYearAsDate:(NSDate *) aDate;
-- (BOOL) isEarlierThanDate:(NSDate *) aDate;
-- (BOOL) isLaterThanDate:(NSDate *) aDate;
++ (NSString * _Nonnull) getUniversalHourFromDateString:(NSString * _Nonnull) string formatterString:(NSString * _Nonnull) formatterString andUppercaseString:(BOOL) uppercaseString;
+
+- (NSDate * _Nonnull) dateToNearestMinutes:(NSInteger)minutes;
+
+- (NSDate * _Nonnull) dateByAddingMinutes:(NSInteger) dMinutes;
+- (NSDate * _Nonnull) dateByAddingHours:(NSInteger) hours;
+- (NSDate * _Nonnull) dateByAddingDays:(NSInteger) days;
+- (NSDate * _Nonnull) dateByAddingYears:(NSInteger) years;
+
+- (NSDate * _Nonnull) dateBySubtractingMinutes:(NSInteger) dMinutes;
+- (NSDate * _Nonnull) dateBySubtractingHours:(NSInteger) hours;
+- (NSDate * _Nonnull) dateBySubtractingDays:(NSInteger) days;
+- (NSDate * _Nonnull) dateBySubtractingYears:(NSInteger) years;
+
+- (NSDate * _Nonnull) dateAtStartOfDay;
+- (NSDate * _Nonnull) dateAtEndOfDay;
+
+- (NSInteger) minutesAfterDate:(NSDate * _Nonnull) aDate;
+- (CGFloat) distanceInWeeksToDate:(NSDate * _Nonnull) anotherDate;
+- (CGFloat) distanceInDaysToDate:(NSDate * _Nonnull) anotherDate;
+- (CGFloat) distanceInHoursToDate:(NSDate * _Nonnull) anotherDate;
+- (CGFloat) distanceInMinutesToDate:(NSDate * _Nonnull) anotherDate;
+- (CGFloat) distanceInSeconsToDate:(NSDate * _Nonnull) anotherDate;
+
+- (NSDate * _Nonnull) toLocalTime;
+- (NSDate * _Nonnull) toGlobalTime;
+
+- (BOOL) isSameYearAsDate:(NSDate * _Nonnull) aDate;
+- (BOOL) isEarlierThanDate:(NSDate * _Nonnull) aDate;
+- (BOOL) isLaterThanDate:(NSDate * _Nonnull) aDate;
 
 - (NSUInteger) daysAgo;
 - (NSUInteger) daysAgoAgainstMidnight;
-- (NSString *) stringDaysAgo;
-- (NSString *) stringDaysAgoAgainstMidnight:(BOOL)flag;
+- (NSString * _Nonnull) stringDaysAgo;
+- (NSString * _Nonnull) stringDaysAgoAgainstMidnight:(BOOL)flag;
 - (NSUInteger) monthDay;
 - (NSUInteger) weekday;
 - (NSUInteger) month;
@@ -91,37 +123,19 @@ static NSString *kNSDateHelperFormatSQLDateWithTimeEN_shashSeparated        = @"
 - (NSUInteger) minute;
 - (NSUInteger) year;
 - (long int) utcTimeStamp; //full seconds since
-+ (NSDate *) dateFromString:(NSString *) string;
-+ (NSDate *) dateFromString:(NSString *) string withFormat:(NSString *) format;
-+ (NSDate *) dateFromString:(NSString *) string withFormat:(NSString *) format withTimeZone:(NSTimeZone*) timeZone;
-+ (NSString *) stringFromDate:(NSDate *) date withFormat:(NSString *) string;
-+ (NSString *) stringFromDate:(NSDate *) date;
-+ (NSString *) stringForDisplayFromDate:(NSDate *) date;
-+ (NSString *) stringForDisplayFromDate:(NSDate *) date prefixed:(BOOL) prefixed;
-+ (NSString *) stringForDisplayFromDate:(NSDate *) date prefixed:(BOOL) prefixed alwaysDisplayTime:(BOOL)displayTime;
-- (NSString *) monthSymbol;
-- (NSString *) string;
-- (NSString *) stringWithFormat:(NSString *) format;
-- (NSString *) stringWithFormat:(NSString *) format timeZone:(NSTimeZone*) timezone;
-- (NSString *) stringWithDateStyle:(NSDateFormatterStyle) dateStyle timeStyle:(NSDateFormatterStyle) timeStyle;
-- (NSDate *) beginningOfWeek;
-- (NSDate *) beginningOfDay;
-- (NSDate *) endOfWeek;
-+ (NSString *) dateFormatString;
-+ (NSString *) timeFormatString;
-+ (NSString *) timestampFormatString;
-+ (NSString *) dbFormatString;
 
-+ (NSString *) parseDateFormatFromString:(NSString *) dateString;
+- (NSString * _Nonnull) monthSymbol;
+- (NSString * _Nonnull) string;
+- (NSString * _Nullable) stringWithFormat:(NSString * _Nonnull) format;
+- (NSString * _Nullable) stringWithFormat:(NSString * _Nonnull) format timeZone:(NSTimeZone * _Nonnull) timezone;
+- (NSString * _Nonnull) stringWithDateStyle:(NSDateFormatterStyle) dateStyle timeStyle:(NSDateFormatterStyle) timeStyle;
+- (NSDate * _Nonnull) beginningOfWeek;
+- (NSDate * _Nonnull) beginningOfDay;
+- (NSDate * _Nonnull) endOfWeek;
 
-+ (NSString *) WCFStringFromDate:(NSDate*) date;
+- (BOOL)isSameDayAsDate:(NSDate * _Nonnull)otherDate;
 
-+ (NSArray*) getSlotTimesFromDate:(NSDate*) date distanceMinutes:(NSInteger) minutes;
-
-- (BOOL)isSameDayAsDate:(NSDate*)otherDate;
-
-+ (NSString *) getUniversalHourFromDateString:(NSString *) string formatterString:(NSString*) formatterString andUppercaseString:(BOOL) uppercaseString;
-- (NSString *) getUniversalHourUppercaseString:(BOOL) uppercaseString;
-- (NSString *) getNotificationUniversalHourUppercaseString:(BOOL) uppercaseString;
+- (NSString * _Nonnull) getUniversalHourUppercaseString:(BOOL) uppercaseString;
+- (NSString * _Nonnull) getNotificationUniversalHourUppercaseString:(BOOL) uppercaseString;
 
 @end
