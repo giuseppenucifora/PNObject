@@ -17,6 +17,7 @@
 #import <FBSDKShareKit/FBSDKShareKit.h>
 #import "PNObjcPassword.h"
 #import "HTTPStatusCodes.h"
+#import "NSDate+NSDate_Util.h"
 
 
 @interface PNUser() <PNObjectSubclassing>
@@ -321,6 +322,7 @@ static bool isFirstAccess = YES;
                         [user setEmail:[result objectForKey:@"email"]];
                         [user setFacebookId:[result objectForKey:@"id"]];
                         [user setFacebookUser:YES];
+                        [user setBirthDate:[NSDate dateFromString:[result objectForKey:@"birthday"]]];
                         [user saveLocally];
                         
                         USER = user;
