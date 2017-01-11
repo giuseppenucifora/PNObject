@@ -20,6 +20,153 @@ it, simply add the following line to your Podfile:
 pod "PNObject"
 ```
 
+Configure PNObject endpoint client ID, client secret and OAuthModePassword
+###
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+
+[PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
+                                                        EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
+                                                        EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
+                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModePassword];
+    
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
+        
+    
+    
+    [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
+   
+    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+}
+```
+###
+Configure PNObject endpoint client ID, client secret and OAuthModeClientCredential
+---
+
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+
+[PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
+                                                        EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
+                                                        EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
+                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+    
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
+        
+    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+}
+```
+###
+Configure PNObject endpoint and using custom PNUser object
+---
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+
+[PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
+                                                        EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
+                                                        EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
+                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+    
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
+        
+    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+}
+```
+
+###
+User.h
+---
+
+```
+
+
+#import <PNObject/PNUser.h>
+
+@interface User : PNUser
+
+@end
+```
+
+###
+User.m
+---
+```
+#import "User.h"
+#import "PNObject+Protected.h"
+#import "PNObject+PNObjectConnection.h"
+#import <NSDate_Utils/NSDate+NSDate_Util.h>
+
+@interface User () <PNObjectSubclassing>
+
+@end
+
+
+@implementation User
+
++ (NSDictionary *)objcetMapping {
+    
+    NSMutableDictionary *userMapping = [[NSMutableDictionary alloc] initWithDictionary:[[PNUser class] objcetMapping]];
+    
+    return userMapping;
+}
+
++ (BOOL) singleInstance {
+    return [[self class] singleInstance];
+}
+
++ (NSString * _Nonnull) objectEndPoint {
+    return @"User";
+}
+
+
++ (NSString * _Nonnull ) objectClassName {
+    return @"User";
+}
+
+###
+Custom Reset Password
+
++ (void) resetPasswordForEmail:(NSString * _Nonnull) userEmail
+                      Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                       Success:(nullable void (^)(NSDictionary * _Nullable responseObject))success
+                       failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    
+    [self POSTWithEndpointAction:@"password-reset-request"
+                      parameters:[self resetPasswordFormObject:userEmail]
+                        progress:uploadProgress
+                         success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
+                             if (success) {
+                                 success(responseObject);
+                             }
+                         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                             if (failure) {
+                                 failure(error);
+                             }
+                         }];
+}
+
++ (NSDictionary * _Nonnull) resetPasswordFormObject:(NSString *) email {
+    
+    NSMutableDictionary *resetPasswordDictionary = [[NSMutableDictionary alloc] init];
+    [resetPasswordDictionary setObject:email forKey:@"email"];
+    
+    return resetPasswordDictionary;
+}
+
+```
+
+
+
+
 ## Author
 
 Giuseppe Nucifora, me@giuseppenucifora.com

@@ -31,29 +31,16 @@
     
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    /*
-    [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://packman.local/app_dev.php/api/v1/",
-                                                        EnvironmentStage : @"https://packman.ppreview.it/app_stage.php/api/v1/",
-                                                        EnvironmentProduction : @"http://packman.ppreview.it/app_stage.php/api/v1/"
-                                                        } userSubclass:[PNUser class] withOauth:YES];
-    [[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
-    [[PNObjectConfig sharedInstance] setClientID:@"1_pqjo2w5k7j4g8skco408oc048w8so0ws840gcg8k8gwsgk0g4" clientSecret:@"10w0vg2v6eggooc4wks4w4s0wkwok0wkck0w888so0o80g88w8" forEnv:EnvironmentProduction];
-#ifdef DEBUG
+    
+    [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
+                                                        EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
+                                                        EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
+                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+    
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
+    
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
-#endif*/
-    
-    [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://bmwcallingweb.local/app_dev.php/api/v1/",
-                                                        EnvironmentStage : @"http://bmwcallingweb.ppreview.it/app_dev.php/api/v1/",
-                                                        EnvironmentProduction : @"http://bmwcallingweb.ppreview.it/app_dev.php/api/v1/"
-                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModePassword];
-    
-    [[PNObjectConfig sharedInstance] setClientID:@"1_pqjo2w5k7j4g8skco408oc048w8so0ws840gcg8k8gwsgk0g4" clientSecret:@"10w0vg2v6eggooc4wks4w4s0wkwok0wkck0w888so0o80g88w8" forEnv:EnvironmentStage];
-    
-    
-    [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
-   
-    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
-    
     //[[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"XMLHttpRequest" forKey:@"X-Request-With"];
     
     

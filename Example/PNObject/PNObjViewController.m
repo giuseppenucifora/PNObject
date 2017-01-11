@@ -30,7 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view, typically from a nib.
     
     _refreshToken = [UIButton newAutoLayoutView];
     [_refreshToken addTarget:self action:@selector(refreshTokenAction) forControlEvents:UIControlEventTouchUpInside];
@@ -102,72 +102,22 @@
 
 - (void) apiCallAction {
     
-    /*PNObjcPassword *password = [PNObjcPassword new];
-     [password setPassword:@"asdasdasd"];
-     [password setConfirmPassword:@"asdasdasd"];
-     
-     User *user = [User new];
-     [user setFirstName:@"Giuseppe"];
-     [user setLastName:@"Nuficora"];
-     [user setEmail:@"packman5@giuseppenucifora.com"];
-     [user setPassword:password];
-     [user setHasAcceptedNewsletter:YES];
-     [user setHasAcceptedPrivacy:YES];
-     */
-    //[user saveLocally];
+    PNObjcPassword *password = [PNObjcPassword new];
+    [password setPassword:@"asdasdasd"];
+    [password setConfirmPassword:@"asdasdasd"];
+    
+    PNUser *user = [PNUser new];
+    [user setFirstName:@"Test"];
+    [user setLastName:@"Test"];
+    [user setEmail:@"pnobject@pnobject.com"];
+    [user setPassword:password];
+    [user setHasAcceptedNewsletter:YES];
+    [user setHasAcceptedPrivacy:YES];
+    
+    [user saveLocally];
     
     NSLog(@"%@",[[PNUser currentUser] JSONFormObject]);
-    //NSLog(@"%@",[user JSONObjectMap]);
-    /*[user registerWithBlockSuccess:^(PNUser * _Nullable responseObject) {
-     
-     } failure:^(NSError * _Nonnull error) {
-     
-     }];*/
     
-    /*[[User currentUser] socialLoginWithBlockSuccessFromViewController:self
-     blockSuccess:^(PNUser * _Nullable responseObject) {
-     
-     } failure:^(NSError * _Nonnull error) {
-     
-     }];*/
-    
-    //User * user = [User currentUser];
-    
-    //if ([user isAuthenticated]) {
-    
-    /*[User loginCurrentUserWithEmail:@"demo@packman.example" password:@"demo@packman.example" withBlockSuccess:^(PNUser * _Nullable responseObject) {
-     
-     NSLog(@"response : %@",responseObject);
-     
-     NSLog(@"%@",[User currentUser]);
-     } failure:^(NSError * _Nonnull error) {
-     NSLog(@"response : %@",error);
-     }];*/
-    
-    /*[PNUser socialLoginWithBlockSuccess:^(PNUser * _Nullable responseObject) {
-        
-    } failure:^(NSError * _Nonnull error) {
-        
-    }];*/
-    
-    /*[PNUser socialUserFromViewController:self blockSuccess:^(PNUser * _Nullable responseObject) {
-        
-        NSLog(@"%@",[[PNUser currentUser] JSONFormObject]);
-
-        
-    } failure:^(NSError * _Nonnull error) {
-        
-    }];*/
-    
-    
-    
-    /*[User resetPasswordForEmail:@"packman@giuseppenucifora.com" Progress:^(NSProgress * _Nonnull uploadProgress) {
-     
-     } Success:^(NSDictionary * _Nullable responseObject) {
-     
-     } failure:^(NSError * _Nonnull error) {
-     
-     }];*/
     
 }
 
