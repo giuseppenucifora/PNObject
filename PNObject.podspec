@@ -14,11 +14,11 @@ s.summary          = 'PNObject is a simple replica of the more complex ParseObje
 
 #s.description      = <<-DESC TODO: Add long description of the pod here. DESC
 
-s.homepage         = "https://git.giuseppenucifora.com/giuseppenucifora/PNObject"
+s.homepage         = "https://github.com/giuseppenucifora/PNObject"
 # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
 s.license          = { :type => 'MIT', :file => 'LICENSE' }
 s.author           = { 'Giuseppe Nucifora' => 'me@giuseppenucifora.com' }
-s.source           = { :git => "https://git.giuseppenucifora.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
+s.source           = { :git => "https://github.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
 # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
 s.ios.deployment_target = '8.0'
