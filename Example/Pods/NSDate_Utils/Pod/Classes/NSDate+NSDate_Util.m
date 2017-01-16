@@ -194,7 +194,10 @@ static NSDateFormatter *_displayFormatter = nil;
                                  kNSDateHelperFormatSQLDateWithTimeEN_shashSeparated,kNSDateHelperFormatSQLDateWithTimeZone,
                                  kNSDateHelperFormatSQLDateWithTimeZone_shashSeparated,kNSDateHelperFormatSQLDateWithTimeZoneEN,
                                  kNSDateHelperFormatSQLDateWithTimeZoneEN_shashSeparated,kNSDateHelperFormatSQLDateWithTimeZoneIT,
-                                 kNSDateHelperFormatSQLDateWithTimeZoneIT_shashSeparated, nil];
+                                 kNSDateHelperFormatSQLDateWithTimeZoneIT_shashSeparated,kNSDateHelperFormatSQLDateWithTimeZone_T_Separator,
+                                 kNSDateHelperFormatSQLDateWithTimeZone_T_Separator_shashSeparated,kNSDateHelperFormatSQLDateWithTimeZoneEN_T_Separator,
+                                 kNSDateHelperFormatSQLDateWithTimeZoneENAndTSeparator_shashSeparated, kNSDateHelperFormatSQLDateWithTimeZoneIT_T_Separator,
+                                 kNSDateHelperFormatSQLDateWithTimeZoneIT_T_Separator_shashSeparated, nil];
     
     
     for (NSString *dateFormat in dateFormatsArray) {
@@ -513,6 +516,19 @@ static NSDateFormatter *_displayFormatter = nil;
             }
         }
     }
+}
+
+
++ (NSTimeInterval) timeIntervalFromMinutes:(NSUInteger) minutes {
+    
+    NSTimeInterval seconds = minutes /60;
+    
+    return seconds;
+}
+
+
++ (NSTimeInterval) timeIntervalFromHours:(NSUInteger) hours {
+    
 }
 
 

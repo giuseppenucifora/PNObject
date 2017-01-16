@@ -9,6 +9,8 @@
 #import "PNInstallation.h"
 #import "DJLocalization.h"
 #import "PNObjectConfig.h"
+#import "PNObject+PNObjectConnection.h"
+#import "NSDate+NSDate_Util.h"
 
 
 
@@ -172,12 +174,6 @@ static bool isFirstAccess = YES;
     
     if (self) {
         
-        /*[super setValue:@"iOS" forKey:VariableName(deviceType)];
-         [super setValue:[[UIDevice currentDevice] model] forKey:VariableName(deviceModel)];
-         [super setValue:[[UIDevice currentDevice] systemVersion] forKey:VariableName(osVersion)];
-         [self setValue:[[UIDevice currentDevice] name] forKey:VariableName(deviceName)];
-         [self setValue:[[DJLocalizationSystem shared] language] forKey:VariableName(localeIdentifier)];
-         */
         _installationStatus = PNInstallationStatusNone;
         _deviceType = @"iOS";
         _deviceModel = [[UIDevice currentDevice] model];
@@ -189,6 +185,135 @@ static bool isFirstAccess = YES;
     }
     return self;
 }
+
+
+- (void) registerDeviceWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                                 Success:(nullable void (^)(BOOL response))success
+                                 failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    [self registerDeviceForced:NO WithBlockProgress:uploadProgress Success:success failure:failure];
+    
+}
+
+
+- (void) registerDeviceForced:(BOOL) forced
+            WithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                      Success:(nullable void (^)(BOOL response))success
+                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    if (self.deviceToken && (forced || !self.registeredAt || [self.registeredAt isEarlierThanDate:[[NSDate date] dateByAddingHours:3]])) {
+        
+        [[self class] POSTWithEndpointAction:@"device/register" parameters:[self registrationDeviceFormObject]
+                                    progress:uploadProgress
+                                     success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
+                                         [self setRegistered];
+                                         [self saveLocally];
+                                         if(success){
+                                             success(YES);
+                                         }
+                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                         [self setRegistered];
+                                         [self saveLocally];
+                                         if (failure) {
+                                             failure(error);
+                                         }
+                                     }];
+    }
+    else {
+        if (success) {
+            success(YES);
+        }
+    }
+}
+
+- (NSDictionary * _Nonnull) registrationDeviceFormObject {
+    
+    NSMutableDictionary *registrationDeviceDictionary = [[NSMutableDictionary alloc] initWithDictionary:[self JSONFormObject]];
+    
+    [registrationDeviceDictionary setObject:[self deviceType] forKey:@"platform"];
+    
+    return registrationDeviceDictionary;
+}
+
+
+- (void) updateDeviceWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                               Success:(nullable void (^)(BOOL response))success
+                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    if (self.deviceToken && self.oldDeviceToken && (!self.updatedAt || [self.updatedAt isEarlierThanDate:[[NSDate date] dateByAddingHours:3]])) {
+        
+        [[self class] POSTWithEndpointAction:@"device/update" parameters:[self updateDeviceFormObject]
+                                    progress:uploadProgress
+                                     success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
+                                         [self setUpdated];
+                                         [self saveLocally];
+                                         if(success){
+                                             success(YES);
+                                         }
+                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                         if (failure) {
+                                             failure(error);
+                                         }
+                                     }];
+    }
+    else {
+        if (success) {
+            success(YES);
+        }
+    }
+}
+
+- (NSDictionary * _Nonnull) updateDeviceFormObject {
+    
+    NSMutableDictionary *updateDeviceDictionary = [[NSMutableDictionary alloc] initWithDictionary:[self JSONFormObject]];
+    
+    if ([updateDeviceDictionary objectForKey:VariableName(self.deviceToken)]) {
+        [updateDeviceDictionary setObject:[updateDeviceDictionary objectForKey:VariableName(self.deviceToken)] forKey:@"newDeviceToken"];
+        
+    }
+    if ([updateDeviceDictionary objectForKey:VariableName(self.oldDeviceToken)]) {
+        [updateDeviceDictionary setObject:[updateDeviceDictionary objectForKey:VariableName(self.oldDeviceToken)] forKey:VariableName(self.deviceToken)];
+        [updateDeviceDictionary removeObjectForKey:VariableName(self.oldDeviceToken)];
+    }
+    
+    
+    
+    return updateDeviceDictionary;
+}
+
+- (void) removeDeviceWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                               Success:(nullable void (^)(BOOL response))success
+                               failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    
+    if (self.deviceToken) {
+        
+        [[self class] POSTWithEndpointAction:@"device/remove-user" parameters:[self removeDeviceFormObject]
+                                    progress:uploadProgress
+                                     success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
+                                         NSLog(@"response %@",responseObject);
+                                         if(success){
+                                             success(YES);
+                                         }
+                                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                         NSLog(@"error : %@",error);
+                                         if (failure) {
+                                             failure(error);
+                                         }
+                                     }];
+    }
+    else{
+        if (success) {
+            success(YES);
+        }
+    }
+}
+
+- (NSDictionary * _Nonnull) removeDeviceFormObject {
+    
+    NSMutableDictionary *updateDeviceDictionary = [[NSMutableDictionary alloc] init];
+    
+    [updateDeviceDictionary setObject:self.deviceToken forKey:VariableName(self.deviceToken)];
+    
+    return updateDeviceDictionary;
+}
+
 
 #pragma mark -
 

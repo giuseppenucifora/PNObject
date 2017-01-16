@@ -42,14 +42,23 @@ static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeIT_shashSeparated  
 static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeEN                       = @"MM-dd-yyyy HH:mm:ss";
 static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeEN_shashSeparated        = @"MM/dd/yyyy HH:mm:ss";
 
-static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone_shashSeparated = @"yyyy/MM/dd'T'HH:mm:ss'Z'";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone_T_Separator = @"yyyy-MM-dd'T'HH:mm:ss ZZZ";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone_T_Separator_shashSeparated = @"yyyy/MM/dd'T'HH:mm:ss ZZZ";
 
-static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneEN = @"MM-dd-yyyy'T'HH:mm:ss'Z'";
-static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneEN_shashSeparated = @"MM/dd/yyyy'T'HH:mm:ss'Z'";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneEN_T_Separator = @"MM-dd-yyyy'T'HH:mm:ss ZZZ";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneENAndTSeparator_shashSeparated = @"MM/dd/yyyy'T'HH:mm:ss ZZZ";
 
-static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT = @"dd-MM-yyyy'T'HH:mm:ss'Z'";
-static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT_shashSeparated = @"dd/MM/yyyy'T'HH:mm:ss'Z'";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT_T_Separator = @"dd-MM-yyyy'T'HH:mm:ss ZZZ";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT_T_Separator_shashSeparated = @"dd/MM/yyyy'T'HH:mm:ss ZZZ";
+
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone = @"yyyy-MM-dd HH:mm:ss ZZZ";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZone_shashSeparated = @"yyyy/MM/dd HH:mm:ss ZZZ";
+
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneEN = @"MM-dd-yyyy HH:mm:ss ZZZ";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneEN_shashSeparated = @"MM/dd/yyyy HH:mm:ss ZZZ";
+
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT = @"dd-MM-yyyy HH:mm:ss ZZZ";
+static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT_shashSeparated = @"dd/MM/yyyy HH:mm:ss ZZZ";
 
 @interface NSDate (NSDate_Util)
 
@@ -81,6 +90,9 @@ static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT_shashSeparat
 + (NSArray * _Nullable) getSlotTimesFromDate:(NSDate * _Nonnull) date distanceMinutes:(NSInteger) minutes;
 
 + (NSString * _Nonnull) getUniversalHourFromDateString:(NSString * _Nonnull) string formatterString:(NSString * _Nonnull) formatterString andUppercaseString:(BOOL) uppercaseString;
+
++ (NSTimeInterval) timeIntervalFromMinutes:(NSUInteger) minutes;
++ (NSTimeInterval) timeIntervalFromHours:(NSUInteger) minutes;
 
 - (NSDate * _Nonnull) dateToNearestMinutes:(NSInteger)minutes;
 
