@@ -46,6 +46,18 @@ typedef NS_ENUM(NSInteger, PNInstallationStatus) {
 
 - (void) setUpdated;
 
+- (void) registerDeviceWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                                 Success:(nullable void (^)(BOOL response))success
+                                 failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+- (void) updateDeviceWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                               Success:(nullable void (^)(BOOL response))success
+                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+- (void) removeDeviceWithBlockProgress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
+                               Success:(nullable void (^)(BOOL response))success
+                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 ///--------------------------------------
 #pragma mark - PNInstallation Properties
 ///--------------------------------------

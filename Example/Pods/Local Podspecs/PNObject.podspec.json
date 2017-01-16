@@ -1,8 +1,8 @@
 {
   "name": "PNObject",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "summary": "PNObject is a simple replica of the more complex ParseObject",
-  "homepage": "https://git.giuseppenucifora.com/giuseppenucifora/PNObject",
+  "homepage": "https://github.com/giuseppenucifora/PNObject",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -11,8 +11,8 @@
     "Giuseppe Nucifora": "me@giuseppenucifora.com"
   },
   "source": {
-    "git": "https://git.giuseppenucifora.com/giuseppenucifora/PNObject.git",
-    "tag": "1.1.1"
+    "git": "https://github.com/giuseppenucifora/PNObject.git",
+    "tag": "1.2.1"
   },
   "platforms": {
     "ios": "8.0"
