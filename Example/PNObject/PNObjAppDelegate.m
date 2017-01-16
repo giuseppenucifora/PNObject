@@ -19,6 +19,7 @@
 #import "UIDevice-Hardware.h"
 
 #import <PNObject/PNInstallation.h>
+#import <NSDate_Utils/NSDate+NSDate_Util.h>
 
 @implementation PNObjAppDelegate
 
@@ -156,6 +157,52 @@
     
     //[installation setUser:nil];
     
+    [self updateDeviceUser];
+    
+}
+
+- (void) updateDeviceUser {
+    
+    
+    PNInstallation * installation = [PNInstallation currentInstallation];
+    
+    if ([PNUser currentUser] && [[PNUser currentUser] isAuthenticated]) {
+        [[PNInstallation currentInstallation] setUser:[PNUser currentUser]];
+    }
+    else {
+        [[PNInstallation currentInstallation] setUser:nil];
+    }
+    
+    if (![[PNInstallation currentInstallation] registeredAt] || [[NSDate date] isLaterThanDate:[[[PNInstallation currentInstallation] lastTokenUpdate] dateByAddingDays:1]]) {
+        [self registerRemoteDevice];
+    }
+    else if ([[PNInstallation currentInstallation] updatedAt] || [[NSDate date] isLaterThanDate:[[[PNInstallation currentInstallation] updatedAt] dateByAddingMinutes:30]]) {
+        [self updateRemoteDevice];
+    }
+}
+
+- (void) registerRemoteDevice {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[PNInstallation currentInstallation] registerDeviceWithBlockProgress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } Success:^(BOOL response) {
+            NSLog(@"device registrato");
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"device non registrato");
+        }];
+    });
+}
+
+- (void) updateRemoteDevice {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[PNInstallation currentInstallation] updateDeviceWithBlockProgress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } Success:^(BOOL response) {
+            NSLog(@"device aggiornato");
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"device non aggiornato");
+        }];
+    });
 }
 
 - (void) application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
