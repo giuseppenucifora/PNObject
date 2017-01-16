@@ -150,9 +150,6 @@
 
 - (void) updateDeviceUser {
     
-    
-    PNInstallation * installation = [PNInstallation currentInstallation];
-    
     if ([PNUser currentUser] && [[PNUser currentUser] isAuthenticated]) {
         [[PNInstallation currentInstallation] setUser:[PNUser currentUser]];
     }
