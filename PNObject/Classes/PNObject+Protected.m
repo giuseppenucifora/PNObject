@@ -176,8 +176,7 @@
                                [self setValue:val forKey:propertyName];
                            }
                            else {
-                               NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName];
-                               NSLogDebug(@"%@",errorStr);
+                               NSLogDebug(@"%@",[NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName]);
                            }
                        })();
     }
@@ -268,8 +267,7 @@
                                [self setValue:@"" forKey:propertyName];
                            }
                            else {
-                               NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName];
-                               NSLogDebug(@"%@",errorStr);
+                               NSLogDebug(@"%@",[NSString stringWithFormat:@"Property '%@' could not be assigned any value.", propertyName]);
                            }
                        })();
     }
@@ -419,8 +417,7 @@
                                    }
                                    else {
                                    
-                                       NSString *errorStr = [NSString stringWithFormat:@"Property '%@' could not be assigned any value.", property];
-                                       NSLogDebug(@"%@",errorStr);
+                                       NSLogDebug(@"%@",[NSString stringWithFormat:@"Property '%@' could not be assigned any value.", property]);
                                    }
                                })();
             }

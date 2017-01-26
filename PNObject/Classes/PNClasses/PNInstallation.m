@@ -287,12 +287,12 @@ static bool isFirstAccess = YES;
         [[self class] POSTWithEndpointAction:@"device/remove-user" parameters:[self removeDeviceFormObject]
                                     progress:uploadProgress
                                      success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
-                                         NSLog(@"response %@",responseObject);
+                                         NSLogDebug(@"response %@",responseObject);
                                          if(success){
                                              success(YES);
                                          }
                                      } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                                         NSLog(@"error : %@",error);
+                                         NSLogDebug(@"error : %@",error);
                                          if (failure) {
                                              failure(error);
                                          }

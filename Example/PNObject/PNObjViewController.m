@@ -116,7 +116,7 @@
     
     [user saveLocally];
     
-    NSLog(@"%@",[[PNUser currentUser] JSONFormObject]);
+    NSLogDebug(@"%@",[[PNUser currentUser] JSONFormObject]);
     
     
 }

@@ -138,9 +138,9 @@
     
     [installation saveLocally];
     
-    NSLog(@"%@",installation);
+    NSLogDebug(@"%@",installation);
     
-    NSLog(@"%@",[installation JSONFormObject]);
+    NSLogDebug(@"%@",[installation JSONFormObject]);
     
     //[installation setUser:nil];
     
@@ -170,9 +170,9 @@
         [[PNInstallation currentInstallation] registerDeviceWithBlockProgress:^(NSProgress * _Nonnull uploadProgress) {
             
         } Success:^(BOOL response) {
-            NSLog(@"device registrato");
+            NSLogDebug(@"device registrato");
         } failure:^(NSError * _Nonnull error) {
-            NSLog(@"device non registrato");
+            NSLogDebug(@"device non registrato");
         }];
     });
 }
@@ -182,26 +182,26 @@
         [[PNInstallation currentInstallation] updateDeviceWithBlockProgress:^(NSProgress * _Nonnull uploadProgress) {
             
         } Success:^(BOOL response) {
-            NSLog(@"device aggiornato");
+            NSLogDebug(@"device aggiornato");
         } failure:^(NSError * _Nonnull error) {
-            NSLog(@"device non aggiornato");
+            NSLogDebug(@"device non aggiornato");
         }];
     });
 }
 
 - (void) application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
     
-    NSLog(@"%@",notificationSettings);
+    NSLogDebug(@"%@",notificationSettings);
 }
 
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
-    NSLog(@"%@",userInfo);
+    NSLogDebug(@"%@",userInfo);
 }
 
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
-    NSLog(@"%@",userInfo);
+    NSLogDebug(@"%@",userInfo);
 }
 
 #pragma mark -

@@ -227,7 +227,7 @@ NSString * const PNObjectMappingSelector = @"selector";
         
         type = [properties valueForKey:propertyName];
         
-        NSLog(@"PropertyName MappedJsonType PropertyType: %@ - %@ - %@",propertyName,mappedJSONType,type);
+        NSLogDebug(@"PropertyName MappedJsonType PropertyType: %@ - %@ - %@",propertyName,mappedJSONType,type);
         
         id value;
         
@@ -343,7 +343,7 @@ NSString * const PNObjectMappingSelector = @"selector";
         }
         @finally {
             
-            //NSLog(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
+            //NSLogDebug(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
         }
     }
     
@@ -374,7 +374,7 @@ NSString * const PNObjectMappingSelector = @"selector";
             mappedJSONType = [properties valueForKey:propertyName];
         }
         
-        NSLog(@"PropertyName PropertyType: %@ - %@",propertyName,mappedJSONType);
+        NSLogDebug(@"PropertyName PropertyType: %@ - %@",propertyName,mappedJSONType);
         
         id value;
         
@@ -502,7 +502,7 @@ NSString * const PNObjectMappingSelector = @"selector";
         }
         @finally {
             
-            //NSLog(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
+            //NSLogDebug(@"PropertyName PropertyType Value: %@ - %@ - %@",propertyName,propertyType,value);
         }
     }
     return JSONFormObject;

@@ -189,7 +189,7 @@ static bool isFirstAccess = YES;
     [[self class] POSTWithEndpointAction:@"registration/register" parameters:[self JSONFormObject]
                                 progress:uploadProgress
                                  success:^(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject) {
-                                     NSLog(@"response %@",responseObject);
+                                     NSLogDebug(@"response %@",responseObject);
                                      if(success){
                                          [[[self class] currentUser] saveLocally];
                                          success([[self class] currentUser]);
@@ -266,18 +266,18 @@ static bool isFirstAccess = YES;
         FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
         [login logInWithReadPermissions: @[@"public_profile",@"email",@"user_birthday"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
-                NSLog(@"Process error");
+                NSLogDebug(@"Process error");
                 if (failure) {
                     failure(error);
                 }
             } else if (result.isCancelled) {
-                NSLog(@"Cancelled");
+                NSLogDebug(@"Cancelled");
                 if (failure) {
                     NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Request cancelled", @"") code:kHTTPStatusCodeMethodNotAllowed userInfo:nil];
                     failure(error);
                 }
             } else {
-                NSLog(@"Logged in");
+                NSLogDebug(@"Logged in");
                 [self socialLoginFromViewController:viewController blockSuccess:success failure:failure];
             }
         }];
@@ -455,10 +455,10 @@ static bool isFirstAccess = YES;
             NSError* error = nil;
             NSData* data = [NSData dataWithContentsOfURL:_profileImageUrl options:NSDataReadingUncached error:&error];
             if (error) {
-                NSLog(@"%@", [error localizedDescription]);
+                NSLogDebug(@"%@", [error localizedDescription]);
                 return [UIImage imageNamed:@"userProfileAvatar"];
             } else {
-                NSLog(@"Data has loaded successfully.");
+                NSLogDebug(@"Data has loaded successfully.");
                 return [UIImage imageWithData:data];
             }
         }
