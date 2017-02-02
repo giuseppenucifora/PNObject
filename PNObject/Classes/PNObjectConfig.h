@@ -37,6 +37,9 @@ extern NSString* _Nonnull const PNObjectLocalNotificationPNInstallationUserDelet
 
 #pragma mark -
 
+extern NSString* _Nonnull const BaseUrl;
+extern NSString* _Nonnull const EndpointPath;
+
 extern NSString* _Nonnull const EnvironmentProduction;
 extern NSString* _Nonnull const EnvironmentStage;
 extern NSString* _Nonnull const EnvironmentDevelopment;
@@ -153,6 +156,10 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  @return <#return value description#>
  */
 - (NSString * _Nonnull) baseUrl;
+
+- (NSString * _Nonnull) endPointPath;
+
+- (NSString * _Nonnull) endPointUrl;
 
 /**
  *  <#Description#>

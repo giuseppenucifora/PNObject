@@ -33,9 +33,9 @@
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
-    [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
-                                                        EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
-                                                        EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
+    [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @{BaseUrl:@"http://pnobject.local/",EndpointPath:@"api/v1/"},
+                                                        EnvironmentStage : @{BaseUrl:@"http://pnobject.stage.it/",EndpointPath:@"api/v1/"},
+                                                        EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
                                                         } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
     
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
@@ -44,6 +44,9 @@
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
     //[[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"XMLHttpRequest" forKey:@"X-Request-With"];
     
+    NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] baseUrl]);
+    NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointPath]);
+    NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointUrl]);
     
     
     

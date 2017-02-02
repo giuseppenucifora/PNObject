@@ -20,8 +20,49 @@ it, simply add the following line to your Podfile:
 pod "PNObject"
 ```
 
-Configure PNObject endpoint client ID, client secret and OAuthModePassword
+New in version 1.3.0
+---
+                                                        
+- Can Separate Base url with endpoint api path during configuration
+- Access to separate base url, endpoint path or complete endpoint url
+
+
+Configure PNObject endpoint client ID, client secret and OAuthModePassword with separate base url and api path
+---
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+
+    [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @{BaseUrl:@"http://pnobject.local/",EndpointPath:@"api/v1/"},
+                                                        EnvironmentStage : @{BaseUrl:@"http://pnobject.stage.it/",EndpointPath:@"api/v1/"},
+                                                        EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
+                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+    
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
+        
+    
+    
+    [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
+   
+    [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+    
+    
+}
+```
+
+Get BaseUrl, endPointPath and endPointUrl
+---
+```
+    NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] baseUrl]);
+    NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointPath]);
+    NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointUrl]);
+```
+
 ###
+Configure PNObject endpoint client ID, client secret and OAuthModePassword
+---
 
 ```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

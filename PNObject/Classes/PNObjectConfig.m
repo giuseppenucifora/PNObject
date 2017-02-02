@@ -46,6 +46,7 @@ NSString* const EnvironmentStage = @"PNObjectConfigEnvStage";
 NSString* const EnvironmentDevelopment = @"PNObjectConfigDevelopment";
 
 NSString*  const BaseUrl = @"base_url";
+NSString*  const EndpointPath = @"endpoint_path";
 NSString*  const Client_ID = @"client_id";
 NSString*  const Client_Secret = @"client_secret";
 NSString*  const Client_Username = @"client_username";
@@ -58,7 +59,9 @@ NSString*  const Client_Password = @"client_password";
 @property (nonatomic, strong) NSMutableDictionary *configuration;
 @property (nonatomic, strong) NSMutableDictionary *headerFields;
 @property (nonatomic, strong) NSString *currentEnv;
-@property (nonatomic, strong) NSString *currentEndPointBaseUrl;
+@property (nonatomic, strong) NSString *currentBaseUrl;
+@property (nonatomic, strong) NSString *currentEndPointPath;
+@property (nonatomic, strong) NSString *currentEndPointUrl;
 @property (nonatomic, strong) NSString *currentOAuthClientID;
 @property (nonatomic, strong) NSString *currentOAuthClientSecret;
 @property (nonatomic, strong) NSString *currentOAuthUserName;
@@ -112,11 +115,20 @@ static bool isFirstAccess = YES;
             
             for (NSString *key in [endpointUrlsForEnvironments allKeys]) {
                 
-                NSURL * endpointUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
-                if (endpointUrl) {
-                    [SINGLETON_PNObjectConfig.configuration setValue:[NSDictionary dictionaryWithObjectsAndKeys:[endpointUrl absoluteString],BaseUrl, nil] forKey:key];
+                if ([[endpointUrlsForEnvironments objectForKey:key] isKindOfClass:[NSDictionary class]]) {
+                    
+                    NSURL * baseUrl = [NSURL URLWithString:[[endpointUrlsForEnvironments objectForKey:key] objectForKey:BaseUrl]];
+                    NSString * endPointUrl = [[endpointUrlsForEnvironments objectForKey:key] objectForKey:EndpointPath];
+                    if (baseUrl) {
+                        [SINGLETON_PNObjectConfig.configuration setValue:[NSDictionary dictionaryWithObjectsAndKeys:[baseUrl absoluteString],BaseUrl,endPointUrl,EndpointPath, nil] forKey:key];
+                    }
                 }
-                
+                else if ([[endpointUrlsForEnvironments objectForKey:key] isKindOfClass:[NSString class]]) {
+                    NSURL * baseUrl = [NSURL URLWithString:[endpointUrlsForEnvironments objectForKey:key]];
+                    if (baseUrl) {
+                        [SINGLETON_PNObjectConfig.configuration setValue:[NSDictionary dictionaryWithObjectsAndKeys:[baseUrl absoluteString],BaseUrl,@"",EndpointPath, nil] forKey:key];
+                    }
+                }
             }
             NSAssert([SINGLETON_PNObjectConfig.configuration objectForKey:EnvironmentProduction], @"EnvironmentProduction must be valid endpoint url");
             
@@ -172,8 +184,6 @@ static bool isFirstAccess = YES;
         
         _headerFields = [[NSMutableDictionary alloc] init];
         
-        
-        
         if(![DDDKeychainWrapper dataForKey:PNObjectEncryptionKey]){
             
             NSData *key = [[NSString getRandString:256] dataUsingEncoding:NSUTF8StringEncoding];
@@ -209,14 +219,18 @@ static bool isFirstAccess = YES;
 - (void) setEnvironment:(NSString * _Nonnull) environment {
     
     _currentEnv = environment;
-    _currentEndPointBaseUrl = nil;
+    _currentBaseUrl = nil;
+    _currentEndPointPath = nil;
+    _currentEndPointUrl = nil;
     _currentOAuthClientID = nil;
     _currentOAuthClientSecret = nil;
     _currentOAuthUserName = nil;
     _currentOAuthPassword = nil;
     
     if ([_configuration objectForKey:environment]) {
-        _currentEndPointBaseUrl = [[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl];
+        _currentBaseUrl = [[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl];
+        _currentEndPointPath = ([[_configuration objectForKey:_currentEnv] objectForKey:EndpointPath] ? [[_configuration objectForKey:_currentEnv] objectForKey:EndpointPath] : @"");
+        _currentEndPointUrl = [_currentBaseUrl stringByAppendingString:_currentEndPointPath];
         _currentOAuthClientID = [[_configuration objectForKey:_currentEnv] objectForKey:Client_ID];
         _currentOAuthClientSecret = [[_configuration objectForKey:_currentEnv] objectForKey:Client_Secret];
         if ([[_configuration objectForKey:_currentEnv] objectForKey:Client_Username] && [[_configuration objectForKey:_currentEnv] objectForKey:Client_Password]) {
@@ -227,7 +241,7 @@ static bool isFirstAccess = YES;
     
     NSLogDebug(@"%@",[[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl]);
     
-    NSAssert(_currentEndPointBaseUrl,@"Selected environment generate error. Please check configuration");
+    NSAssert(_currentEndPointUrl,@"Selected environment generate error. Please check configuration");
     
     if (_currentOAuthClientID && _currentOAuthClientSecret) {
         [self authManager];
@@ -237,7 +251,15 @@ static bool isFirstAccess = YES;
 }
 
 - (NSString *) baseUrl {
-    return _currentEndPointBaseUrl;
+    return _currentBaseUrl;
+}
+
+- (NSString *) endPointPath {
+    return _currentEndPointPath;
+}
+
+- (NSString *) endPointUrl {
+    return _currentEndPointUrl;
 }
 
 - (AFHTTPSessionManager *) manager {
@@ -281,7 +303,7 @@ static bool isFirstAccess = YES;
                     
                     
                     if (![_authManager clientID]) {
-                        _authManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointBaseUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
+                        _authManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
                     }
                     
                     [_authManager setUseHTTPBasicAuthentication:NO];
@@ -294,7 +316,7 @@ static bool isFirstAccess = YES;
                 if (_currentOAuthClientID && _currentOAuthClientSecret && _currentOAuthUserName && _currentOAuthPassword) {
                     
                     if (![_authManager clientID]) {
-                        _authManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointBaseUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
+                        _authManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentEndPointUrl] clientID:_currentOAuthClientID secret:_currentOAuthClientSecret];
                     }
                     
                     [_authManager setUseHTTPBasicAuthentication:NO];
@@ -370,7 +392,7 @@ static bool isFirstAccess = YES;
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
     if (_currentOauthCredential) {
         
-        [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] refreshToken:[_currentOauthCredential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
+        [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] refreshToken:[_currentOauthCredential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
             
             
@@ -443,7 +465,7 @@ static bool isFirstAccess = YES;
             return;
         }
     }
-    [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+    [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] username:email password:password scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
         
         
@@ -486,7 +508,7 @@ static bool isFirstAccess = YES;
         }
     }
     
-    [_authManager authenticateUsingFacebookOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] facebookID:facebookID facebookToken:facebookToken scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+    [_authManager authenticateUsingFacebookOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] facebookID:facebookID facebookToken:facebookToken scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
         
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];
@@ -519,7 +541,7 @@ static bool isFirstAccess = YES;
     
     if (_currentOauthCredential) {
         
-        [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] refreshToken:[_currentOauthCredential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
+        [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] refreshToken:[_currentOauthCredential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
             _currentOauthCredential = credential;
             
             [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceClientCredentialIdentifier];
@@ -545,7 +567,7 @@ static bool isFirstAccess = YES;
     else {
         switch (_oauthMode) {
             case OAuthModeClientCredential:{
-                [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+                [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
                     _currentOauthCredential = credential;
                     
                     [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceClientCredentialIdentifier];
@@ -570,7 +592,7 @@ static bool isFirstAccess = YES;
                 break;
             case OAuthModePassword:{
                 
-                [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointBaseUrl stringByAppendingString:@"oauth-token"] username:_currentOAuthUserName password:_currentOAuthPassword scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+                [_authManager authenticateUsingOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] username:_currentOAuthUserName password:_currentOAuthPassword scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
                     _currentOauthCredential = credential;
                     
                     [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceClientCredentialIdentifier];
