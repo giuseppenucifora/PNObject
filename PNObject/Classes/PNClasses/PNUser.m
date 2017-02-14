@@ -320,8 +320,6 @@ static bool isFirstAccess = YES;
                         [user setFirstName:[result objectForKey:@"first_name"]];
                         [user setLastName:[result objectForKey:@"last_name"]];
                         [user setEmail:[result objectForKey:@"email"]];
-                        [user setFacebookId:[result objectForKey:@"id"]];
-                        [user setFacebookUser:YES];
                         [user setBirthDate:[[NSDate dateFromString:[result objectForKey:@"birthday"] withFormat:kNSDateHelperFormatSQLDateEN_shashSeparated] toLocalTime]];
                         
                         if (success) {
