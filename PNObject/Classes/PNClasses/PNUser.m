@@ -323,9 +323,6 @@ static bool isFirstAccess = YES;
                         [user setFacebookId:[result objectForKey:@"id"]];
                         [user setFacebookUser:YES];
                         [user setBirthDate:[[NSDate dateFromString:[result objectForKey:@"birthday"] withFormat:kNSDateHelperFormatSQLDateEN_shashSeparated] toLocalTime]];
-                        [user saveLocally];
-                        
-                        USER = user;
                         
                         if (success) {
                             success(user);
