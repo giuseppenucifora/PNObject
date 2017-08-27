@@ -235,7 +235,7 @@ static bool isFirstAccess = YES;
                         }
                     }
                     else {
-                        [[PNObjectConfig sharedInstance] refreshTokenForUserWithFacebookID:[result objectForKey:@"id"] facebookToken:[FBSDKAccessToken currentAccessToken].tokenString withBlockSuccess:^(BOOL refreshSuccess) {
+                        [[PNObjectConfig sharedInstance] refreshTokenForUserWithFacebookId:[result objectForKey:@"id"] facebookToken:[FBSDKAccessToken currentAccessToken].tokenString withBlockSuccess:^(BOOL refreshSuccess) {
                             
                             PNUser *user = [[self class] new];
                             

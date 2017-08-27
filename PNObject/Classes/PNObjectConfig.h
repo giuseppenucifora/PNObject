@@ -123,7 +123,7 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 /**
  *  <#Description#>
  *
- *  @param env <#env description#>
+ *  @param environment <#env description#>
  */
 - (void) setEnvironment:(NSString * _Nonnull) environment;
 
@@ -138,7 +138,6 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 /**
  *  <#Description#>
  *
- *  @param value EnvironmentProduction, EnvironmentStage, EnvironmentDevelopment
  *  @param key   <#key description#>
  */
 - (void) removeHTTPHeaderValueForKey:(NSString * _Nonnull) key;
@@ -225,7 +224,7 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 
-- (void) refreshTokenForUserWithFacebookID:(NSString * _Nonnull) facebookID
+- (void) refreshTokenForUserWithFacebookId:(NSString * _Nonnull) facebookId
                              facebookToken:(NSString * _Nonnull) facebookToken
                           withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                    failure:(nullable void (^)(NSError * _Nonnull error))failure;

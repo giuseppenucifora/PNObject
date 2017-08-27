@@ -431,7 +431,7 @@ static bool isFirstAccess = YES;
                     }
                 }
                 else {
-                    [self refreshTokenForUserWithFacebookID:[[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId] facebookToken:[[FBSDKAccessToken currentAccessToken] tokenString] withBlockSuccess:success failure:failure];
+                    [self refreshTokenForUserWithFacebookId:[[SINGLETON_PNObjectConfig.userSubClass currentUser] facebookId] facebookToken:[[FBSDKAccessToken currentAccessToken] tokenString] withBlockSuccess:success failure:failure];
                 }
             }];
         }
@@ -489,11 +489,11 @@ static bool isFirstAccess = YES;
     }];
 }
 
-- (void) refreshTokenForUserWithFacebookID:(NSString * _Nonnull) facebookID
+- (void) refreshTokenForUserWithFacebookId:(NSString * _Nonnull) facebookId
                              facebookToken:(NSString * _Nonnull) facebookToken
                           withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                    failure:(nullable void (^)(NSError * _Nonnull error))failure {
-    if (!facebookID || [facebookID length] == 0) {
+    if (!facebookId || [facebookId length] == 0) {
         if (failure) {
             NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Facebook id is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
             failure(error);
@@ -508,7 +508,7 @@ static bool isFirstAccess = YES;
         }
     }
     
-    [_authManager authenticateUsingFacebookOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] facebookID:facebookID facebookToken:facebookToken scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
+    [_authManager authenticateUsingFacebookOAuthWithURLString:[_currentEndPointUrl stringByAppendingString:@"oauth-token"] facebookId:facebookId facebookToken:facebookToken scope:nil success:^(AFOAuthCredential * _Nonnull credential) {
         _currentOauthCredential = credential;
         
         [AFOAuthCredential storeCredential:_currentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];

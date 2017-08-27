@@ -52,7 +52,7 @@
 /**
  *  <#Description#>
  *
- *  @param mappingSelector <#mappingSelector description#>
+ *  @param dictionaryMappingSelector <#mappingSelector description#>
  *
  *  @return <#return value description#>
  */

@@ -162,17 +162,17 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 }
 
 - (NSURLSessionTask *)authenticateUsingFacebookOAuthWithURLString:(NSString *)URLString
-                                                       facebookID:(NSString *)facebookid
+                                                       facebookId:(NSString *)facebookId
                                                     facebookToken:(NSString *)facebookToken
                                                             scope:(NSString *)scope
                                                           success:(void (^)(AFOAuthCredential * _Nonnull))success
                                                           failure:(void (^)(NSError * _Nonnull))failure {
-    NSParameterAssert(facebookid);
+    NSParameterAssert(facebookId);
     NSParameterAssert(facebookToken);
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:kAFOAuthFacebookCredentialGrantType forKey:@"grant_type"];
-    [parameters setValue:facebookid forKey:@"username"];
+    [parameters setValue:facebookId forKey:@"username"];
     [parameters setValue:facebookToken forKey:@"password"];
     
     if (scope) {
