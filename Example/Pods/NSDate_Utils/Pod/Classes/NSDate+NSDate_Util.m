@@ -528,7 +528,9 @@ static NSDateFormatter *_displayFormatter = nil;
 
 
 + (NSTimeInterval) timeIntervalFromHours:(NSUInteger) hours {
+    NSTimeInterval seconds = hours / 60 / 60;
     
+    return seconds;
 }
 
 
