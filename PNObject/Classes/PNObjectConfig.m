@@ -250,6 +250,10 @@ static bool isFirstAccess = YES;
     }
 }
 
+- (NSString * _Nonnull) getEnvironment {
+    return _currentEnv;
+}
+
 - (NSString *) baseUrl {
     return _currentBaseUrl;
 }

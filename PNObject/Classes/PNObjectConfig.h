@@ -127,6 +127,9 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  */
 - (void) setEnvironment:(NSString * _Nonnull) environment;
 
+
+- (NSString * _Nonnull) getEnvironment;
+
 /**
  *  <#Description#>
  *

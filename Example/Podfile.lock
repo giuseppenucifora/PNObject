@@ -14,30 +14,31 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - Bolts (1.8.4):
-    - Bolts/AppLinks (= 1.8.4)
-    - Bolts/Tasks (= 1.8.4)
-  - Bolts/AppLinks (1.8.4):
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.8.4)
+  - Bolts/Tasks (1.9.0)
   - CodFis-Helper (0.1.3)
   - DDDKeychainWrapper (1.0.0)
   - DJLocalization (1.2.2):
     - DJLocalization/Core (= 1.2.2)
   - DJLocalization/Core (1.2.2)
   - Expecta (1.0.6)
-  - FBSDKCoreKit (4.26.0):
+  - FBSDKCoreKit (4.29.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.26.0):
+  - FBSDKLoginKit (4.29.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.26.0):
+  - FBSDKShareKit (4.29.0):
     - FBSDKCoreKit
   - NSDataAES (0.2.2)
-  - NSDate_Utils (1.0.6)
+  - NSDate_Utils (1.1.0):
+    - DJLocalization
   - NSString-Helper (1.0.5)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (1.3.2):
+  - PNObject (1.3.3):
     - AFNetworking
     - CodFis-Helper
     - DDDKeychainWrapper
@@ -55,7 +56,7 @@ PODS:
     - UIDevice-Utils
   - PureLayout (3.0.2)
   - RZDataBinding (2.1.0)
-  - Specta (1.0.6)
+  - Specta (1.0.7)
   - StrongestPasswordValidator (0.1.2)
   - UIDevice-Utils (1.0.0)
 
@@ -71,26 +72,26 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
   DDDKeychainWrapper: e681a4daba6448786fa83b4941f58102a33b1897
   DJLocalization: 0c84029af375647d4104a42ae36be87194c46c47
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  FBSDKCoreKit: c8b8582311ec11b145451d8b9717dc6cc2ae5a76
-  FBSDKLoginKit: f3f03b94c21eb834af243c0a881d48641f47ca60
-  FBSDKShareKit: 320712d8293fde6392872c91eb80ef0da5d73cc3
+  FBSDKCoreKit: 6f139173dc63a1deaff4430a55f2fe5bb222d2af
+  FBSDKLoginKit: 56a057ca6822535ea0faa25f57a7c41edb697fd4
+  FBSDKShareKit: 18a2cd118aef11dd657fe7e8b64bae5c719088b2
   NSDataAES: 967ea3337476a80e9838a533c25d570a06855ed0
-  NSDate_Utils: c7802a1e0f5ef3acaf39bf55806a1caaa0343d2d
+  NSDate_Utils: c858a89da6e204ecf53aca48dbccb4da4d25bc9e
   NSString-Helper: 459e1b6a62b3bf7db10f01b0d102548608e945c4
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: 6dcb7b25b6d1ab221b59b7ed4e7c34a6dc50f76e
+  PNObject: 3ad5828da3dae309a09b73da59ae4b56d4b8458e
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   RZDataBinding: 6981e90ddaae2f5e02028323b1043f8c31013109
-  Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
+  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
   UIDevice-Utils: ff37bd042127117572d6ce4c5ff074f4f54ab5ed
 
-PODFILE CHECKSUM: db08ccdd0a68e33d4a1cceb1843643fbab2f2a8e
+PODFILE CHECKSUM: fcd5d1cf3426c7c9c5b3e5edcd4b8e5402ee7f2e
 
 COCOAPODS: 1.3.1

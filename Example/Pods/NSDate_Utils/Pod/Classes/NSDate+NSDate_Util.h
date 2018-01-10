@@ -94,6 +94,9 @@ static NSString * _Nonnull kNSDateHelperFormatSQLDateWithTimeZoneIT_shashSeparat
 + (NSTimeInterval) timeIntervalFromMinutes:(NSUInteger) minutes;
 + (NSTimeInterval) timeIntervalFromHours:(NSUInteger) minutes;
 
++ (NSString * _Nonnull) stringFromWeekday :(NSInteger) weekday;
++ (NSString * _Nonnull) stringMonth :(NSInteger) month;
+
 - (NSDate * _Nonnull) dateToNearestMinutes:(NSInteger)minutes;
 
 - (NSDate * _Nonnull) dateByAddingMinutes:(NSInteger) dMinutes;
