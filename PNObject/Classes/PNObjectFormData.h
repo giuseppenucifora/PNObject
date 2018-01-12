@@ -50,5 +50,8 @@
  */
 + (instancetype _Nonnull) formDataFromUIImage:(UIImage * _Nonnull) image compression:(CGFloat) compression name:(NSString * _Nonnull) name fileName:(NSString * _Nonnull) fileName mimeType:(NSString * _Nonnull) mimeType;
 
++ (instancetype _Nonnull) formDataFromFilepath:(NSString * _Nonnull) filePath name:(NSString * _Nonnull) name fileName:(NSString * _Nonnull) fileName mimeType:(NSString * _Nonnull) mimeType;
+
++ (instancetype _Nonnull) formDataFromFileUrl:(NSURL * _Nonnull) fileUrl name:(NSString * _Nonnull) name fileName:(NSString * _Nonnull) fileName mimeType:(NSString * _Nonnull) mimeType;
 
 @end

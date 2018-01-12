@@ -36,5 +36,20 @@
     return responseData;
 }
 
++ (instancetype _Nonnull) formDataFromFilepath:(NSString * _Nonnull) filePath name:(NSString * _Nonnull) name fileName:(NSString * _Nonnull) fileName mimeType:(NSString * _Nonnull) mimeType {
+    return [self formDataFromFileUrl:[NSURL URLWithString:filePath] name:name fileName:fileName mimeType:mimeType];
+}
+
++ (instancetype _Nonnull) formDataFromFileUrl:(NSURL * _Nonnull) fileUrl name:(NSString * _Nonnull) name fileName:(NSString * _Nonnull) fileName mimeType:(NSString * _Nonnull) mimeType {
+    PNObjectFormData * responseData = [PNObjectFormData new];
+    
+    [responseData setFormData:[NSData dataWithContentsOfURL:fileUrl]];
+    [responseData setName:name];
+    [responseData setFileName:fileName];
+    [responseData setMimeType:mimeType];
+    
+    return responseData;
+}
+
 
 @end
