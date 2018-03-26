@@ -7,69 +7,13 @@
 //
 
 #import "PNObject.h"
-#import "PNObjectFormData.h"
+#import "PNObject+PNObjectGETConnection.h"
+#import "PNObject+PNObjectPOSTConnection.h"
+#import "PNObject+PNObjectDELETEConnection.h"
+
+#define MAX_RETRIES 3
 
 @interface PNObject (PNObjectConnection)
-
-
-+ (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
-                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                       failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-					parameters:(NSDictionary * _Nullable) parameters
-                      progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
-                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                       failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                    parameters:(NSDictionary * _Nullable) parameters
-                       retries:(NSInteger) retries
-                      progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
-                       success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                       failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
-                     parameters:(NSDictionary * _Nullable) parameters
-                       progress:(nullable void (^)(NSProgress * _Nullable uploadProgress)) uploadProgress
-                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
-                     parameters:(NSDictionary * _Nullable) parameters
-                        retries:(NSInteger) retries
-                       progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
-                       formData:(NSArray * _Nullable) postFormData
-                     parameters:(NSDictionary * _Nullable) parameters
-                       progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
-                       formData:(NSArray * _Nullable) postFormData
-                     parameters:(NSDictionary * _Nullable) parameters
-                        retries:(NSInteger) retries
-                       progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
-                       parameters:(NSDictionary * _Nullable) parameters
-                         progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                          success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                          failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
-
-+ (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
-                       parameters:(NSDictionary * _Nullable) parameters
-                          retries:(NSInteger) retries
-                         progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
-                          success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
-                          failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 + (id _Nonnull) parseObjectFromResponse:(id _Nullable) response;
 

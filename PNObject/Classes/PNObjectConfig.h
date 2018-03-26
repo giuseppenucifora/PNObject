@@ -39,6 +39,8 @@ extern NSString* _Nonnull const PNObjectLocalNotificationPNInstallationUserDelet
 
 extern NSString* _Nonnull const BaseUrl;
 extern NSString* _Nonnull const EndpointPath;
+extern NSString* _Nonnull const OAuthEndpointPath;
+extern NSString* _Nonnull const OAuthEndpointAction;
 
 extern NSString* _Nonnull const EnvironmentProduction;
 extern NSString* _Nonnull const EnvironmentStage;
@@ -46,6 +48,9 @@ extern NSString* _Nonnull const EnvironmentDevelopment;
 
 extern NSString* _Nonnull const Client_ID;
 extern NSString* _Nonnull const Client_Secret;
+
+extern NSString* _Nonnull const OAuthClient_ID;
+extern NSString* _Nonnull const OAuthClient_Secret;
 
 typedef NS_ENUM(NSInteger, OAuthMode) {
     OAuthModeNo = 0,
@@ -67,8 +72,8 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  @param endpointUrlsForEnvironments
  *  For example,
  *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
- *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
- *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
+ *       PNObjectConfigEnvStage : @"https://stage.it/api/v1",
+ *       PNObjectConfigEnvProduction : @"https://production.it/api/v1"
  *   }
  *
  *  @return singleton
@@ -81,8 +86,8 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  @param endpointUrlsForEnvironments
  *  For example,
  *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
- *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
- *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
+ *       PNObjectConfigEnvStage : @"https://stage.it/api/v1",
+ *       PNObjectConfigEnvProduction : @"https://production.it/api/v1"
  *   }
  *  @param userSubClass                <#userSubClass description#>
  *
@@ -96,8 +101,8 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  @param endpointUrlsForEnvironments
  *  For example,
  *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
- *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
- *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
+ *       PNObjectConfigEnvStage : @"https://stage.it/api/v1",
+ *       PNObjectConfigEnvProduction : @"https://production.it/api/v1"
  *   }
  *  @param oauthMode                <#oauthEnabled description#>
  *
@@ -111,8 +116,8 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  @param endpointUrlsForEnvironments
  *  For example,
  *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
- *       PNObjectConfigEnvStage : @"ttps://stage.it/api/v1",
- *       PNObjectConfigEnvProduction : @"ttps://production.it/api/v1"
+ *       PNObjectConfigEnvStage : @"https://stage.it/api/v1",
+ *       PNObjectConfigEnvProduction : @"https://production.it/api/v1"
  *   }
  *  @param userSubClass                <#userSubClass description#>
  *  @param oauthMode                <#oauthEnabled description#>
@@ -147,10 +152,11 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 
 
 
-- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret forEnv:(NSString * _Nonnull) environment;
+- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction forEnv:(NSString * _Nonnull) environment;
 
+- (void) setOauthClientID:(NSString * _Nonnull) oauthClientID oauthClientSecret:(NSString* _Nonnull) oauthClientSecret oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction forEnv:(NSString *) environment;
 
-- (void) setOauthUserName:(NSString * _Nonnull)oauthUserName oauthPassword:(NSString* _Nonnull) oauthPassword forEnv:(NSString * _Nonnull) environment;
+- (void) setOauthUserName:(NSString * _Nonnull)oauthUserName oauthPassword:(NSString* _Nonnull) oauthPassword oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction forEnv:(NSString * _Nonnull) environment;
 
 /**
  *  <#Description#>
@@ -240,6 +246,8 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 #pragma mark - PNObjectConfig Properties
 ///--------------------------------------
 
+@property (nonatomic, readonly) OAuthMode oauthMode;
+
 @property (nonatomic, readonly, nonnull)  Class userSubClass;
 /**
  *  <#Description#>
@@ -259,7 +267,12 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, nullable, readonly) AFOAuthCredential *currentOauthCredential;
+@property (nonatomic, strong, nullable, readonly) AFOAuthCredential *currentOauthClientCredential;
+
+/**
+ *
+ */
+@property (nonatomic, strong, nullable, readonly) AFOAuthCredential *currentOauthUserCredential;
 
 /**
  *  <#Description#>

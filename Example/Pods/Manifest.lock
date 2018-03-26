@@ -1,18 +1,18 @@
 PODS:
-  - AFNetworking (3.1.0):
-    - AFNetworking/NSURLSession (= 3.1.0)
-    - AFNetworking/Reachability (= 3.1.0)
-    - AFNetworking/Security (= 3.1.0)
-    - AFNetworking/Serialization (= 3.1.0)
-    - AFNetworking/UIKit (= 3.1.0)
-  - AFNetworking/NSURLSession (3.1.0):
+  - AFNetworking (3.2.0):
+    - AFNetworking/NSURLSession (= 3.2.0)
+    - AFNetworking/Reachability (= 3.2.0)
+    - AFNetworking/Security (= 3.2.0)
+    - AFNetworking/Serialization (= 3.2.0)
+    - AFNetworking/UIKit (= 3.2.0)
+  - AFNetworking/NSURLSession (3.2.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.1.0)
-  - AFNetworking/Security (3.1.0)
-  - AFNetworking/Serialization (3.1.0)
-  - AFNetworking/UIKit (3.1.0):
+  - AFNetworking/Reachability (3.2.0)
+  - AFNetworking/Security (3.2.0)
+  - AFNetworking/Serialization (3.2.0)
+  - AFNetworking/UIKit (3.2.0):
     - AFNetworking/NSURLSession
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
@@ -26,19 +26,19 @@ PODS:
     - DJLocalization/Core (= 1.2.2)
   - DJLocalization/Core (1.2.2)
   - Expecta (1.0.6)
-  - FBSDKCoreKit (4.29.0):
+  - FBSDKCoreKit (4.31.1):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.29.0):
+  - FBSDKLoginKit (4.31.1):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.29.0):
-    - FBSDKCoreKit
+  - FBSDKShareKit (4.31.1):
+    - FBSDKCoreKit (~> 4.31.1)
   - NSDataAES (0.2.2)
   - NSDate_Utils (1.1.0):
     - DJLocalization
-  - NSString-Helper (1.0.5)
+  - NSString-Helper (1.0.6)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (1.3.4):
+  - PNObject (1.5):
     - AFNetworking
     - CodFis-Helper
     - DDDKeychainWrapper
@@ -58,7 +58,7 @@ PODS:
   - RZDataBinding (2.1.0)
   - Specta (1.0.7)
   - StrongestPasswordValidator (0.1.2)
-  - UIDevice-Utils (1.0.0)
+  - UIDevice-Utils (1.0.7)
 
 DEPENDENCIES:
   - Expecta
@@ -71,27 +71,27 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
   DDDKeychainWrapper: e681a4daba6448786fa83b4941f58102a33b1897
   DJLocalization: 0c84029af375647d4104a42ae36be87194c46c47
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  FBSDKCoreKit: 6f139173dc63a1deaff4430a55f2fe5bb222d2af
-  FBSDKLoginKit: 56a057ca6822535ea0faa25f57a7c41edb697fd4
-  FBSDKShareKit: 18a2cd118aef11dd657fe7e8b64bae5c719088b2
+  FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
+  FBSDKLoginKit: 99797ac39252fef6f72600b886f6ee60b4b29cab
+  FBSDKShareKit: e640c41c9fcd61929eeb3d0c21ad335103e7cb62
   NSDataAES: 967ea3337476a80e9838a533c25d570a06855ed0
   NSDate_Utils: c858a89da6e204ecf53aca48dbccb4da4d25bc9e
-  NSString-Helper: 459e1b6a62b3bf7db10f01b0d102548608e945c4
+  NSString-Helper: 389265918b2a4c5b0d09f0e03c607e8e5e254dd7
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: 8dc560680a7a48060ed309b019ca4fc41505cc07
+  PNObject: 75d5a262457e538027c6f7b9cbd4f8ee5700f21f
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   RZDataBinding: 6981e90ddaae2f5e02028323b1043f8c31013109
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
-  UIDevice-Utils: ff37bd042127117572d6ce4c5ff074f4f54ab5ed
+  UIDevice-Utils: 8ff812220ce91e97a2cea243bd4160e7b958ec76
 
 PODFILE CHECKSUM: fcd5d1cf3426c7c9c5b3e5edcd4b8e5402ee7f2e
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0
