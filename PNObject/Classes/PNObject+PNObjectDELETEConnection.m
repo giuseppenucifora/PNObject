@@ -22,7 +22,7 @@
                          progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                           success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self DELETEWithEndpointAction:endPoint authMode:OAuthModeClientCredential parameters:parameters retries:MAX_RETRIES progress:uploadProgress success:success failure:failure];
+    return [self DELETEWithEndpointAction:endPoint oauthMode:OAuthModeNo parameters:parameters retries:MAX_RETRIES progress:uploadProgress success:success failure:failure];
 }
 
 + (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
@@ -31,29 +31,28 @@
                          progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                           success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self DELETEWithEndpointAction:endPoint authMode:OAuthModeClientCredential parameters:parameters retries:retries progress:uploadProgress success:success failure:failure];
+    return [self DELETEWithEndpointAction:endPoint oauthMode:OAuthModeNo parameters:parameters retries:retries progress:uploadProgress success:success failure:failure];
 }
 
 + (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
-                         authMode:(OAuthMode) authMode
+                         oauthMode:(OAuthMode) oauthMode
                        parameters:(NSDictionary * _Nullable) parameters
                          progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                           success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self DELETEWithEndpointAction:endPoint authMode:authMode parameters:parameters retries:MAX_RETRIES progress:uploadProgress success:success failure:failure];
+    return [self DELETEWithEndpointAction:endPoint oauthMode:oauthMode parameters:parameters retries:MAX_RETRIES progress:uploadProgress success:success failure:failure];
 }
 
 + (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
-                         authMode:(OAuthMode) authMode
+                         oauthMode:(OAuthMode) oauthMode
                        parameters:(NSDictionary * _Nullable) parameters
                           retries:(NSInteger) retries
                          progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                           success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
+    if([[PNObjectConfig sharedInstance] setCredentialTokenForOauthMode:oauthMode]){
     
-    
-    if ([[PNObjectConfig sharedInstance] currentOauthUserCredential] && ![[[PNObjectConfig sharedInstance] currentOauthUserCredential] isExpired]) {
         [[[PNObjectConfig sharedInstance] manager] DELETE:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]
                                                parameters:parameters
                                                   success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -65,7 +64,7 @@
                                                           [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
                                                               
                                                               [self DELETEWithEndpointAction:endPoint
-                                                                                    authMode:authMode
+                                                                                    oauthMode:oauthMode
                                                                                   parameters:parameters
                                                                                      retries:retries-1
                                                                                     progress:uploadProgress
@@ -87,15 +86,16 @@
         
     }
     else {
-        [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
+        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode WithBlockSuccess:^(BOOL refreshSuccess) {
             
             [self DELETEWithEndpointAction:endPoint
-                                  authMode:authMode
+                                  oauthMode:oauthMode
                                 parameters:parameters
                                    retries:retries-1
                                   progress:uploadProgress
                                    success:success
                                    failure:failure];
+            
         } failure:^(NSError * _Nonnull error) {
             
             if (failure) {
@@ -103,20 +103,6 @@
             }
         }];
     }
-}
-
-+ (BOOL) checkCredential {
-    
-    switch ([[PNObjectConfig sharedInstance] oauthMode]) {
-        case OAuthModeClientCredential:
-            return NO;
-            break;
-        case OAuthModePassword:
-        default:
-            return NO;
-            break;
-    }
-    return YES;
 }
 
 @end

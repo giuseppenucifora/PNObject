@@ -33,20 +33,20 @@
 
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      authMode:(OAuthMode) authMode
+                      oauthMode:(OAuthMode) oauthMode
                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      authMode:(OAuthMode) authMode
+                      oauthMode:(OAuthMode) oauthMode
                     parameters:(NSDictionary * _Nullable) parameters
                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      authMode:(OAuthMode) authMode
+                      oauthMode:(OAuthMode) oauthMode
                     parameters:(NSDictionary * _Nullable) parameters
                        retries:(NSInteger) retries
                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress

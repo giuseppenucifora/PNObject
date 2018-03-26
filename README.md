@@ -37,7 +37,7 @@ Configure PNObject endpoint client ID, client secret and OAuthModePassword with 
     [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @{BaseUrl:@"http://pnobject.local/",EndpointPath:@"api/v1/"},
                                                         EnvironmentStage : @{BaseUrl:@"http://pnobject.stage.it/",EndpointPath:@"api/v1/"},
                                                         EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
-                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+                                                        } userSubclass:[PNUser class]];
     
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
@@ -71,7 +71,7 @@ Configure PNObject endpoint client ID, client secret and OAuthModePassword
 [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
                                                         EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
                                                         EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
-                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModePassword];
+                                                        } userSubclass:[PNUser class]];
     
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
@@ -95,7 +95,7 @@ Configure PNObject endpoint client ID, client secret and OAuthModeClientCredenti
 [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
                                                         EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
                                                         EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
-                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+                                                        } userSubclass:[PNUser class]];
     
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
@@ -114,7 +114,7 @@ Configure PNObject endpoint and using custom PNUser object
 [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @"http://pnobject.local/api/v1/",
                                                         EnvironmentStage : @"http://pnobject.stage.it/api/v1/",
                                                         EnvironmentProduction : @"http://pnobject.prod.it/api/v1/"
-                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+                                                        } userSubclass:[PNUser class]];
     
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];

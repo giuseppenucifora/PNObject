@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		0ABF8340F735722CEE937FA3 /* libPods-PNObject_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PNObject_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		116AF818F8117B91EF290C9A /* Pods-PNObject_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PNObject_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-PNObject_Example/Pods-PNObject_Example.release.xcconfig"; sourceTree = "<group>"; };
-		2661CEE1F223361CD1DACC25 /* PNObject.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PNObject.podspec; path = ../PNObject.podspec; sourceTree = "<group>"; };
+		2661CEE1F223361CD1DACC25 /* PNObject.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PNObject.podspec; path = ../PNObject.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3E392C278361604C1602CAF0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* PNObject_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PNObject_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };

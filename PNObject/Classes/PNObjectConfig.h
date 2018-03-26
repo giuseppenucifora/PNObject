@@ -39,8 +39,6 @@ extern NSString* _Nonnull const PNObjectLocalNotificationPNInstallationUserDelet
 
 extern NSString* _Nonnull const BaseUrl;
 extern NSString* _Nonnull const EndpointPath;
-extern NSString* _Nonnull const OAuthEndpointPath;
-extern NSString* _Nonnull const OAuthEndpointAction;
 
 extern NSString* _Nonnull const EnvironmentProduction;
 extern NSString* _Nonnull const EnvironmentStage;
@@ -49,8 +47,11 @@ extern NSString* _Nonnull const EnvironmentDevelopment;
 extern NSString* _Nonnull const Client_ID;
 extern NSString* _Nonnull const Client_Secret;
 
-extern NSString* _Nonnull const OAuthClient_ID;
-extern NSString* _Nonnull const OAuthClient_Secret;
+extern NSString* _Nonnull const Client_Credential_ID;
+extern NSString* _Nonnull const Client_Credential_Secret;
+
+extern NSString* _Nonnull const Client_Username;
+extern NSString* _Nonnull const Client_Password;
 
 typedef NS_ENUM(NSInteger, OAuthMode) {
     OAuthModeNo = 0,
@@ -96,36 +97,6 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 + (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments andUserSubclass:(Class _Nonnull) userSubClass;
 
 /**
- *
- *
- *  @param endpointUrlsForEnvironments
- *  For example,
- *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
- *       PNObjectConfigEnvStage : @"https://stage.it/api/v1",
- *       PNObjectConfigEnvProduction : @"https://production.it/api/v1"
- *   }
- *  @param oauthMode                <#oauthEnabled description#>
- *
- *  @return singleton
- */
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments withOauthMode:(OAuthMode) oauthMode;
-
-/**
- *  <#Description#>
- *
- *  @param endpointUrlsForEnvironments
- *  For example,
- *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
- *       PNObjectConfigEnvStage : @"https://stage.it/api/v1",
- *       PNObjectConfigEnvProduction : @"https://production.it/api/v1"
- *   }
- *  @param userSubClass                <#userSubClass description#>
- *  @param oauthMode                <#oauthEnabled description#>
- *
- *  @return <#return value description#>
- */
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withOauthMode:(OAuthMode) oauthMode;
-/**
  *  <#Description#>
  *
  *  @param environment <#env description#>
@@ -151,12 +122,17 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 - (void) removeHTTPHeaderValueForKey:(NSString * _Nonnull) key;
 
 
-
-- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction forEnv:(NSString * _Nonnull) environment;
-
-- (void) setOauthClientID:(NSString * _Nonnull) oauthClientID oauthClientSecret:(NSString* _Nonnull) oauthClientSecret oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction forEnv:(NSString *) environment;
-
-- (void) setOauthUserName:(NSString * _Nonnull)oauthUserName oauthPassword:(NSString* _Nonnull) oauthPassword oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction forEnv:(NSString * _Nonnull) environment;
+/**
+ *
+ *
+ *  @param clientID Client ID for selected environment
+ *  @param clientSecret Client Secret for selected environment
+ *  @param oAuthEndpointAction endpoint action. You can pass specia string "%@" to autoset EndpointPath to Oauth endpointPath
+ *  @param oauthMode OauthMode
+ *  @param environment environment
+ *
+ */
+- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction oauthMode:(OAuthMode) oauthMode forEnv:(NSString* _Nonnull) environment;
 
 /**
  *  <#Description#>
@@ -232,21 +208,39 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
                      withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
-
+/**
+ *  <#Description#>
+ */
 - (void) refreshTokenForUserWithFacebookId:(NSString * _Nonnull) facebookId
                              facebookToken:(NSString * _Nonnull) facebookToken
                           withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                    failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 /**
  *  <#Description#>
  */
-- (BOOL) resetToken;
+- (void) refreshTokenForOauthMode:(OAuthMode) oauthMode
+                  WithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                           failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+/**
+ *  <#Description#>
+ */
+- (BOOL) resetTokenForOauthMode:(OAuthMode) oauthMode;
+
+/**
+ *  <#Description#>
+ */
+- (void) resetAllTokens;
+
+/**
+ *  <#Description#>
+ */
+- (BOOL) setCredentialTokenForOauthMode:(OAuthMode) oauthMode;
 
 ///--------------------------------------
 #pragma mark - PNObjectConfig Properties
 ///--------------------------------------
-
-@property (nonatomic, readonly) OAuthMode oauthMode;
 
 @property (nonatomic, readonly, nonnull)  Class userSubClass;
 /**
@@ -257,12 +251,22 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, readonly, nonnull) AFJSONRequestSerializer *jsonSerializer;
+@property (nonatomic, strong, readonly, nonnull) AFJSONRequestSerializer *managerJsonRequestSerializer;
 
 /**
  *  <#Description#>
  */
-@property (nonatomic, strong, readonly, nonnull) AFHTTPRequestSerializer *httpSerializer;
+@property (nonatomic, strong, readonly, nonnull) AFHTTPRequestSerializer *managerHttpRequestSerializer;
+
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly, nonnull) AFJSONRequestSerializer *oauthJsonRequestSerializer;
+
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, strong, readonly, nonnull) AFHTTPRequestSerializer *oauthHttpRequestSerializer;
 
 /**
  *  <#Description#>

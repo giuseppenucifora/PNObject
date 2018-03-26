@@ -25,14 +25,14 @@
                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 + (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
-                         authMode:(OAuthMode) authMode
+                         oauthMode:(OAuthMode) oauthMode
                        parameters:(NSDictionary * _Nullable) parameters
                          progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                           success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure;
 
 + (void) DELETEWithEndpointAction:(NSString * _Nonnull) endPoint
-                         authMode:(OAuthMode) authMode
+                         oauthMode:(OAuthMode) oauthMode
                        parameters:(NSDictionary * _Nullable) parameters
                           retries:(NSInteger) retries
                          progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress

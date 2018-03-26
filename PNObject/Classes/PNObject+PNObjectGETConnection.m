@@ -32,7 +32,7 @@
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
-    return [self GETWithEndpointAction:endPoint authMode:OAuthModeClientCredential parameters:parameters retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
+    return [self GETWithEndpointAction:endPoint oauthMode:OAuthModeClientCredential parameters:parameters retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
@@ -42,35 +42,35 @@
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
-    return [self GETWithEndpointAction:endPoint authMode:OAuthModeClientCredential parameters:parameters retries:retries progress:downloadProgress success:success failure:failure];
+    return [self GETWithEndpointAction:endPoint oauthMode:OAuthModeClientCredential parameters:parameters retries:retries progress:downloadProgress success:success failure:failure];
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      authMode:(OAuthMode) authMode
+                      oauthMode:(OAuthMode) oauthMode
                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self GETWithEndpointAction:endPoint authMode:authMode parameters:nil retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
+    return [self GETWithEndpointAction:endPoint oauthMode:oauthMode parameters:nil retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      authMode:(OAuthMode) authMode
+                      oauthMode:(OAuthMode) oauthMode
                     parameters:(NSDictionary * _Nullable) parameters
                        progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self GETWithEndpointAction:endPoint authMode:authMode parameters:parameters retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
+    return [self GETWithEndpointAction:endPoint oauthMode:oauthMode parameters:parameters retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      authMode:(OAuthMode) authMode
+                      oauthMode:(OAuthMode) oauthMode
                     parameters:(NSDictionary * _Nullable) parameters
                        retries:(NSInteger) retries
                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
-    if ([[PNObjectConfig sharedInstance] currentOauthClientCredential] && ![[[PNObjectConfig sharedInstance] currentOauthClientCredential] isExpired]) {
+    if([[PNObjectConfig sharedInstance] setCredentialTokenForOauthMode:oauthMode]){
         [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:parameters progress:downloadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
             
             if (success) {
@@ -82,7 +82,7 @@
                 [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
                     
                     return [self GETWithEndpointAction:endPoint
-                                              authMode:authMode
+                                              oauthMode:oauthMode
                                             parameters:parameters
                                                retries:retries-1
                                               progress:downloadProgress
@@ -102,10 +102,10 @@
         }];
     }
     else {
-        [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
+        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode WithBlockSuccess:^(BOOL refreshSuccess) {
             
             return [self GETWithEndpointAction:endPoint
-                                      authMode:authMode
+                                      oauthMode:oauthMode
                                     parameters:parameters
                                        retries:retries-1
                                       progress:downloadProgress

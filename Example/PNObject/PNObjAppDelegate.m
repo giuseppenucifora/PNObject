@@ -33,22 +33,26 @@
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
+    /**
     [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @{BaseUrl:@"http://pnobject.local/",EndpointPath:@"api/v1/"},
-                                                        EnvironmentStage : @{BaseUrl:@"https://idd.ppreview.it/",EndpointPath:@"wp-json/v1/"},
+                                                        EnvironmentStage : @{BaseUrl:@"https://pnobject.stage.it/",EndpointPath:@"api/v1/"},
                                                         EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
-                                                        } userSubclass:[PNUser class] withOauthMode:OAuthModeClientCredential];
+                                                        } andUserSubclass:[PNUser class]];
     
-    [[PNObjectConfig sharedInstance] setClientID:@"xVdEbNLLierj9CJoLNo5lsbg7VFs8UikqADbcwKA" clientSecret:@"2WWSJrDNbZhbUUCXIOTBiYIJv9muiRGK68f2B2Eb" oAuthEndpointAction:@"oauth/token" forEnv:EnvironmentStage];
-    [[PNObjectConfig sharedInstance] setOauthClientID:@"tXYhKtcvfYdCM4tNor6WfbclEWYkoGWqBimUBzqZ" oauthClientSecret:@"3UMEQthBHp1oEo0pjFmgkifhig689ZL5L9DsSETd" oAuthEndpointAction:@"oauth/token" forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"api/v1/" oauthMode:OAuthModeClientCredential forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"api/v1/" oauthMode:OAuthModePassword forEnv:EnvironmentStage];
+    */
+    
+    
+    /** Can user special char %@ to autoset EndpointPath to Oauth endpointPath */
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModeClientCredential forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModePassword forEnv:EnvironmentStage];
     
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
-    //[[PNObjectConfig sharedInstance] setHTTPHeaderValue:@"XMLHttpRequest" forKey:@"X-Request-With"];
     
     NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] baseUrl]);
     NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointPath]);
     NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointUrl]);
-    
-    
     
     PNObjViewController *viewController = [[PNObjViewController alloc] init];
     

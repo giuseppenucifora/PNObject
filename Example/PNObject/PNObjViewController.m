@@ -93,11 +93,15 @@
 }
 
 - (void) refreshTokenAction {
-    [[PNObjectConfig sharedInstance] refreshTokenForClientCredential];
+    [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
+        
+    } failure:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 - (void) cancelTokenAction {
-    [[PNObjectConfig sharedInstance] resetToken];
+    [[PNObjectConfig sharedInstance] resetAllTokens];
 }
 
 - (void) apiCallAction {
