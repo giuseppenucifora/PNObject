@@ -33,21 +33,17 @@
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
-    /**
     [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @{BaseUrl:@"http://pnobject.local/",EndpointPath:@"api/v1/"},
                                                         EnvironmentStage : @{BaseUrl:@"https://pnobject.stage.it/",EndpointPath:@"api/v1/"},
                                                         EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
                                                         } andUserSubclass:[PNUser class]];
     
-    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"api/v1/" oauthMode:OAuthModeClientCredential forEnv:EnvironmentStage];
-    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"api/v1/" oauthMode:OAuthModePassword forEnv:EnvironmentStage];
-    */
-    
-    
     /** Can user special char %@ to autoset EndpointPath to Oauth endpointPath */
     [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModeClientCredential forEnv:EnvironmentStage];
     [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModePassword forEnv:EnvironmentStage];
     
+    [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
+ 
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
     
     NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] baseUrl]);

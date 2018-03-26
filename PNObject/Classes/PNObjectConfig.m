@@ -790,6 +790,22 @@ static bool isFirstAccess = YES;
     }
 }
 
+- (void) setOauthUserName:(NSString * _Nonnull)oauthUserName oauthPassword:(NSString* _Nonnull) oauthPassword forEnv:(NSString *) environment {
+    
+    if ([_configuration objectForKey:environment]) {
+        
+        NSMutableDictionary *currentConfigurationDict = [[NSMutableDictionary alloc] initWithDictionary:[_configuration objectForKey:environment]];
+        [currentConfigurationDict setObject:oauthUserName forKey:Client_Username];
+        [currentConfigurationDict setObject:oauthPassword forKey:Client_Password];
+        
+        [_configuration setObject:currentConfigurationDict forKey:environment];
+        
+        if (_currentEnv == environment) {
+            [self setEnvironment:environment];
+        }
+    }
+}
+
 - (BOOL) setCredentialTokenForOauthMode:(OAuthMode) oauthMode {
     switch (oauthMode) {
         case OAuthModeClientCredential:

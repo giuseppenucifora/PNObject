@@ -39,10 +39,10 @@ Configure PNObject endpoint client ID, client secret and OAuthModePassword with 
                                                         EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
                                                         } userSubclass:[PNUser class]];
     
-    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentStage];
-    [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
-        
     
+    /** Can user special char %@ to autoset EndpointPath to Oauth endpointPath */
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModeClientCredential forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModePassword forEnv:EnvironmentStage];
     
     [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
    
