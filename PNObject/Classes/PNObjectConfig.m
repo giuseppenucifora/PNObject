@@ -311,11 +311,11 @@ static bool isFirstAccess = YES;
 }
 
 - (NSString *) endPointPath {
-    return _currentUserCredenzialEndPointPath;
+    return _currentEndPointPath;
 }
 
 - (NSString *) endPointUrl {
-    return _currentUserCredenzialEndPointUrl;
+    return _currentEndPointUrl;
 }
 
 - (AFHTTPSessionManager *) manager {
