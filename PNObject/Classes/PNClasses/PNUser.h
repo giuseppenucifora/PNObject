@@ -59,6 +59,18 @@
                   withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
                            failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
+/**
+ *  <#Description#>
+ *
+ *  @param username    username description
+ *  @param password <#password description#>
+ *  @param success  <#success description#>
+ *  @param failure  <#failure description#>
+ */
++ (void) loginCurrentUserWithUsername:(NSString * _Nonnull) username
+                             password:(NSString * _Nonnull) password
+                     withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                              failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
  *  <#Description#>

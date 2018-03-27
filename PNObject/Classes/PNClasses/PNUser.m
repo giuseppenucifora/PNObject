@@ -390,6 +390,38 @@ static bool isFirstAccess = YES;
     
 }
 
++ (void) loginCurrentUserWithUsername:(NSString * _Nonnull) username
+                          password:(NSString * _Nonnull) password
+                  withBlockSuccess:(nullable void (^)(PNUser * _Nullable responseObject))success
+                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    
+    [[PNObjectConfig sharedInstance] refreshTokenForUserWithUsername:username password:password withBlockSuccess:^(BOOL refreshSuccess) {
+        if (refreshSuccess) {
+            
+            PNUser *user = [[self class] new];
+            
+            PNObjcPassword *objectPassword = [PNObjcPassword new];
+            [objectPassword setPassword:password];
+            [objectPassword setConfirmPassword:password];
+            
+            [user setAuthenticated:YES];
+            [user setUsername:username];
+            [user setPassword:objectPassword];
+            [user saveLocally];
+            [user reloadFormServer];
+            
+            USER = user;
+            
+            if (success) {
+                success(user);
+            }
+        }
+    } failure:failure];
+    
+}
+
+
+
 + (void) uploadAvatar:(UIImage * _Nonnull) avatar
              Progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
               Success:(nullable void (^)(NSDictionary * _Nullable responseObject))success

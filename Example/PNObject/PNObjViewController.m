@@ -95,6 +95,12 @@
 - (void) refreshTokenAction {
     [[PNObjectConfig sharedInstance] refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
         
+        [PNUser loginCurrentUserWithUsername:@"test" password:@"test" withBlockSuccess:^(PNUser * _Nullable responseObject) {
+            
+            NSLog(@"success");
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"%@",error);
+        }];
     } failure:^(NSError * _Nonnull error) {
         
     }];

@@ -102,7 +102,7 @@
         }];
     }
     else {
-        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode WithBlockSuccess:^(BOOL refreshSuccess) {
+        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode retries:MAX_RETRIES WithBlockSuccess:^(BOOL refreshSuccess) {
             
             return [self GETWithEndpointAction:endPoint
                                       oauthMode:oauthMode

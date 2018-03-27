@@ -16,6 +16,7 @@
 #import <NSDataAES/NSData+AES.h>
 #import <DDDKeychainWrapper/DDDKeychainWrapper.h>
 #import "HTTPStatusCodes.h"
+#import "PNObject+PNObjectConnection.h"
 
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess = @"PNObjectLocalNotificationRefreshTokenClientCredentialSuccess";
 NSString * const PNObjectLocalNotificationRefreshTokenClientCredentialFail = @"PNObjectLocalNotificationRefreshTokenClientCredentialFail";
@@ -261,10 +262,10 @@ static bool isFirstAccess = YES;
         
         
         if (![currentEnvConfig objectForKey:Client_ID] || ![currentEnvConfig objectForKey:Client_Secret]) {
-             _currentUserCredenzialClientID = _currentClientCredenzialClientID;
-             _currentUserCredenzialClientSecret = _currentClientCredenzialClientSecret;
-             _currentUserCredenzialEndPointPath = _currentClientCredenzialEndPointPath;
-             _currentUserCredenzialEndPointUrl = _currentClientCredenzialEndPointUrl;
+            _currentUserCredenzialClientID = _currentClientCredenzialClientID;
+            _currentUserCredenzialClientSecret = _currentClientCredenzialClientSecret;
+            _currentUserCredenzialEndPointPath = _currentClientCredenzialEndPointPath;
+            _currentUserCredenzialEndPointUrl = _currentClientCredenzialEndPointUrl;
         }
         else {
             _currentUserCredenzialClientID = [currentEnvConfig objectForKey:Client_ID];
@@ -405,10 +406,10 @@ static bool isFirstAccess = YES;
     if (!_userCredentialAuthManager) {
         _userCredentialAuthManager = [AFOAuth2Manager manager];
         
-        if (_currentUserCredenzialClientID && _currentUserCredenzialClientID && _currentOAuthUserName && _currentOAuthPassword) {
+        if ((_currentUserCredenzialClientID && _currentUserCredenzialClientID) || (_currentOAuthUserName && _currentOAuthPassword)) {
             
             if (![_userCredentialAuthManager clientID]) {
-                _userCredentialAuthManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentClientCredenzialEndPointUrl] clientID:_currentUserCredenzialClientID secret:_currentUserCredenzialClientID];
+                _userCredentialAuthManager = [AFOAuth2Manager  managerWithBaseURL:[NSURL URLWithString:_currentClientCredenzialEndPointUrl] clientID:_currentUserCredenzialClientID secret:_currentUserCredenzialClientSecret];
             }
             
             [_userCredentialAuthManager setUseHTTPBasicAuthentication:NO];
@@ -499,27 +500,27 @@ static bool isFirstAccess = YES;
 
 - (void) refreshTokenForClientCredentialWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                                  failure:(nullable void (^)(NSError * _Nonnull error))failure {
-    [self refreshTokenForOauthMode:OAuthModeClientCredential WithBlockSuccess:success failure:failure];
+    [self refreshTokenForOauthMode:OAuthModeClientCredential retries:MAX_RETRIES WithBlockSuccess:success failure:failure];
 }
 
 - (void) refreshTokenForUserWithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                                      failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
-    [self refreshTokenForOauthMode:OAuthModePassword WithBlockSuccess:success failure:failure];
+    [self refreshTokenForOauthMode:OAuthModePassword retries:MAX_RETRIES WithBlockSuccess:success failure:failure];
 }
 
 - (void) refreshTokenForOauthMode:(OAuthMode) oauthMode
+                          retries:(NSUInteger) retries
                  WithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
-    __block __typeof__(_currentOauthClientCredential) __weak wCurrentOauthCredential = _currentOauthClientCredential;
+    __block __typeof__(_currentOauthClientCredential) wCurrentOauthCredential = _currentOauthClientCredential;
     
-    __block __typeof__(_managerHttpRequestSerializer) __weak wHttpSerializer = _managerHttpRequestSerializer;
-    __block __typeof__(_managerJsonRequestSerializer) __weak wJsonSerializer = _managerJsonRequestSerializer;
-    __block __typeof__(_clientCredentialAuthManager) __weak wClientCredentialAuthManager = _clientCredentialAuthManager;
-    __block __typeof__(_userCredentialAuthManager) __weak wUserCredentialAuthManager = _userCredentialAuthManager;
-    __block __typeof__(_manager) __weak wManager = _manager;
-    
+    __block __typeof__(_managerHttpRequestSerializer) wHttpSerializer = _managerHttpRequestSerializer;
+    __block __typeof__(_managerJsonRequestSerializer) wJsonSerializer = _managerJsonRequestSerializer;
+    __block __typeof__(_clientCredentialAuthManager) wClientCredentialAuthManager = _clientCredentialAuthManager;
+    __block __typeof__(_userCredentialAuthManager) wUserCredentialAuthManager = _userCredentialAuthManager;
+    __block __typeof__(_manager) wManager = _manager;
     
     switch (oauthMode) {
         case OAuthModeClientCredential:
@@ -533,7 +534,6 @@ static bool isFirstAccess = YES;
                     [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     [wClientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialSuccess object:nil];
@@ -545,7 +545,15 @@ static bool isFirstAccess = YES;
                 } failure:^(NSError * _Nonnull error) {
                     [self resetTokenForOauthMode:oauthMode];
                     
-                    [self refreshTokenForClientCredentialWithBlockSuccess:success failure:failure];
+                    if (retries > 0) {
+                        [self refreshTokenForOauthMode:oauthMode retries:retries-1 WithBlockSuccess:success failure:failure];
+                    }
+                    else {
+                        if (failure) {
+                            failure(error);
+                        }
+                    }
+                    
                     return;
                 }];
             }
@@ -557,7 +565,6 @@ static bool isFirstAccess = YES;
                     [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     [wClientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialSuccess object:nil];
@@ -595,8 +602,15 @@ static bool isFirstAccess = YES;
                         
                     } failure:^(NSError * _Nonnull error) {
                         [self resetTokenForOauthMode:oauthMode];
+                        if (retries > 0) {
+                            [self refreshTokenForOauthMode:oauthMode retries:retries-1 WithBlockSuccess:success failure:failure];
+                        }
+                        else {
+                            if (failure) {
+                                failure(error);
+                            }
+                        }
                         
-                        [self refreshTokenForOauthMode:oauthMode WithBlockSuccess:success failure:failure];
                         return;
                     }];
                 }
@@ -630,10 +644,18 @@ static bool isFirstAccess = YES;
                 }
             }
             else {
-                
-                [self refreshTokenForClientCredentialWithBlockSuccess:^(BOOL refreshSuccess) {
-                    [self refreshTokenForOauthMode:oauthMode WithBlockSuccess:success failure:failure];
-                } failure:failure];
+                if (retries > 0) {
+                    [self refreshTokenForOauthMode:OAuthModeClientCredential retries:retries-1 WithBlockSuccess:^(BOOL refreshSuccess) {
+                        [self refreshTokenForOauthMode:oauthMode retries:retries-1 WithBlockSuccess:success failure:failure];
+                    } failure:failure];
+                }
+                else {
+                    if (failure) {
+                        NSError *error = [NSError errorWithDomain:@"" code:kHTTPStatusCodeBadRequest userInfo:nil];
+                        failure(error);
+                        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:nil];
+                    }
+                }
             }
             break;
         default: {
@@ -664,12 +686,12 @@ static bool isFirstAccess = YES;
         }
     }
     
-    __block __typeof__(_currentOauthUserCredential) __weak wCurrentOauthCredential = _currentOauthUserCredential;
+    __block __typeof__(_currentOauthUserCredential)  wCurrentOauthCredential = _currentOauthUserCredential;
     
-    __block __typeof__(_managerHttpRequestSerializer) __weak wHttpSerializer = _managerHttpRequestSerializer;
-    __block __typeof__(_managerJsonRequestSerializer) __weak wJsonSerializer = _managerJsonRequestSerializer;
-    __block __typeof__(_manager) __weak wManager = _manager;
-    __block __typeof__(_userCredentialAuthManager) __weak wUserCredentialAuthManager = _userCredentialAuthManager;
+    __block __typeof__(_managerHttpRequestSerializer)  wHttpSerializer = _managerHttpRequestSerializer;
+    __block __typeof__(_managerJsonRequestSerializer)  wJsonSerializer = _managerJsonRequestSerializer;
+    __block __typeof__(_manager)  wManager = _manager;
+    __block __typeof__(_userCredentialAuthManager)  wUserCredentialAuthManager = _userCredentialAuthManager;
     
     [_userCredentialAuthManager authenticateUsingFacebookOAuthWithURLString:_currentClientCredenzialEndPointUrl facebookId:facebookId facebookToken:facebookToken scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         wCurrentOauthCredential = credential;
@@ -714,15 +736,60 @@ static bool isFirstAccess = YES;
         }
     }
     
-    __block __typeof__(_currentOauthUserCredential) __weak wCurrentOauthCredential = _currentOauthUserCredential;
+    __block __typeof__(_currentOauthUserCredential)  wCurrentOauthCredential = _currentOauthUserCredential;
     
-    __block __typeof__(_managerHttpRequestSerializer) __weak wHttpSerializer = _managerHttpRequestSerializer;
-    __block __typeof__(_managerJsonRequestSerializer) __weak wJsonSerializer = _managerJsonRequestSerializer;
-    __block __typeof__(_manager) __weak wManager = _manager;
-    __block __typeof__(_userCredentialAuthManager) __weak wUserCredentialAuthManager = _userCredentialAuthManager;
+    __block __typeof__(_managerHttpRequestSerializer)  wHttpSerializer = _managerHttpRequestSerializer;
+    __block __typeof__(_managerJsonRequestSerializer)  wJsonSerializer = _managerJsonRequestSerializer;
+    __block __typeof__(_manager)  wManager = _manager;
+    __block __typeof__(_userCredentialAuthManager) wUserCredentialAuthManager = _userCredentialAuthManager;
     
     
     [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl username:email password:password scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
+        wCurrentOauthCredential = credential;
+        
+        [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+        
+        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserSuccess object:nil];
+        if (success) {
+            success(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserFail object:nil];
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void) refreshTokenForUserWithUsername:(NSString * _Nonnull) username
+                             password:(NSString * _Nonnull) password
+                     withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                              failure:(nullable void (^)(NSError * _Nonnull error))failure {
+    
+    if (![SINGLETON_PNObjectConfig.userSubClass isValidPassword:password]) {
+        if (failure) {
+            NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Password is not valid", @"") code:kHTTPStatusCodeBadRequest userInfo:nil];
+            failure(error);
+            return;
+        }
+    }
+    
+    __block __typeof__(_currentOauthUserCredential)  wCurrentOauthCredential = _currentOauthUserCredential;
+    
+    __block __typeof__(_managerHttpRequestSerializer)  wHttpSerializer = _managerHttpRequestSerializer;
+    __block __typeof__(_managerJsonRequestSerializer)  wJsonSerializer = _managerJsonRequestSerializer;
+    __block __typeof__(_manager)  wManager = _manager;
+    __block __typeof__(_userCredentialAuthManager) wUserCredentialAuthManager = _userCredentialAuthManager;
+    
+    
+    [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl username:username password:password scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         wCurrentOauthCredential = credential;
         
         [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];

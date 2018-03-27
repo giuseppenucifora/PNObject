@@ -210,6 +210,11 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
                      withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                               failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
+
+- (void) refreshTokenForUserWithUsername:(NSString * _Nonnull) username
+                                password:(NSString * _Nonnull) password
+                        withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                 failure:(nullable void (^)(NSError * _Nonnull error))failure;
 /**
  *  <#Description#>
  */
@@ -222,8 +227,9 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  <#Description#>
  */
 - (void) refreshTokenForOauthMode:(OAuthMode) oauthMode
-                  WithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
-                           failure:(nullable void (^)(NSError * _Nonnull error))failure;
+                          retries:(NSUInteger) retries
+                 WithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                          failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
  *  <#Description#>

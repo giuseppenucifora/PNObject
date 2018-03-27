@@ -134,6 +134,7 @@
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
+    
     if([[PNObjectConfig sharedInstance] setCredentialTokenForOauthMode:oauthMode]){
         
         [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]
@@ -172,7 +173,7 @@
                                                 }];
     }
     else {
-        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode WithBlockSuccess:^(BOOL refreshSuccess) {
+        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode retries:MAX_RETRIES WithBlockSuccess:^(BOOL refreshSuccess) {
             
             return [self POSTWithEndpointAction:endPoint oauthMode:oauthMode formData:postFormData parameters:parameters retries:retries-1 progress:uploadProgress success:success failure:failure];
         } failure:^(NSError * _Nonnull error) {
