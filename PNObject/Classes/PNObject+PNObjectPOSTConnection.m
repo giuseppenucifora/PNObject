@@ -63,7 +63,7 @@
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             if (retries > 0) {
-                [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
+                [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode retries:MAX_RETRIES WithBlockSuccess:^(BOOL refreshSuccess) {
                     
                     return [self POSTWithEndpointAction:endPoint parameters:parameters retries:retries-1 progress:uploadProgress success:success failure:failure];
                 } failure:^(NSError * _Nonnull error) {

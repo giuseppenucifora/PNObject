@@ -876,7 +876,7 @@ static bool isFirstAccess = YES;
 - (BOOL) setCredentialTokenForOauthMode:(OAuthMode) oauthMode {
     switch (oauthMode) {
         case OAuthModeClientCredential:
-            if (_currentOauthClientCredential && ![_currentOauthClientCredential isExpired]) {
+            if (!_currentOauthClientCredential || (_currentOauthClientCredential && ![_currentOauthClientCredential isExpired])) {
                 return NO;
             }
             [_managerHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
@@ -884,7 +884,7 @@ static bool isFirstAccess = YES;
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
             break;
         case OAuthModePassword:
-            if (_currentOauthUserCredential && ![_currentOauthUserCredential isExpired]) {
+            if (!_currentOauthClientCredential || (_currentOauthUserCredential && ![_currentOauthUserCredential isExpired])) {
                 return NO;
             }
             [_managerHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
