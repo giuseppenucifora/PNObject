@@ -22,6 +22,7 @@
 
 #import "AFOAuth2Manager.h"
 #import "AFOAuthCredential.h"
+#import "NSDate+NSDate_Util.h"
 
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
@@ -275,7 +276,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         NSDate *expireDate = [NSDate distantFuture];
         id expiresIn = [responseObject valueForKey:@"expires_in"];
         if (expiresIn && ![expiresIn isEqual:[NSNull null]]) {
-            expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
+            expireDate = [[NSDate date] dateByAddingMinutes:[expiresIn integerValue]/60];
         }
         
         if (expireDate) {
