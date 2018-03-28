@@ -61,21 +61,14 @@
                                                       }
                                                   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                                       if (retries > 0) {
-                                                          [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
-                                                              
-                                                              [self DELETEWithEndpointAction:endPoint
+                                                          
+                                                              return [self DELETEWithEndpointAction:endPoint
                                                                                     oauthMode:oauthMode
                                                                                   parameters:parameters
                                                                                      retries:retries-1
                                                                                     progress:uploadProgress
                                                                                      success:success
                                                                                      failure:failure];
-                                                          } failure:^(NSError * _Nonnull error) {
-                                                              
-                                                              if (failure) {
-                                                                  failure(nil,error);
-                                                              }
-                                                          }];
                                                       }
                                                       else {
                                                           if (failure) {

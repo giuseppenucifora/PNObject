@@ -23,7 +23,11 @@
                        progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self POSTWithEndpointAction:endPoint oauthMode:OAuthModeClientCredential parameters:parameters retries:MAX_RETRIES progress:uploadProgress success:success failure:failure];
+    return [self POSTWithEndpointAction:endPoint
+                              oauthMode:OAuthModeClientCredential
+                             parameters:parameters retries:MAX_RETRIES
+                               progress:uploadProgress success:success
+                                failure:failure];
 }
 
 + (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
@@ -32,8 +36,12 @@
                        progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self POSTWithEndpointAction:endPoint oauthMode:OAuthModeClientCredential parameters:parameters retries:retries progress:uploadProgress success:success failure:failure];
-
+    return [self POSTWithEndpointAction:endPoint
+                              oauthMode:OAuthModeClientCredential
+                             parameters:parameters retries:retries
+                               progress:uploadProgress success:success
+                                failure:failure];
+    
 }
 
 + (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
@@ -42,7 +50,13 @@
                        progress:(nullable void (^)(NSProgress * _Nullable uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self POSTWithEndpointAction:endPoint oauthMode:oauthMode parameters:parameters retries:MAX_RETRIES progress:uploadProgress success:success failure:failure];
+    return [self POSTWithEndpointAction:endPoint
+                              oauthMode:oauthMode
+                             parameters:parameters
+                                retries:MAX_RETRIES
+                               progress:uploadProgress
+                                success:success
+                                failure:failure];
 }
 
 + (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
@@ -55,7 +69,10 @@
     
     if([[PNObjectConfig sharedInstance] setCredentialTokenForOauthMode:oauthMode]){
         
-        [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:parameters progress:uploadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]
+                                             parameters:parameters
+                                               progress:uploadProgress
+                                                success:^(NSURLSessionDataTask *task, id responseObject) {
             
             if (success) {
                 success(task,responseObject);
@@ -63,15 +80,14 @@
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             if (retries > 0) {
-                [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode retries:MAX_RETRIES WithBlockSuccess:^(BOOL refreshSuccess) {
-                    
-                    return [self POSTWithEndpointAction:endPoint parameters:parameters retries:retries-1 progress:uploadProgress success:success failure:failure];
-                } failure:^(NSError * _Nonnull error) {
-                    
-                    if (failure) {
-                        failure(nil,error);
-                    }
-                }];
+                
+                return [self POSTWithEndpointAction:endPoint
+                                         parameters:parameters
+                                            retries:retries-1
+                                           progress:uploadProgress
+                                            success:success
+                                            failure:failure];
+                
             }
             else {
                 if (failure) {
@@ -81,9 +97,17 @@
         }];
     }
     else {
-        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode retries:MAX_RETRIES WithBlockSuccess:^(BOOL refreshSuccess) {
+        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode
+                                                          retries:MAX_RETRIES
+                                                 WithBlockSuccess:^(BOOL refreshSuccess) {
             
-            return [self POSTWithEndpointAction:endPoint oauthMode:oauthMode parameters:parameters retries:retries-1 progress:uploadProgress success:success failure:failure];
+            return [self POSTWithEndpointAction:endPoint
+                                      oauthMode:oauthMode
+                                     parameters:parameters
+                                        retries:retries-1
+                                       progress:uploadProgress
+                                        success:success
+                                        failure:failure];
         } failure:^(NSError * _Nonnull error) {
             
             if (failure) {
@@ -101,7 +125,14 @@
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
-    return [self POSTWithEndpointAction:endPoint  oauthMode:OAuthModeClientCredential formData:postFormData parameters:parameters retries:MAX_RETRIES progress:uploadProgress success:success failure:failure];
+    return [self POSTWithEndpointAction:endPoint
+                              oauthMode:OAuthModeClientCredential
+                               formData:postFormData
+                             parameters:parameters
+                                retries:MAX_RETRIES
+                               progress:uploadProgress
+                                success:success
+                                failure:failure];
 }
 
 
@@ -112,7 +143,14 @@
                        progress:(nullable void (^)(NSProgress * _Nonnull uploadProgress)) uploadProgress
                         success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                         failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
-    return [self POSTWithEndpointAction:endPoint  oauthMode:OAuthModeClientCredential formData:postFormData parameters:parameters retries:retries progress:uploadProgress success:success failure:failure];
+    return [self POSTWithEndpointAction:endPoint
+                              oauthMode:OAuthModeClientCredential
+                               formData:postFormData
+                             parameters:parameters
+                                retries:retries
+                               progress:uploadProgress
+                                success:success
+                                failure:failure];
 }
 
 + (void) POSTWithEndpointAction:(NSString * _Nonnull) endPoint
@@ -143,7 +181,10 @@
                                   if (postFormData) {
                                       for (PNObjectFormData *postData in postFormData) {
                                           
-                                          [formData appendPartWithFileData:[postData formData] name:[postData name] fileName:[postData fileName] mimeType:[postData mimeType]];
+                                          [formData appendPartWithFileData:[postData formData]
+                                                                      name:[postData name]
+                                                                  fileName:[postData fileName]
+                                                                  mimeType:[postData mimeType]];
                                       }
                                   }
                               }
@@ -154,16 +195,14 @@
                                                     }
                                                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                                     if (retries > 0) {
-                                                        [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
-                                                            
-                                                            return [self POSTWithEndpointAction:endPoint formData:postFormData parameters:parameters retries:retries-1 progress:uploadProgress success:success failure:failure];
-                                                        } failure:^(NSError * _Nonnull error) {
-                                                            
-                                                            if (failure) {
-                                                                failure(nil,error);
-                                                            }
-                                                        }];
-                                                        
+                                                
+                                                        return [self POSTWithEndpointAction:endPoint
+                                                                                   formData:postFormData
+                                                                                 parameters:parameters
+                                                                                    retries:retries-1
+                                                                                   progress:uploadProgress
+                                                                                    success:success
+                                                                                    failure:failure];
                                                     }
                                                     else {
                                                         if (failure) {
@@ -173,9 +212,18 @@
                                                 }];
     }
     else {
-        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode retries:MAX_RETRIES WithBlockSuccess:^(BOOL refreshSuccess) {
+        [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode
+                                                          retries:MAX_RETRIES
+                                                 WithBlockSuccess:^(BOOL refreshSuccess) {
             
-            return [self POSTWithEndpointAction:endPoint oauthMode:oauthMode formData:postFormData parameters:parameters retries:retries-1 progress:uploadProgress success:success failure:failure];
+            return [self POSTWithEndpointAction:endPoint
+                                      oauthMode:oauthMode
+                                       formData:postFormData
+                                     parameters:parameters
+                                        retries:retries-1
+                                       progress:uploadProgress
+                                        success:success
+                                        failure:failure];
         } failure:^(NSError * _Nonnull error) {
             
             if (failure) {

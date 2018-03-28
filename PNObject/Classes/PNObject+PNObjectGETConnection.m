@@ -46,7 +46,7 @@
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      oauthMode:(OAuthMode) oauthMode
+                     oauthMode:(OAuthMode) oauthMode
                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
@@ -54,16 +54,16 @@
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      oauthMode:(OAuthMode) oauthMode
+                     oauthMode:(OAuthMode) oauthMode
                     parameters:(NSDictionary * _Nullable) parameters
-                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
+                      progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSDictionary * _Nullable responseObject))success
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     return [self GETWithEndpointAction:endPoint oauthMode:oauthMode parameters:parameters retries:MAX_RETRIES progress:downloadProgress success:success failure:failure];
 }
 
 + (void) GETWithEndpointAction:(NSString * _Nonnull) endPoint
-                      oauthMode:(OAuthMode) oauthMode
+                     oauthMode:(OAuthMode) oauthMode
                     parameters:(NSDictionary * _Nullable) parameters
                        retries:(NSInteger) retries
                       progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) downloadProgress
@@ -79,21 +79,15 @@
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             if (retries > 0) {
-                [[PNObjectConfig sharedInstance] refreshTokenWithBlockSuccess:^(BOOL refreshSuccess) {
-                    
-                    return [self GETWithEndpointAction:endPoint
-                                              oauthMode:oauthMode
-                                            parameters:parameters
-                                               retries:retries-1
-                                              progress:downloadProgress
-                                               success:success
-                                               failure:failure];
-                } failure:^(NSError * _Nonnull error) {
-                    if (failure) {
-                        failure(nil,error);
-                    }
-                }];
-                return;
+                
+                return [self GETWithEndpointAction:endPoint
+                                         oauthMode:oauthMode
+                                        parameters:parameters
+                                           retries:retries-1
+                                          progress:downloadProgress
+                                           success:success
+                                           failure:failure];
+                
             }else {
                 if (failure) {
                     failure(task,error);
@@ -105,7 +99,7 @@
         [[PNObjectConfig sharedInstance] refreshTokenForOauthMode:oauthMode retries:MAX_RETRIES WithBlockSuccess:^(BOOL refreshSuccess) {
             
             return [self GETWithEndpointAction:endPoint
-                                      oauthMode:oauthMode
+                                     oauthMode:oauthMode
                                     parameters:parameters
                                        retries:retries-1
                                       progress:downloadProgress
