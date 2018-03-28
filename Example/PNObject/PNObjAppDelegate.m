@@ -33,14 +33,16 @@
     // Override point for customization after application launch.
     
     [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @{BaseUrl:@"http://pnobject.local/",EndpointPath:@"api/v1/"},
-                                                        EnvironmentStage : @{BaseUrl:@"https://idd.ppreview.it/",EndpointPath:@"wp-json/"},
+                                                        EnvironmentStage : @{BaseUrl:@"https://pnobject.stage.it/",EndpointPath:@"api/v1/"},
                                                         EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
                                                         } andUserSubclass:[PNUser class]];
     
-    [[PNObjectConfig sharedInstance] setClientID:@"xVdEbNLLierj9CJoLNo5lsbg7VFs8UikqADbcwKA" clientSecret:@"2WWSJrDNbZhbUUCXIOTBiYIJv9muiRGK68f2B2Eb" oAuthEndpointAction:@"oauth/token" oauthMode:OAuthModeClientCredential refreshTokenEnabled:NO forEnv:EnvironmentStage];
-    [[PNObjectConfig sharedInstance] setClientID:@"tXYhKtcvfYdCM4tNor6WfbclEWYkoGWqBimUBzqZ" clientSecret:@"3UMEQthBHp1oEo0pjFmgkifhig689ZL5L9DsSETd" oAuthEndpointAction:@"oauth/token" oauthMode:OAuthModePassword refreshTokenEnabled:YES forEnv:EnvironmentStage];
-    [[PNObjectConfig sharedInstance] setAcceptablePasswordLenght:8];
+    /** Can user special char %@ to autoset EndpointPath to Oauth endpointPath */
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModeClientCredential refreshTokenEnabled:NO forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModePassword refreshTokenEnabled:NO forEnv:EnvironmentStage];
     
+    [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
+ 
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
     
     NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] baseUrl]);
