@@ -38,8 +38,8 @@
                                                         } andUserSubclass:[PNUser class]];
     
     /** Can user special char %@ to autoset EndpointPath to Oauth endpointPath */
-    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModeClientCredential forEnv:EnvironmentStage];
-    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModePassword forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModeClientCredential refreshTokenEnabled:NO forEnv:EnvironmentStage];
+    [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModePassword refreshTokenEnabled:NO forEnv:EnvironmentStage];
     
     [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
  

@@ -52,10 +52,12 @@ NSString*  const EndpointPath = @"endpoint_path";
 NSString*  const Client_ID = @"oauth_user_credential_client_id";
 NSString*  const Client_Secret = @"oauth_user_credential_client_secret";
 NSString*  const Client_EndpointAction  = @"oauth_user_credential_endpoint_action";
+NSString*  const Client_Refresh_Token_Enabled = @"oauth_user_credential_refresh_token_enabled";
 
 NSString*  const Client_Credential_ID = @"oauth_client_credential_client_id";
 NSString*  const Client_Credential_Secret = @"oauth_client_credential_client_secret";
-NSString*  const Client_CredentialEndpointAction  = @"oauth_client_credential_endpoint_action";
+NSString*  const Client_Credential_EndpointAction  = @"oauth_client_credential_endpoint_action";
+NSString*  const Client_Credential_Refresh_Token_Enabled = @"oauth_client_credential_refresh_token_enabled";
 
 NSString*  const Client_Username = @"client_username";
 NSString*  const Client_Password = @"client_password";
@@ -74,13 +76,14 @@ NSString*  const Client_Password = @"client_password";
 @property (nonatomic, strong) NSString *currentClientCredenzialEndPointUrl;
 @property (nonatomic, strong) NSString *currentClientCredenzialClientID;
 @property (nonatomic, strong) NSString *currentClientCredenzialClientSecret;
+@property (nonatomic) BOOL currentClientCredenzialRefreshTokenEnabled;
 
 /* User credential configuration */
 @property (nonatomic, strong) NSString *currentUserCredenzialEndPointPath;
 @property (nonatomic, strong) NSString *currentUserCredenzialEndPointUrl;
 @property (nonatomic, strong) NSString *currentUserCredenzialClientID;
 @property (nonatomic, strong) NSString *currentUserCredenzialClientSecret;
-
+@property (nonatomic) BOOL currentUserCredenzialRefreshTokenEnabled;
 
 @property (nonatomic, strong) NSString *currentOAuthUserName;
 @property (nonatomic, strong) NSString *currentOAuthPassword;
@@ -253,7 +256,8 @@ static bool isFirstAccess = YES;
         
         _currentClientCredenzialClientID = [currentEnvConfig objectForKey:Client_Credential_ID];
         _currentClientCredenzialClientSecret = [currentEnvConfig objectForKey:Client_Credential_Secret];
-        _currentClientCredenzialEndPointPath = ([currentEnvConfig objectForKey:Client_CredentialEndpointAction] ? [currentEnvConfig objectForKey:Client_CredentialEndpointAction] : @"");
+        _currentClientCredenzialEndPointPath = ([currentEnvConfig objectForKey:Client_Credential_EndpointAction] ? [currentEnvConfig objectForKey:Client_Credential_EndpointAction] : @"");
+        _currentClientCredenzialRefreshTokenEnabled = ([currentEnvConfig objectForKey:Client_Credential_Refresh_Token_Enabled] ? [[currentEnvConfig objectForKey:Client_Credential_Refresh_Token_Enabled] boolValue] : YES);
         
         if([_currentClientCredenzialEndPointPath containsString:@"%@"]){
             _currentClientCredenzialEndPointPath = [NSString stringWithFormat:_currentClientCredenzialEndPointPath,_currentEndPointPath];
@@ -266,6 +270,7 @@ static bool isFirstAccess = YES;
             _currentUserCredenzialClientSecret = _currentClientCredenzialClientSecret;
             _currentUserCredenzialEndPointPath = _currentClientCredenzialEndPointPath;
             _currentUserCredenzialEndPointUrl = _currentClientCredenzialEndPointUrl;
+            _currentUserCredenzialRefreshTokenEnabled = _currentClientCredenzialRefreshTokenEnabled;
         }
         else {
             _currentUserCredenzialClientID = [currentEnvConfig objectForKey:Client_ID];
@@ -277,6 +282,8 @@ static bool isFirstAccess = YES;
                 _currentUserCredenzialEndPointPath = [NSString stringWithFormat:_currentUserCredenzialEndPointPath,_currentEndPointPath];
             }
             _currentUserCredenzialEndPointUrl = [_currentBaseUrl stringByAppendingString:_currentUserCredenzialEndPointPath];
+
+            _currentUserCredenzialRefreshTokenEnabled = [currentEnvConfig objectForKey:Client_Refresh_Token_Enabled];
         }
         
         
@@ -495,7 +502,7 @@ static bool isFirstAccess = YES;
         case OAuthModeClientCredential: {
             AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
             
-            if (credential && ![credential isExpired]) {
+            if (credential && ![credential isExpired] && _currentClientCredenzialRefreshTokenEnabled) {
                 
                 [_clientCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[credential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
                     
@@ -554,7 +561,7 @@ static bool isFirstAccess = YES;
             
             AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
             
-            if (credential && ![credential isExpired]) {
+            if (credential && ![credential isExpired] && _currentUserCredenzialRefreshTokenEnabled) {
                 
                 [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[credential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
                     
@@ -776,7 +783,7 @@ static bool isFirstAccess = YES;
     }
 }
 
-- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction oauthMode:(OAuthMode) oauthMode forEnv:(NSString *) environment {
+- (void) setClientID:(NSString * _Nonnull) clientID clientSecret:(NSString* _Nonnull) clientSecret oAuthEndpointAction:(NSString* _Nonnull) oAuthEndpointAction oauthMode:(OAuthMode) oauthMode refreshTokenEnabled:(BOOL) refreshTokenEnabled forEnv:(NSString * _Nonnull) environment {
     
     if ([_configuration objectForKey:environment]) {
         
@@ -785,12 +792,14 @@ static bool isFirstAccess = YES;
             case OAuthModeClientCredential:
                 [currentConfigurationDict setObject:clientID forKey:Client_Credential_ID];
                 [currentConfigurationDict setObject:clientSecret forKey:Client_Credential_Secret];
-                [currentConfigurationDict setObject:oAuthEndpointAction forKey:Client_CredentialEndpointAction];
+                [currentConfigurationDict setObject:oAuthEndpointAction forKey:Client_Credential_EndpointAction];
+                [currentConfigurationDict setObject:[NSNumber numberWithBool:refreshTokenEnabled] forKey:Client_Credential_Refresh_Token_Enabled];
                 break;
             case OAuthModePassword:{
                 [currentConfigurationDict setObject:clientID forKey:Client_ID];
                 [currentConfigurationDict setObject:clientSecret forKey:Client_Secret];
                 [currentConfigurationDict setObject:oAuthEndpointAction forKey:Client_EndpointAction];
+                [currentConfigurationDict setObject:[NSNumber numberWithBool:refreshTokenEnabled] forKey:Client_Refresh_Token_Enabled];
             }
                 break;
             default:
