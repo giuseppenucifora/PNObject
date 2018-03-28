@@ -502,7 +502,7 @@ static bool isFirstAccess = YES;
         case OAuthModeClientCredential: {
             AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
             
-            if (credential && ![credential isExpired] && _currentClientCredenzialRefreshTokenEnabled) {
+            if (credential && ![credential isExpired] && nil != [credential refreshToken] && _currentClientCredenzialRefreshTokenEnabled) {
                 
                 [_clientCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[credential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
                     
@@ -561,7 +561,7 @@ static bool isFirstAccess = YES;
             
             AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
             
-            if (credential && ![credential isExpired] && _currentUserCredenzialRefreshTokenEnabled) {
+            if (credential && ![credential isExpired] && nil != [credential refreshToken] && _currentUserCredenzialRefreshTokenEnabled) {
                 
                 [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[credential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
                     
