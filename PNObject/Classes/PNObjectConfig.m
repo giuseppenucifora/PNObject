@@ -836,7 +836,7 @@ static bool isFirstAccess = YES;
         case OAuthModeClientCredential:{
             
             AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
-            if (!credential || (credential && ![credential isExpired])) {
+            if (!credential || (credential && [credential isExpired])) {
                 return NO;
             }
             [_managerHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:credential];
@@ -847,7 +847,7 @@ static bool isFirstAccess = YES;
         case OAuthModePassword:{
             
             AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
-            if (!credential || (credential && ![credential isExpired])) {
+            if (!credential || (credential && [credential isExpired])) {
                 return NO;
             }
             [_managerHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:credential];
