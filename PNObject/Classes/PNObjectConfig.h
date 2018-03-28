@@ -246,6 +246,10 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  */
 - (BOOL) setCredentialTokenForOauthMode:(OAuthMode) oauthMode;
 
+- (AFOAuthCredential * _Nullable) currentOauthClientCredential;
+
+- (AFOAuthCredential * _Nullable) currentOauthUserCredential;
+
 ///--------------------------------------
 #pragma mark - PNObjectConfig Properties
 ///--------------------------------------
@@ -275,16 +279,6 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  <#Description#>
  */
 @property (nonatomic, strong, readonly, nonnull) AFHTTPRequestSerializer *oauthHttpRequestSerializer;
-
-/**
- *  <#Description#>
- */
-@property (nonatomic, strong, nullable, readonly) AFOAuthCredential *currentOauthClientCredential;
-
-/**
- *
- */
-@property (nonatomic, strong, nullable, readonly) AFOAuthCredential *currentOauthUserCredential;
 
 /**
  *  <#Description#>
