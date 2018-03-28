@@ -205,17 +205,22 @@ static bool isFirstAccess = YES;
             
         }
         
-        
         AFOAuthCredential *clientCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
         
-        if (clientCredential) {
+        if (clientCredential && ![clientCredential isExpired]) {
             _currentOauthClientCredential = clientCredential;
+        }
+        else {
+            [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
         }
         
         AFOAuthCredential *userCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
         
-        if (userCredential) {
+        if (userCredential && ![userCredential isExpired]) {
             _currentOauthUserCredential = userCredential;
+        }
+        else {
+            [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
         }
     }
     return self;
@@ -381,19 +386,12 @@ static bool isFirstAccess = YES;
         _clientCredentialAuthManager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
         _clientCredentialAuthManager.requestSerializer = _oauthJsonRequestSerializer;
         
-        if (canTryRefreh) {
+        if (_currentOauthClientCredential && ![_currentOauthClientCredential isExpired]) {
             
-            if (_currentOauthClientCredential && ![_currentOauthClientCredential isExpired]) {
-                
-                [_oauthHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
-                [_oauthJsonRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
-                [_clientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
-            }
-            else {
-                [self refreshToken];
-            }
+            [_oauthHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
+            [_oauthJsonRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
+            [_clientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
         }
-        
     }
     
     return _clientCredentialAuthManager;
@@ -423,17 +421,13 @@ static bool isFirstAccess = YES;
             [_oauthHttpRequestSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
         }
         
-        if (canTryRefreh) {
+        
+        
+        if (_currentOauthUserCredential && ![_currentOauthUserCredential isExpired] && ![[_manager requestSerializer] hasAuthorizationHeaderField]) {
             
-            if (_currentOauthUserCredential && ![_currentOauthUserCredential isExpired] && ![[_manager requestSerializer] hasAuthorizationHeaderField]) {
-                
-                [_oauthHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
-                [_oauthJsonRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
-                [_userCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
-            }
-            else {
-                [self refreshToken];
-            }
+            [_oauthHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
+            [_oauthJsonRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
+            [_userCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
         }
         
         _userCredentialAuthManager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
@@ -514,8 +508,8 @@ static bool isFirstAccess = YES;
                  WithBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
                           failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
-    __block __typeof__(_currentOauthClientCredential) wCurrentOauthCredential = _currentOauthClientCredential;
-    
+    __block __typeof__(_currentOauthClientCredential) wCurrentOauthClientCredential = _currentOauthClientCredential;
+    __block __typeof__(_currentOauthUserCredential) wCurrentOauthUserCredential = _currentOauthUserCredential;
     __block __typeof__(_managerHttpRequestSerializer) wHttpSerializer = _managerHttpRequestSerializer;
     __block __typeof__(_managerJsonRequestSerializer) wJsonSerializer = _managerJsonRequestSerializer;
     __block __typeof__(_clientCredentialAuthManager) wClientCredentialAuthManager = _clientCredentialAuthManager;
@@ -527,14 +521,14 @@ static bool isFirstAccess = YES;
             if (_currentOauthClientCredential && ![_currentOauthClientCredential isExpired]) {
                 
                 [_clientCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[_currentOauthClientCredential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
-                    wCurrentOauthCredential = credential;
+                    wCurrentOauthClientCredential = credential;
                     
-                    [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceClientCredentialIdentifier];
+                    [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceClientCredentialIdentifier];
                     
-                    [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wClientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+                    [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                    [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                    [wClientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                    [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialSuccess object:nil];
                     if (success) {
@@ -543,7 +537,6 @@ static bool isFirstAccess = YES;
                     return;
                     
                 } failure:^(NSError * _Nonnull error) {
-                    [self resetTokenForOauthMode:oauthMode];
                     
                     if (retries > 0) {
                         [self refreshTokenForOauthMode:oauthMode retries:retries-1 WithBlockSuccess:success failure:failure];
@@ -559,13 +552,14 @@ static bool isFirstAccess = YES;
             }
             else {
                 [_clientCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
+                    wCurrentOauthClientCredential = credential;
                     
-                    [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceClientCredentialIdentifier];
+                    [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceClientCredentialIdentifier];
                     
-                    [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wClientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                    [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+                    [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                    [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                    [wClientCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                    [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialSuccess object:nil];
                     if (success) {
@@ -585,14 +579,14 @@ static bool isFirstAccess = YES;
                 if (_currentOauthUserCredential && ![_currentOauthUserCredential isExpired]) {
                     
                     [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[_currentOauthUserCredential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
-                        wCurrentOauthCredential = credential;
+                        wCurrentOauthUserCredential = credential;
                         
-                        [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+                        [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
                         
-                        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-                        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+                        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
+                        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
                         
                         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenClientCredentialSuccess object:nil];
                         if (success) {
@@ -601,7 +595,6 @@ static bool isFirstAccess = YES;
                         return;
                         
                     } failure:^(NSError * _Nonnull error) {
-                        [self resetTokenForOauthMode:oauthMode];
                         if (retries > 0) {
                             [self refreshTokenForOauthMode:oauthMode retries:retries-1 WithBlockSuccess:success failure:failure];
                         }
@@ -696,12 +689,12 @@ static bool isFirstAccess = YES;
     [_userCredentialAuthManager authenticateUsingFacebookOAuthWithURLString:_currentClientCredenzialEndPointUrl facebookId:facebookId facebookToken:facebookToken scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         wCurrentOauthCredential = credential;
         
-        [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+        [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
         
-        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserSuccess object:nil];
         if (success) {
@@ -737,7 +730,6 @@ static bool isFirstAccess = YES;
     }
     
     __block __typeof__(_currentOauthUserCredential)  wCurrentOauthCredential = _currentOauthUserCredential;
-    
     __block __typeof__(_managerHttpRequestSerializer)  wHttpSerializer = _managerHttpRequestSerializer;
     __block __typeof__(_managerJsonRequestSerializer)  wJsonSerializer = _managerJsonRequestSerializer;
     __block __typeof__(_manager)  wManager = _manager;
@@ -747,12 +739,12 @@ static bool isFirstAccess = YES;
     [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl username:email password:password scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         wCurrentOauthCredential = credential;
         
-        [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+        [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
         
-        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
         
         
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserSuccess object:nil];
@@ -769,9 +761,9 @@ static bool isFirstAccess = YES;
 }
 
 - (void) refreshTokenForUserWithUsername:(NSString * _Nonnull) username
-                             password:(NSString * _Nonnull) password
-                     withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
-                              failure:(nullable void (^)(NSError * _Nonnull error))failure {
+                                password:(NSString * _Nonnull) password
+                        withBlockSuccess:(nullable void (^)(BOOL refreshSuccess))success
+                                 failure:(nullable void (^)(NSError * _Nonnull error))failure {
     
     if (![SINGLETON_PNObjectConfig.userSubClass isValidPassword:password]) {
         if (failure) {
@@ -782,7 +774,6 @@ static bool isFirstAccess = YES;
     }
     
     __block __typeof__(_currentOauthUserCredential)  wCurrentOauthCredential = _currentOauthUserCredential;
-    
     __block __typeof__(_managerHttpRequestSerializer)  wHttpSerializer = _managerHttpRequestSerializer;
     __block __typeof__(_managerJsonRequestSerializer)  wJsonSerializer = _managerJsonRequestSerializer;
     __block __typeof__(_manager)  wManager = _manager;
@@ -792,12 +783,12 @@ static bool isFirstAccess = YES;
     [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl username:username password:password scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         wCurrentOauthCredential = credential;
         
-        [AFOAuthCredential storeCredential:wCurrentOauthCredential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+        [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
         
-        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
-        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:wCurrentOauthCredential];
+        [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wUserCredentialAuthManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
+        [wManager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
         
         
         [[NSNotificationCenter defaultCenter] postNotificationName:PNObjectLocalNotificationRefreshTokenUserSuccess object:nil];
@@ -874,27 +865,34 @@ static bool isFirstAccess = YES;
 }
 
 - (BOOL) setCredentialTokenForOauthMode:(OAuthMode) oauthMode {
+    
     switch (oauthMode) {
-        case OAuthModeClientCredential:
+        case OAuthModeClientCredential:{
+            
+            NSLog(@"%@",_currentOauthClientCredential);
             if (!_currentOauthClientCredential || (_currentOauthClientCredential && ![_currentOauthClientCredential isExpired])) {
                 return NO;
             }
             [_managerHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
             [_managerJsonRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthClientCredential];
+        }
             break;
-        case OAuthModePassword:
-            if (!_currentOauthClientCredential || (_currentOauthUserCredential && ![_currentOauthUserCredential isExpired])) {
+        case OAuthModePassword:{
+            
+            if (!_currentOauthUserCredential || (_currentOauthUserCredential && ![_currentOauthUserCredential isExpired])) {
                 return NO;
             }
             [_managerHttpRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
             [_managerJsonRequestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
             [_manager.requestSerializer setAuthorizationHeaderFieldWithCredential:_currentOauthUserCredential];
+        }
             break;
-        default:
+        default: {
             [_managerHttpRequestSerializer setValue:@"" forHTTPHeaderField:@"Authorization"];
             [_managerJsonRequestSerializer setValue:@"" forHTTPHeaderField:@"Authorization"];
             [_manager.requestSerializer setValue:@"" forHTTPHeaderField:@"Authorization"];
+        }
             break;
     }
     return YES;
