@@ -142,7 +142,15 @@
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
                 if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
-                    PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    PNObject *val;
+                    
+                    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+                        val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    }
+                    else {
+                        val = [[NSClassFromString(mappedJSONType) alloc] init];
+                    }
+                    
                     [arr addObject:val];
                 }
                 else {
@@ -156,7 +164,15 @@
             NSMutableArray *arr = [NSMutableArray array];
             for(id JSONObject in value) {
                 if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
-                    PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    PNObject *val;
+                    
+                    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+                        val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    }
+                    else {
+                        val = [[NSClassFromString(mappedJSONType) alloc] init];
+                    }
+                    //PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
                     [arr addObject:val];
                 }
                 else {
@@ -171,8 +187,14 @@
                            BOOL isPNObjectSubclass = [NSClassFromString(propertyType) isSubclassOfClass:[PNObject class]];
                            
                            if(isPNObjectSubclass) {
+                               PNObject *val;
+                               if ([value isKindOfClass:[NSDictionary class]]) {
+                                   val = [[NSClassFromString(propertyType) alloc] initWithJSON:value fromLocal:fromLocal];
+                               }
+                               else {
+                                   val = [[NSClassFromString(propertyType) alloc] init];
+                               }
                                
-                               PNObject *val = [[NSClassFromString(propertyType) alloc] initWithJSON:value fromLocal:fromLocal];
                                [self setValue:val forKey:propertyName];
                            }
                            else {
