@@ -282,7 +282,7 @@ static bool isFirstAccess = YES;
                 _currentUserCredenzialEndPointPath = [NSString stringWithFormat:_currentUserCredenzialEndPointPath,_currentEndPointPath];
             }
             _currentUserCredenzialEndPointUrl = [_currentBaseUrl stringByAppendingString:_currentUserCredenzialEndPointPath];
-
+            
             _currentUserCredenzialRefreshTokenEnabled = [currentEnvConfig objectForKey:Client_Refresh_Token_Enabled];
         }
         
@@ -775,11 +775,37 @@ static bool isFirstAccess = YES;
 
 - (void) setHTTPHeaderValue:(NSString * _Nonnull)value forKey:(NSString * _Nonnull) key {
     [_headerFields setObject:value forKey:key];
+    
+    if (_managerHttpRequestSerializer) {
+        [_managerHttpRequestSerializer setValue:value forHTTPHeaderField:key];
+    }
+    if (_managerJsonRequestSerializer) {
+        [_managerJsonRequestSerializer setValue:value forHTTPHeaderField:key];
+    }
+    if (_oauthHttpRequestSerializer) {
+        [_oauthHttpRequestSerializer setValue:value forHTTPHeaderField:key];
+    }
+    if (_oauthJsonRequestSerializer) {
+        [_oauthJsonRequestSerializer setValue:value forHTTPHeaderField:key];
+    }
 }
 
 - (void) removeHTTPHeaderValueForKey:(NSString * _Nonnull) key {
     if ([_headerFields objectForKey:key]) {
         [_headerFields removeObjectForKey:key];
+    }
+    
+    if (_managerHttpRequestSerializer) {
+        [_managerHttpRequestSerializer setValue:nil forHTTPHeaderField:key];
+    }
+    if (_managerJsonRequestSerializer) {
+        [_managerJsonRequestSerializer setValue:nil forHTTPHeaderField:key];
+    }
+    if (_oauthHttpRequestSerializer) {
+        [_oauthHttpRequestSerializer setValue:nil forHTTPHeaderField:key];
+    }
+    if (_oauthJsonRequestSerializer) {
+        [_oauthJsonRequestSerializer setValue:nil forHTTPHeaderField:key];
     }
 }
 
