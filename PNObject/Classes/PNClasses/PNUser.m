@@ -117,7 +117,7 @@ static bool isFirstAccess = YES;
 }
 
 - (BOOL) hasValidEmailAndPasswordData {
-    if(self.email && [self.email isValidEmail] && self.password && [self.password isValid]){
+    if(self.email && [self.email isValidEmail] && self.password && [self.password isKindOfClass:[PNObjcPassword class]] && [self.password isValid]){
         return YES;
     }
     

@@ -296,7 +296,9 @@ static bool isFirstAccess = YES;
     NSLogDebug(@"%@",[[_configuration objectForKey:_currentEnv] objectForKey:BaseUrl]);
     
     NSAssert(_currentUserCredenzialEndPointUrl,@"Selected environment generate error. Please check configuration");
-    
+}
+
+- (void) loadManagersWithCredentials {
     if (_currentClientCredenzialClientID && _currentClientCredenzialClientSecret) {
         [self clientCredentialAuthManager];
     }
@@ -307,7 +309,6 @@ static bool isFirstAccess = YES;
     }
     [self manager];
 }
-
 
 - (NSString * _Nonnull) getEnvironment {
     return _currentEnv;

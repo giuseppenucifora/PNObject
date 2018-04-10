@@ -17,6 +17,9 @@
 extern NSString* _Nonnull const PNObjectEncryptionKey;
 extern NSString* _Nonnull const PNObjectEncryptionNonce;
 
+extern NSString* _Nonnull const PNObjectServiceClientCredentialIdentifier;
+extern NSString* _Nonnull const PNObjectServiceUserCredentialIdentifier;
+
 #pragma mark LocalNotification Keys
 
 extern NSString* _Nonnull const PNObjectLocalNotificationRefreshTokenClientCredentialSuccess;
@@ -245,6 +248,8 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *  <#Description#>
  */
 - (BOOL) setCredentialTokenForOauthMode:(OAuthMode) oauthMode;
+
+- (void) loadManagersWithCredentials;
 
 - (AFOAuthCredential * _Nullable) currentOauthClientCredential;
 

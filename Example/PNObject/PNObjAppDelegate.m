@@ -49,6 +49,8 @@
     NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointPath]);
     NSLogDebug(@"%@",[[PNObjectConfig sharedInstance] endPointUrl]);
     
+    [[PNObjectConfig sharedInstance] loadManagersWithCredentials];
+    
     PNObjViewController *viewController = [[PNObjViewController alloc] init];
     
     switch ([[UIDevice currentDevice] deviceFamily]) {

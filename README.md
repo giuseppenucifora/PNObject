@@ -48,6 +48,8 @@ Configure PNObject endpoint client ID, client secret and OAuthModePassword with 
    
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
     
+    [[PNObjectConfig sharedInstance] loadManagersWithCredentials];
+    
     
 }
 ```
@@ -81,6 +83,8 @@ Configure PNObject endpoint client ID, client secret and OAuthModePassword
     [[PNObjectConfig sharedInstance] setOauthUserName:@"admin" oauthPassword:@"admin" forEnv:EnvironmentStage];
    
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+    
+    [[PNObjectConfig sharedInstance] loadManagersWithCredentials];
 }
 ```
 ###
@@ -101,6 +105,8 @@ Configure PNObject endpoint client ID, client secret and OAuthModeClientCredenti
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
         
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+    
+    [[PNObjectConfig sharedInstance] loadManagersWithCredentials];
 }
 ```
 ###
@@ -120,6 +126,8 @@ Configure PNObject endpoint and using custom PNUser object
     [[PNObjectConfig sharedInstance] setClientID:@"xxxxxxxxx" clientSecret:@"xxxxxxxxxxxx" forEnv:EnvironmentProduction];
         
     [[PNObjectConfig sharedInstance] setEnvironment:EnvironmentStage];
+    
+    [[PNObjectConfig sharedInstance] loadManagersWithCredentials];
 }
 ```
 
