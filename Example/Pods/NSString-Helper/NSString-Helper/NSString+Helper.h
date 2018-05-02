@@ -22,6 +22,8 @@
 
 - (BOOL) isValidTaxCode;
 
+- (BOOL) isValidFirstnameOrLastname;
+
 - (NSString *) md5;
 
 - (NSString*) sha1;

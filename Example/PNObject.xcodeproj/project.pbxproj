@@ -210,7 +210,6 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				C40CC8D7B1996A567BE82827 /* [CP] Embed Pods Frameworks */,
 				614EA73ED5E0ED0F8684468C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -230,8 +229,6 @@
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				746A765B48FD98342716D81F /* [CP] Embed Pods Frameworks */,
-				21411FBE0FE21EC75B6AB1E3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -307,21 +304,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		21411FBE0FE21EC75B6AB1E3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PNObject_Tests/Pods-PNObject_Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		3FF38AA7E586B22171D1A118 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -356,36 +338,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PNObject_Example/Pods-PNObject_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		746A765B48FD98342716D81F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PNObject_Tests/Pods-PNObject_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C40CC8D7B1996A567BE82827 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PNObject_Example/Pods-PNObject_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E4CE079F616C61EA34D08B8B /* [CP] Check Pods Manifest.lock */ = {

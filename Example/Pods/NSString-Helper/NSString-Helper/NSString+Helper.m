@@ -62,6 +62,15 @@
     return [urlTest evaluateWithObject:self];
 }
 
+- (BOOL) isValidFirstnameOrLastname {
+    
+    NSString *firstNameRegEx = @"^[a-zA-Z][ a-zA-Z\\s]+$";
+    
+    NSPredicate *nameTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", firstNameRegEx];
+    
+    return [nameTest evaluateWithObject:self];
+}
+
 #pragma mark - Random String Method
 
 + (NSString *) getRandString: (int) length {
