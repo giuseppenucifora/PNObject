@@ -18,7 +18,7 @@
 
 #pragma mark NSLogDebug Macro
 
-#if defined(DEBUG) || (defined(FORCE_LOG) && FORCE_LOG == 1)
+#if defined(DEBUG) && defined(FORCE_LOG) && FORCE_LOG == 1
 #define NSLogDebug(format, ...) NSLog(@"<%s:%d> %s, " format, strrchr("/" __FILE__, '/') + 1, __LINE__, __PRETTY_FUNCTION__, ## __VA_ARGS__)
 #else
 #define NSLogDebug(format, ...)
