@@ -26,6 +26,7 @@
 #import "FBSDKAppEventsStateManager.h"
 #import "FBSDKAppEventsUtility.h"
 #import "FBSDKConstants.h"
+#import "FBSDKDynamicFrameworkLoader.h"
 #import "FBSDKError.h"
 #import "FBSDKGraphRequest+Internal.h"
 #import "FBSDKInternalUtility.h"
@@ -36,6 +37,12 @@
 #import "FBSDKSettings.h"
 #import "FBSDKTimeSpentData.h"
 #import "FBSDKUtility.h"
+#import "FBSDKUserDataStore.h"
+
+#if !TARGET_OS_TV
+#import "FBSDKEventBindingManager.h"
+#import "FBSDKHybridAppEventsScriptMessageHandler.h"
+#endif
 
 //
 // Public event names
@@ -47,13 +54,23 @@ NSString *const FBSDKAppEventNameViewedContent           = @"fb_mobile_content_v
 NSString *const FBSDKAppEventNameSearched                = @"fb_mobile_search";
 NSString *const FBSDKAppEventNameRated                   = @"fb_mobile_rate";
 NSString *const FBSDKAppEventNameCompletedTutorial       = @"fb_mobile_tutorial_completion";
-NSString *const FBSDKAppEventParameterLaunchSource       = @"fb_mobile_launch_source";
+NSString *const FBSDKAppEventNameContact                 = @"Contact";
+NSString *const FBSDKAppEventNameCustomizeProduct        = @"CustomizeProduct";
+NSString *const FBSDKAppEventNameDonate                  = @"Donate";
+NSString *const FBSDKAppEventNameFindLocation            = @"FindLocation";
+NSString *const FBSDKAppEventNameSchedule                = @"Schedule";
+NSString *const FBSDKAppEventNameStartTrial              = @"StartTrial";
+NSString *const FBSDKAppEventNameSubmitApplication       = @"SubmitApplication";
+NSString *const FBSDKAppEventNameSubscribe               = @"Subscribe";
+NSString *const FBSDKAppEventNameAdImpression            = @"AdImpression";
+NSString *const FBSDKAppEventNameAdClick                 = @"AdClick";
 
 // Ecommerce related
 NSString *const FBSDKAppEventNameAddedToCart             = @"fb_mobile_add_to_cart";
 NSString *const FBSDKAppEventNameAddedToWishlist         = @"fb_mobile_add_to_wishlist";
 NSString *const FBSDKAppEventNameInitiatedCheckout       = @"fb_mobile_initiated_checkout";
 NSString *const FBSDKAppEventNameAddedPaymentInfo        = @"fb_mobile_add_payment_info";
+NSString *const FBSDKAppEventNameProductCatalogUpdate    = @"fb_mobile_catalog_update";
 
 // Gaming related
 NSString *const FBSDKAppEventNameAchievedLevel           = @"fb_mobile_level_achieved";
@@ -76,6 +93,9 @@ NSString *const FBSDKAppEventParameterNamePaymentInfoAvailable   = @"fb_payment_
 NSString *const FBSDKAppEventParameterNameNumItems               = @"fb_num_items";
 NSString *const FBSDKAppEventParameterNameLevel                  = @"fb_level";
 NSString *const FBSDKAppEventParameterNameDescription            = @"fb_description";
+NSString *const FBSDKAppEventParameterLaunchSource               = @"fb_mobile_launch_source";
+NSString *const FBSDKAppEventParameterNameAdType                 = @"ad_type";
+NSString *const FBSDKAppEventParameterNameOrderID                = @"fb_order_id";
 
 //
 // Public event parameter values
@@ -181,6 +201,19 @@ NSString *const FBSDKAppEventParameterLiveStreamingVideoID       = @"live_stream
 NSString *const FBSDKAppEventParameterLiveStreamingMicEnabled    = @"live_streaming_mic_enabled";
 NSString *const FBSDKAppEventParameterLiveStreamingCameraEnabled = @"live_streaming_camera_enabled";
 
+NSString *const FBSDKAppEventParameterProductItemID              = @"fb_product_item_id";
+NSString *const FBSDKAppEventParameterProductAvailability        = @"fb_product_availability";
+NSString *const FBSDKAppEventParameterProductCondition           = @"fb_product_condition";
+NSString *const FBSDKAppEventParameterProductDescription         = @"fb_product_description";
+NSString *const FBSDKAppEventParameterProductImageLink           = @"fb_product_image_link";
+NSString *const FBSDKAppEventParameterProductLink                = @"fb_product_link";
+NSString *const FBSDKAppEventParameterProductTitle               = @"fb_product_title";
+NSString *const FBSDKAppEventParameterProductGTIN                = @"fb_product_gtin";
+NSString *const FBSDKAppEventParameterProductMPN                 = @"fb_product_mpn";
+NSString *const FBSDKAppEventParameterProductBrand               = @"fb_product_brand";
+NSString *const FBSDKAppEventParameterProductPriceAmount         = @"fb_product_price_amount";
+NSString *const FBSDKAppEventParameterProductPriceCurrency       = @"fb_product_price_currency";
+
 // Event parameter values internal to this file
 NSString *const FBSDKAppEventsDialogOutcomeValue_Completed = @"Completed";
 NSString *const FBSDKAppEventsDialogOutcomeValue_Cancelled = @"Cancelled";
@@ -224,9 +257,18 @@ static NSString *const FBSDKAppEventParameterPushAction = @"fb_push_action";
 static NSString *const FBSDKAppEventsPushPayloadKey = @"fb_push_payload";
 static NSString *const FBSDKAppEventsPushPayloadCampaignKey = @"campaign";
 
+//
+// Augmentation of web browser constants
+//
+NSString *const FBSDKAppEventsWKWebViewMessagesPixelIDKey = @"pixelID";
+NSString *const FBSDKAppEventsWKWebViewMessagesHandlerKey = @"fbmqHandler";
+NSString *const FBSDKAppEventsWKWebViewMessagesEventKey = @"event";
+NSString *const FBSDKAppEventsWKWebViewMessagesParamsKey = @"params";
+NSString *const FBSDKAPPEventsWKWebViewMessagesProtocolKey = @"fbmq-0.1";
+
+
 #define NUM_LOG_EVENTS_TO_TRY_TO_FLUSH_AFTER 100
 #define FLUSH_PERIOD_IN_SECONDS 15
-#define APP_SUPPORTS_ATTRIBUTION_ID_RECHECK_PERIOD 60 * 60 * 24
 #define USER_ID_USER_DEFAULTS_KEY @"com.facebook.sdk.appevents.userid"
 
 static NSString *g_overrideAppID = nil;
@@ -240,7 +282,6 @@ static NSString *g_overrideAppID = nil;
 @property (nonatomic, copy) NSString *pushNotificationsDeviceTokenString;
 
 @property (nonatomic, strong) dispatch_source_t flushTimer;
-@property (nonatomic, strong) dispatch_source_t attributionIDRecheckTimer;
 
 @end
 
@@ -249,6 +290,9 @@ static NSString *g_overrideAppID = nil;
   BOOL _explicitEventsLoggedYet;
   FBSDKServerConfiguration *_serverConfiguration;
   FBSDKAppEventsState *_appEventsState;
+#if !TARGET_OS_TV
+  FBSDKEventBindingManager *_eventBindingManager;
+#endif
   NSString *_userID;
 }
 
@@ -273,29 +317,6 @@ static NSString *g_overrideAppID = nil;
                                                           [weakSelf flushTimerFired:nil];
                                                         }];
 
-    self.attributionIDRecheckTimer = [FBSDKUtility startGCDTimerWithInterval:APP_SUPPORTS_ATTRIBUTION_ID_RECHECK_PERIOD
-                                                                       block:^{
-                                                                         [weakSelf appSettingsFetchStateResetTimerFired:nil];
-                                                                       }];
-
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(applicationMovingFromActiveStateOrTerminating)
-     name:UIApplicationWillResignActiveNotification
-     object:NULL];
-
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(applicationMovingFromActiveStateOrTerminating)
-     name:UIApplicationWillTerminateNotification
-     object:NULL];
-
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(applicationDidBecomeActive)
-     name:UIApplicationDidBecomeActiveNotification
-     object:NULL];
-
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     _userID = [defaults stringForKey:USER_ID_USER_DEFAULTS_KEY];
   }
@@ -303,11 +324,30 @@ static NSString *g_overrideAppID = nil;
   return self;
 }
 
+- (void)registerNotifications {
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(applicationMovingFromActiveStateOrTerminating)
+   name:UIApplicationWillResignActiveNotification
+   object:NULL];
+
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(applicationMovingFromActiveStateOrTerminating)
+   name:UIApplicationWillTerminateNotification
+   object:NULL];
+
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(applicationDidBecomeActive)
+   name:UIApplicationDidBecomeActiveNotification
+   object:NULL];
+}
+
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [FBSDKUtility stopGCDTimer:self.flushTimer];
-  [FBSDKUtility stopGCDTimer:self.attributionIDRecheckTimer];
 }
 
 #pragma mark - Public Methods
@@ -432,6 +472,109 @@ static NSString *g_overrideAppID = nil;
   [self logEvent:FBSDKAppEventNamePushOpened parameters:parameters];
 }
 
+/*
+ *  Uploads product catalog product item as an app event
+ */
++ (void)logProductItem:(NSString *)itemID
+          availability:(FBSDKProductAvailability)availability
+             condition:(FBSDKProductCondition)condition
+           description:(NSString *)description
+             imageLink:(NSString *)imageLink
+                  link:(NSString *)link
+                 title:(NSString *)title
+           priceAmount:(double)priceAmount
+              currency:(NSString *)currency
+                  gtin:(NSString *)gtin
+                   mpn:(NSString *)mpn
+                 brand:(NSString *)brand
+            parameters:(NSDictionary *)parameters {
+  if (itemID == nil) {
+    [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                           logEntry:@"itemID cannot be null"];
+    return;
+  } else if (description == nil) {
+    [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                           logEntry:@"description cannot be null"];
+    return;
+  } else if (imageLink == nil) {
+    [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                           logEntry:@"imageLink cannot be null"];
+    return;
+  } else if (link == nil) {
+    [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                           logEntry:@"link cannot be null"];
+    return;
+  } else if (title == nil) {
+    [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                           logEntry:@"title cannot be null"];
+    return;
+  } else if (currency == nil) {
+    [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                           logEntry:@"currency cannot be null"];
+    return;
+  } else if (gtin == nil && mpn == nil && brand == nil) {
+    [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                           logEntry:@"Either gtin, mpn or brand is required"];
+    return;
+  }
+
+  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+  if (nil != parameters) {
+    [dict setValuesForKeysWithDictionary:parameters];
+  }
+
+  [dict setObject:itemID forKey:FBSDKAppEventParameterProductItemID];
+
+  NSString *avail = nil;
+  switch (availability) {
+    case FBSDKProductAvailabilityInStock:
+      avail = @"IN_STOCK"; break;
+    case FBSDKProductAvailabilityOutOfStock:
+      avail = @"OUT_OF_STOCK"; break;
+    case FBSDKProductAvailabilityPreOrder:
+      avail = @"PREORDER"; break;
+    case FBSDKProductAvailabilityAvailableForOrder:
+      avail = @"AVALIABLE_FOR_ORDER"; break;
+    case FBSDKProductAvailabilityDiscontinued:
+      avail = @"DISCONTINUED"; break;
+  }
+  if (avail) {
+    [dict setObject:avail forKey:FBSDKAppEventParameterProductAvailability];
+  }
+
+  NSString *cond = nil;
+  switch (condition) {
+    case FBSDKProductConditionNew:
+      cond = @"NEW"; break;
+    case FBSDKProductConditionRefurbished:
+      cond = @"REFURBISHED"; break;
+    case FBSDKProductConditionUsed:
+      cond = @"USED"; break;
+  }
+  if (cond) {
+    [dict setObject:cond forKey:FBSDKAppEventParameterProductCondition];
+  }
+
+  [dict setObject:description forKey:FBSDKAppEventParameterProductDescription];
+  [dict setObject:imageLink forKey:FBSDKAppEventParameterProductImageLink];
+  [dict setObject:link forKey:FBSDKAppEventParameterProductLink];
+  [dict setObject:title forKey:FBSDKAppEventParameterProductTitle];
+  [dict setObject:[NSString stringWithFormat:@"%.3lf", priceAmount] forKey:FBSDKAppEventParameterProductPriceAmount];
+  [dict setObject:currency forKey:FBSDKAppEventParameterProductPriceCurrency];
+  if (gtin) {
+    [dict setObject:gtin forKey:FBSDKAppEventParameterProductGTIN];
+  }
+  if (mpn) {
+    [dict setObject:mpn forKey:FBSDKAppEventParameterProductMPN];
+  }
+  if (brand) {
+    [dict setObject:brand forKey:FBSDKAppEventParameterProductBrand];
+  }
+
+  [FBSDKAppEvents logEvent:FBSDKAppEventNameProductCatalogUpdate
+                parameters:dict];
+}
+
 + (void)activateApp
 {
   [FBSDKAppEventsUtility ensureOnMainThread:NSStringFromSelector(_cmd) className:NSStringFromClass(self)];
@@ -446,6 +589,7 @@ static NSString *g_overrideAppID = nil;
   // when appropriate, result in logging an "activated app" and "deactivated app" (for the
   // previous session) App Event.
   [FBSDKTimeSpentData restore:YES];
+  [FBSDKUserDataStore initStore];
 }
 
 + (void)setPushNotificationsDeviceToken:(NSData *)deviceToken
@@ -509,9 +653,61 @@ static NSString *g_overrideAppID = nil;
   [defaults synchronize];
 }
 
++ (void)clearUserID
+{
+  [self setUserID:nil];
+}
+
 + (NSString *)userID
 {
   return [[self class] singleton]->_userID;
+}
+
++ (void)setUserData:(NSDictionary*)userData
+{
+  [FBSDKUserDataStore setUserDataAndHash:userData];
+}
+
++ (void)setUserEmail:(nullable NSString *)email
+           firstName:(nullable NSString *)firstName
+            lastName:(nullable NSString *)lastName
+               phone:(nullable NSString *)phone
+         dateOfBirth:(nullable NSString *)dateOfBirth
+              gender:(nullable NSString *)gender
+                city:(nullable NSString *)city
+               state:(nullable NSString *)state
+                 zip:(nullable NSString *)zip
+             country:(nullable NSString *)country
+{
+  [FBSDKUserDataStore setUserDataAndHash:email
+                               firstName:firstName
+                                lastName:lastName
+                                   phone:phone
+                             dateOfBirth:dateOfBirth
+                                  gender:gender
+                                    city:city
+                                   state:state
+                                     zip:zip
+                                 country:country];
+}
+
++ (NSString*)getUserData
+{
+  return [FBSDKUserDataStore getHashedUserData];
+}
+
++ (void)clearUserData
+{
+  [FBSDKUserDataStore setUserDataAndHash:nil
+                               firstName:nil
+                                lastName:nil
+                                   phone:nil
+                             dateOfBirth:nil
+                                  gender:nil
+                                    city:nil
+                                   state:nil
+                                     zip:nil
+                                 country:nil];
 }
 
 + (void)updateUserProperties:(NSDictionary *)properties handler:(FBSDKGraphRequestHandler)handler
@@ -559,6 +755,35 @@ static NSString *g_overrideAppID = nil;
                                 ];
   [request startWithCompletionHandler:handler];
 }
+
+#if !TARGET_OS_TV
++ (void)augmentHybridWKWebView:(WKWebView *)webView {
+  // Ensure we can instantiate WebKit before trying this
+  Class WKWebViewClass = fbsdkdfl_WKWebViewClass();
+  if (WKWebViewClass != nil && [webView isKindOfClass:WKWebViewClass]) {
+    Class WKUserScriptClass = fbsdkdfl_WKUserScriptClass();
+    if (WKUserScriptClass != nil) {
+      WKUserContentController *controller = webView.configuration.userContentController;
+      FBSDKHybridAppEventsScriptMessageHandler *scriptHandler = [[FBSDKHybridAppEventsScriptMessageHandler alloc] init];
+      [controller addScriptMessageHandler:scriptHandler name:FBSDKAppEventsWKWebViewMessagesHandlerKey];
+
+      NSString *js =  [NSString stringWithFormat:@"window.fbmq_%@={'sendEvent': function(pixel_id,event_name,custom_data){var msg={\"%@\":pixel_id, \"%@\":event_name,\"%@\":custom_data};window.webkit.messageHandlers[\"%@\"].postMessage(msg);}, 'getProtocol':function(){return \"%@\";}}",
+                         [[self singleton] appID],
+                         FBSDKAppEventsWKWebViewMessagesPixelIDKey,
+                         FBSDKAppEventsWKWebViewMessagesEventKey,
+                         FBSDKAppEventsWKWebViewMessagesParamsKey,
+                         FBSDKAppEventsWKWebViewMessagesHandlerKey,
+                         FBSDKAPPEventsWKWebViewMessagesProtocolKey
+                       ];
+
+      [controller addUserScript:[[WKUserScriptClass alloc] initWithSource:js injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO]];
+    }
+  }
+  else {
+    [FBSDKAppEventsUtility logAndNotify:@"You must call augmentHybridWKWebView with WebKit linked to your project and a WKWebView instance"];
+  }
+}
+#endif
 
 #pragma mark - Internal Methods
 
@@ -624,7 +849,7 @@ static NSString *g_overrideAppID = nil;
   [self fetchServerConfiguration:^{
     NSDictionary *params = [FBSDKAppEventsUtility activityParametersDictionaryForEvent:@"MOBILE_APP_INSTALL"
                                                                     implicitEventsOnly:NO
-                                                             shouldAccessAdvertisingID:_serverConfiguration.isAdvertisingIDEnabled];
+                                                             shouldAccessAdvertisingID:self->_serverConfiguration.isAdvertisingIDEnabled];
     NSString *path = [NSString stringWithFormat:@"%@/activities", appID];
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:path
                                                          parameters:params
@@ -642,27 +867,38 @@ static NSString *g_overrideAppID = nil;
   }];
 }
 
+#if !TARGET_OS_TV
+- (void)enableCodelessEvents {
+  if (_serverConfiguration.isCodelessEventsEnabled) {
+    if (!_eventBindingManager) {
+      _eventBindingManager = [[FBSDKEventBindingManager alloc] init];
+      [_eventBindingManager start];
+    }
+
+    [_eventBindingManager updateBindings:[FBSDKEventBindingManager
+                                          parseArray:_serverConfiguration.eventBindings]];
+  }
+}
+#endif
+
 // app events can use a server configuration up to 24 hours old to minimize network traffic.
 - (void)fetchServerConfiguration:(void (^)(void))callback
 {
-  if (_serverConfiguration == nil) {
-    [FBSDKServerConfigurationManager loadServerConfigurationWithCompletionBlock:^(FBSDKServerConfiguration *serverConfiguration, NSError *error) {
-      _serverConfiguration = serverConfiguration;
+  [FBSDKServerConfigurationManager loadServerConfigurationWithCompletionBlock:^(FBSDKServerConfiguration *serverConfiguration, NSError *error) {
+    self->_serverConfiguration = serverConfiguration;
 
-      if (_serverConfiguration.implicitPurchaseLoggingEnabled) {
-        [FBSDKPaymentObserver startObservingTransactions];
-      } else {
-        [FBSDKPaymentObserver stopObservingTransactions];
-      }
-      if (callback) {
-        callback();
-      }
-    }];
-    return;
-  }
-  if (callback) {
-    callback();
-  }
+    if (self->_serverConfiguration.implicitPurchaseLoggingEnabled) {
+      [FBSDKPaymentObserver startObservingTransactions];
+    } else {
+      [FBSDKPaymentObserver stopObservingTransactions];
+    }
+#if !TARGET_OS_TV
+    [self enableCodelessEvents];
+#endif
+    if (callback) {
+      callback();
+    }
+  }];
 }
 
 - (void)instanceLogEvent:(NSString *)eventName
@@ -819,7 +1055,7 @@ static NSString *g_overrideAppID = nil;
 
   [self fetchServerConfiguration:^(void) {
     NSString *receipt_data = [appEventsState extractReceiptData];
-    NSString *encodedEvents = [appEventsState JSONStringForEvents:_serverConfiguration.implicitLoggingEnabled];
+    NSString *encodedEvents = [appEventsState JSONStringForEvents:self->_serverConfiguration.implicitLoggingEnabled];
     if (!encodedEvents) {
       [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorAppEvents
                              logEntry:@"FBSDKAppEvents: Flushing skipped - no events after removing implicitly logged ones.\n"];
@@ -828,7 +1064,7 @@ static NSString *g_overrideAppID = nil;
     NSMutableDictionary *postParameters = [FBSDKAppEventsUtility
                                            activityParametersDictionaryForEvent:@"CUSTOM_APP_EVENTS"
                                            implicitEventsOnly:appEventsState.areAllEventsImplicit
-                                           shouldAccessAdvertisingID:_serverConfiguration.advertisingIDEnabled];
+                                           shouldAccessAdvertisingID:self->_serverConfiguration.advertisingIDEnabled];
     NSInteger length = [receipt_data length];
     if (length > 0) {
       postParameters[@"receipt_data"] = receipt_data;
@@ -861,6 +1097,7 @@ static NSString *g_overrideAppID = nil;
                       prettyPrintedJsonEvents];
     }
 
+    [FBSDKAppEventsUtility logAndNotify:[NSString stringWithFormat:@"param %@", postParameters]];
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"%@/activities", appEventsState.appID]
                                                          parameters:postParameters
                                                         tokenString:appEventsState.tokenString
@@ -941,11 +1178,6 @@ static NSString *g_overrideAppID = nil;
   if (self.flushBehavior != FBSDKAppEventsFlushBehaviorExplicitOnly && !self.disableTimer) {
     [self flushForReason:FBSDKAppEventsFlushReasonTimer];
   }
-}
-
-- (void)appSettingsFetchStateResetTimerFired:(id)arg
-{
-  _serverConfiguration = nil;
 }
 
 - (void)applicationDidBecomeActive

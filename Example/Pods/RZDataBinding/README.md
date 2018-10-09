@@ -1,11 +1,15 @@
 # RZDataBinding
 
 [![Version](https://img.shields.io/cocoapods/v/RZDataBinding.svg?style=flat)](http://cocoadocs.org/docsets/RZDataBinding)
+[![CircleCI](https://img.shields.io/circleci/project/github/Raizlabs/RZDataBinding/master.svg)](https://circleci.com/gh/Raizlabs/RZDataBinding)
+[![License](https://img.shields.io/cocoapods/l/RZDataBinding.svg?style=flat)](http://cocoapods.org/pods/RZDataBinding)
+[![Platform](https://img.shields.io/cocoapods/p/RZDataBinding.svg?style=flat)](http://cocoapods.org/pods/RZDataBinding)
 
 <p align="center">
 <img src="http://cl.ly/image/1r0I0x401W2m/chain.png"
 alt="RZDataBinding">
 </p>
+
 ## Overview
 RZDataBinding is a framework designed to help maintain data integrity in your iOS or OS X app. It is built using the standard Key-Value Observation (KVO) framework, but is safer and provides additional functionality. Like KVO, RZDataBinding helps to avoid endless delegate chains by establishing direct callbacks for when an object changes state.
 
@@ -30,7 +34,8 @@ alt="RZDataBinding">
 
 The demo shows a basic usage of RZDataBinding, but is by no means the canonical or most advanced use case. 
 
-##Usage
+## Usage
+
 **Register a callback for when the keypath of an object changes:**
 ``` obj-c
 // Register a selector to be called on a given target whenever keyPath changes on the receiver.

@@ -32,5 +32,7 @@
 
 - (NSString*) sha512;
 
+- (NSString*) stringByStrippingHTML;
+
 
 @end

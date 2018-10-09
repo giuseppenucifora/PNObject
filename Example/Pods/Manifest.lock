@@ -1,18 +1,18 @@
 PODS:
-  - AFNetworking (3.2.0):
-    - AFNetworking/NSURLSession (= 3.2.0)
-    - AFNetworking/Reachability (= 3.2.0)
-    - AFNetworking/Security (= 3.2.0)
-    - AFNetworking/Serialization (= 3.2.0)
-    - AFNetworking/UIKit (= 3.2.0)
-  - AFNetworking/NSURLSession (3.2.0):
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.0)
-  - AFNetworking/Security (3.2.0)
-  - AFNetworking/Serialization (3.2.0)
-  - AFNetworking/UIKit (3.2.0):
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
@@ -26,19 +26,19 @@ PODS:
     - DJLocalization/Core (= 1.2.2)
   - DJLocalization/Core (1.2.2)
   - Expecta (1.0.6)
-  - FBSDKCoreKit (4.33.0):
+  - FBSDKCoreKit (4.37.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.33.0):
+  - FBSDKLoginKit (4.37.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.33.0):
-    - FBSDKCoreKit (~> 4.33.0)
+  - FBSDKShareKit (4.37.0):
+    - FBSDKCoreKit (~> 4.37.0)
   - NSDataAES (0.2.2)
   - NSDate_Utils (1.1.0):
     - DJLocalization
-  - NSString-Helper (1.1.0)
+  - NSString-Helper (1.2.0)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (2.5.7):
+  - PNObject (2.6.0):
     - AFNetworking
     - CodFis-Helper
     - DDDKeychainWrapper
@@ -54,11 +54,11 @@ PODS:
     - RZDataBinding
     - StrongestPasswordValidator
     - UIDevice-Utils
-  - PureLayout (3.0.2)
-  - RZDataBinding (2.1.0)
+  - PureLayout (3.1.2)
+  - RZDataBinding (2.1.1)
   - Specta (1.0.7)
   - StrongestPasswordValidator (0.1.2)
-  - UIDevice-Utils (1.0.8)
+  - UIDevice-Utils (1.0.9)
 
 DEPENDENCIES:
   - Expecta
@@ -67,7 +67,7 @@ DEPENDENCIES:
   - Specta
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AFNetworking
     - Bolts
     - CodFis-Helper
@@ -93,27 +93,27 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   CodFis-Helper: 28be4c74d7202542459d72354f59b1215871de87
   DDDKeychainWrapper: e681a4daba6448786fa83b4941f58102a33b1897
   DJLocalization: 0c84029af375647d4104a42ae36be87194c46c47
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  FBSDKCoreKit: 572b047a7e029bc44542bcf8a59414e7ff2b543e
-  FBSDKLoginKit: 88cb456349cfb3b554427ce4f8b43729d85dfb40
-  FBSDKShareKit: b7b5002833a4104fbecad75e8e4e082e91c7a08a
+  FBSDKCoreKit: fe5f3474499a81963e11e3f3a5c753d0a95ca2b4
+  FBSDKLoginKit: 2f7249686d1e30ce8a5ef5400eedf50b3e3df332
+  FBSDKShareKit: 52e0083222c38e930eb6878007478326599195c3
   NSDataAES: 967ea3337476a80e9838a533c25d570a06855ed0
   NSDate_Utils: c858a89da6e204ecf53aca48dbccb4da4d25bc9e
-  NSString-Helper: 645162758421206f509cb46cbd10023eab7594ed
+  NSString-Helper: 1c259caa6c845e79e0bb45ee25e34f95d86d2317
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: 524a8d655fb150c0da2f262441bbbe24dd9bd8b9
-  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  RZDataBinding: 6981e90ddaae2f5e02028323b1043f8c31013109
+  PNObject: d92d660eb43b9385e7148e42598b8a7d3a785834
+  PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
+  RZDataBinding: 289e2fbdce8b9585afef69def83425c5d380ffbd
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   StrongestPasswordValidator: 921e42615bdf353513c6f925bffd4fc29865dbd7
-  UIDevice-Utils: a629b53a88c1429cfb4bdff35b18287feebd164a
+  UIDevice-Utils: 6ba44475416a1e823f214a8ed26fc9a0761db096
 
 PODFILE CHECKSUM: eec9c921f7aee591fd1fdea1fd3e5a191b74a436
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

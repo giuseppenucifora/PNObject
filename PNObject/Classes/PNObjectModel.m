@@ -156,6 +156,35 @@ static bool isFirstAccess = YES;
     }
 }
 
+- (BOOL) removeObjectsWithClass:(Class _Nonnull) class {
+    
+    BOOL isPNObjectSubclass = [class isSubclassOfClass:[PNObject class]];
+    
+    if(isPNObjectSubclass) {
+        
+        NSString *className;
+        
+        @try {
+            
+            className = (NSString *)[class performSelector:@selector(objectClassName)];
+            
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+            if ([_fileManager checkPath:className]) {
+                
+                return [_fileManager deletePath:className];
+                
+            }
+            else
+                return NO;
+        }
+    }
+}
+
 - (id _Nonnull) saveLocally:(id _Nonnull) object {
     
     BOOL isPNObjectSubclass = [[object class] isSubclassOfClass:[PNObject class]];
@@ -196,7 +225,21 @@ static bool isFirstAccess = YES;
                     
                     NSDictionary *objectDict = [(PNObject*)object reverseMapping];
                     
-                    [objects addObject:objectDict];
+                    int index = 0;
+                    BOOL found = NO;
+                    for (NSDictionary* savedObject in [objects copy]) {
+                        if ([[savedObject objectForKey:@"objID"] isEqualToString:[(PNObject*)object objID]]) {
+                            found = YES;
+                            [objects removeObjectAtIndex:index];
+                            [objects insertObject:objectDict atIndex:index];
+                            break;
+                        }
+                        index++;
+                    }
+                    
+                    if (!found) {
+                        [objects addObject:objectDict];
+                    }
                     
                     NSData *objectData = [[NSKeyedArchiver archivedDataWithRootObject:objects] aes_encrypt:[DDDKeychainWrapper dataForKey: PNObjectEncryptionKey]];
                     
