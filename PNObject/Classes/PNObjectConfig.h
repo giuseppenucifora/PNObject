@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *
  *  @return singleton
  */
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments;
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments andStoreClientIdentifier:(NSString* _Nonnull) identifier;
 
 /**
  *  <#Description#>
@@ -97,8 +97,23 @@ typedef NS_ENUM(NSInteger, OAuthMode) {
  *
  *  @return <#return value description#>
  */
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments andUserSubclass:(Class _Nonnull) userSubClass;
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass andStoreClientIdentifier:(NSString* _Nonnull) identifier;
 
+/**
+ *  <#Description#>
+ *
+ *  @param endpointUrlsForEnvironments
+ *  For example,
+ *  @{   PNObjectConfigDevelopment : @"https://development.it/api/v1",
+ *       PNObjectConfigEnvStage : @"https://stage.it/api/v1",
+ *       PNObjectConfigEnvProduction : @"https://production.it/api/v1"
+ *   }
+ *  @param userSubClass                <#userSubClass description#>
+ *  @param identifier                  identifier description
+ *
+ *  @return <#return value description#>
+ */
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments andUserSubclass:(Class _Nonnull) userSubClass andStoreClientIdentifier:(NSString* _Nonnull) identifier;
 /**
  *  <#Description#>
  *

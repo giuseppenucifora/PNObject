@@ -43,13 +43,7 @@
     "StrongestPasswordValidator": [
 
     ],
-    "FBSDKCoreKit": [
-
-    ],
-    "FBSDKShareKit": [
-
-    ],
-    "FBSDKLoginKit": [
+    "Facebook-iOS-SDK": [
 
     ],
     "NSDataAES": [

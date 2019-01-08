@@ -31,15 +31,13 @@
  */
 - (id _Nonnull) fetchObjectsWithClass:(Class _Nonnull) class;
 
-- (BOOL) removeObjectsWithClass:(Class _Nonnull) class;
-
 /**
  *  <#Description#>
  *
  *  @param object PNObject Subclass to save
  *
  *  @return return It return the object if the save was successful.
- *  @return return NSError
+ *  @return return NSError 
  */
 - (id _Nonnull) saveLocally:(id _Nonnull) object;
 

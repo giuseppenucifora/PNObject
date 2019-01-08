@@ -70,6 +70,7 @@ NSString*  const Client_Password = @"client_password";
 @property (nonatomic, strong) NSString *currentBaseUrl;
 @property (nonatomic, strong) NSString *currentEndPointPath;
 @property (nonatomic, strong) NSString *currentEndPointUrl;
+@property (nonatomic, strong) NSString *storeClientIdentifier;
 
 /* Client credential configurations */
 @property (nonatomic, strong) NSString *currentClientCredenzialEndPointPath;
@@ -111,20 +112,20 @@ static bool isFirstAccess = YES;
 
 #pragma mark - Life Cycle
 
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments {
-    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:[PNUser class] withoauthMode:OAuthModeClientCredential];
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary *) endpointUrlsForEnvironments andStoreClientIdentifier:(NSString* _Nonnull) identifier {
+    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:[PNUser class] withoauthMode:OAuthModeClientCredential andStoreClientIdentifier:identifier];
 }
 
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary *)endpointUrlsForEnvironments andUserSubclass:(Class)userSubClass {
-    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:userSubClass withoauthMode:OAuthModeClientCredential];
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary *)endpointUrlsForEnvironments andUserSubclass:(Class)userSubClass  andStoreClientIdentifier:(NSString* _Nonnull) identifier {
+    return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:userSubClass withoauthMode:OAuthModeClientCredential andStoreClientIdentifier:identifier];
 }
 
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withoauthMode:(OAuthMode) oauthMode {
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass withoauthMode:(OAuthMode) oauthMode andStoreClientIdentifier:(NSString* _Nonnull) identifier  {
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         isFirstAccess = NO;
-        SINGLETON_PNObjectConfig = [[super allocWithZone:NULL] initWithUserSubclass:userSubClass];
+        SINGLETON_PNObjectConfig = [[super allocWithZone:NULL] initWithUserSubclass:userSubClass andStoreClientIdentifier:identifier];
         
         if (SINGLETON_PNObjectConfig) {
             
@@ -177,7 +178,7 @@ static bool isFirstAccess = YES;
     return [[PNObjectConfig alloc] init];
 }
 
-- (id) initWithUserSubclass:(Class _Nonnull) userSubClass
+- (id) initWithUserSubclass:(Class _Nonnull) userSubClass andStoreClientIdentifier:(NSString* _Nonnull) identifier
 {
     if(SINGLETON_PNObjectConfig){
         return SINGLETON_PNObjectConfig;
@@ -188,6 +189,7 @@ static bool isFirstAccess = YES;
     self = [super init];
     
     if (self) {
+        _storeClientIdentifier = identifier;
         _userSubClass = userSubClass;
         _configuration = [[NSMutableDictionary alloc] init];
         _minPasswordLenght = minPassLenght;
@@ -208,20 +210,28 @@ static bool isFirstAccess = YES;
             
         }
         
-        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self clientCredentialIdentifier]];
         
         if (!credential || [credential isExpired]) {
-            [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+            [AFOAuthCredential deleteCredentialWithIdentifier:[self clientCredentialIdentifier]];
         }
         
-        credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
+        credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self userCredentialIdentifier]];
         
         if (!credential || [credential isExpired]) {
-            [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
+            [AFOAuthCredential deleteCredentialWithIdentifier:[self userCredentialIdentifier]];
         }
         
     }
     return self;
+}
+
+- (NSString *) clientCredentialIdentifier {
+    return [NSString stringWithFormat:@"%@_%@",_storeClientIdentifier,PNObjectServiceClientCredentialIdentifier];
+}
+
+- (NSString *) userCredentialIdentifier {
+    return [NSString stringWithFormat:@"%@_%@",_storeClientIdentifier,PNObjectServiceClientCredentialIdentifier];
 }
 
 - (void) setEnvironment:(NSString * _Nonnull) environment {
@@ -373,7 +383,7 @@ static bool isFirstAccess = YES;
         _clientCredentialAuthManager.responseSerializer = [AFJSONResponseSerializerWithData serializer];
         _clientCredentialAuthManager.requestSerializer = _oauthJsonRequestSerializer;
         
-        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self clientCredentialIdentifier]];
         
         if (credential && ![credential isExpired]) {
             
@@ -410,7 +420,7 @@ static bool isFirstAccess = YES;
             [_oauthHttpRequestSerializer setValue:[_headerFields objectForKey:key] forHTTPHeaderField:key];
         }
         
-        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
+        AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self userCredentialIdentifier]];
         
         if (credential && ![credential isExpired]) {
             
@@ -430,12 +440,12 @@ static bool isFirstAccess = YES;
     switch (oauthMode) {
         case OAuthModeClientCredential:
             
-            return [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+            return [AFOAuthCredential deleteCredentialWithIdentifier:[self clientCredentialIdentifier]];
             
             break;
         case OAuthModePassword:
             
-            return [AFOAuthCredential deleteCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
+            return [AFOAuthCredential deleteCredentialWithIdentifier:[self userCredentialIdentifier]];
             
             break;
         default:
@@ -501,13 +511,13 @@ static bool isFirstAccess = YES;
     
     switch (oauthMode) {
         case OAuthModeClientCredential: {
-            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self clientCredentialIdentifier]];
             
             if (credential && ![credential isExpired] && nil != [credential refreshToken] && _currentClientCredenzialRefreshTokenEnabled) {
                 
                 [_clientCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[credential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
                     
-                    [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceClientCredentialIdentifier];
+                    [AFOAuthCredential storeCredential:credential withIdentifier:[self clientCredentialIdentifier]];
                     
                     [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
                     [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
@@ -526,9 +536,8 @@ static bool isFirstAccess = YES;
                         [self refreshTokenForOauthMode:oauthMode retries:retries-1 WithBlockSuccess:success failure:failure];
                     }
                     else {
-                        if (failure) {
-                            failure(error);
-                        }
+                        [self resetTokenForOauthMode:oauthMode];
+                        [self refreshTokenForOauthMode:oauthMode retries:0 WithBlockSuccess:success failure:failure];
                     }
                     
                     return;
@@ -537,7 +546,7 @@ static bool isFirstAccess = YES;
             else {
                 [_clientCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
                     
-                    [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceClientCredentialIdentifier];
+                    [AFOAuthCredential storeCredential:credential withIdentifier:[self clientCredentialIdentifier]];
                     
                     [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
                     [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
@@ -560,13 +569,13 @@ static bool isFirstAccess = YES;
             break;
         case OAuthModePassword:{
             
-            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self userCredentialIdentifier]];
             
             if (credential && ![credential isExpired] && nil != [credential refreshToken] && _currentUserCredenzialRefreshTokenEnabled) {
                 
                 [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl refreshToken:[credential refreshToken] success:^(AFOAuthCredential * _Nonnull credential) {
                     
-                    [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+                    [AFOAuthCredential storeCredential:credential withIdentifier:[self userCredentialIdentifier]];
                     
                     [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
                     [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
@@ -584,9 +593,8 @@ static bool isFirstAccess = YES;
                         [self refreshTokenForOauthMode:oauthMode retries:retries-1 WithBlockSuccess:success failure:failure];
                     }
                     else {
-                        if (failure) {
-                            failure(error);
-                        }
+                        [self resetTokenForOauthMode:oauthMode];
+                        [self refreshTokenForOauthMode:oauthMode retries:0 WithBlockSuccess:success failure:failure];
                     }
                     
                     return;
@@ -658,7 +666,7 @@ static bool isFirstAccess = YES;
     
     [_userCredentialAuthManager authenticateUsingFacebookOAuthWithURLString:_currentClientCredenzialEndPointUrl facebookId:facebookId facebookToken:facebookToken scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         
-        [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+        [AFOAuthCredential storeCredential:credential withIdentifier:[self userCredentialIdentifier]];
         
         [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
         [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
@@ -706,7 +714,7 @@ static bool isFirstAccess = YES;
     
     [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl username:email password:password scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         
-        [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+        [AFOAuthCredential storeCredential:credential withIdentifier:[self userCredentialIdentifier]];
         
         [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
         [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
@@ -748,7 +756,7 @@ static bool isFirstAccess = YES;
     
     [_userCredentialAuthManager authenticateUsingOAuthWithURLString:_currentClientCredenzialEndPointUrl username:username password:password scope:@"" success:^(AFOAuthCredential * _Nonnull credential) {
         
-        [AFOAuthCredential storeCredential:credential withIdentifier:PNObjectServiceUserCredentialIdentifier];
+        [AFOAuthCredential storeCredential:credential withIdentifier:[self userCredentialIdentifier]];
         
         [wHttpSerializer setAuthorizationHeaderFieldWithCredential:credential];
         [wJsonSerializer setAuthorizationHeaderFieldWithCredential:credential];
@@ -862,7 +870,7 @@ static bool isFirstAccess = YES;
     switch (oauthMode) {
         case OAuthModeClientCredential:{
             
-            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self clientCredentialIdentifier]];
             if (!credential || (credential && [credential isExpired])) {
                 return NO;
             }
@@ -873,7 +881,7 @@ static bool isFirstAccess = YES;
             break;
         case OAuthModePassword:{
             
-            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
+            AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:[self userCredentialIdentifier]];
             if (!credential || (credential && [credential isExpired])) {
                 return NO;
             }
@@ -892,11 +900,11 @@ static bool isFirstAccess = YES;
     return YES;
 }
 - (AFOAuthCredential * _Nullable) currentOauthClientCredential {
-    return [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceClientCredentialIdentifier];
+    return [AFOAuthCredential retrieveCredentialWithIdentifier:[self clientCredentialIdentifier]];
 }
 
 - (AFOAuthCredential * _Nullable) currentOauthUserCredential {
-    return [AFOAuthCredential retrieveCredentialWithIdentifier:PNObjectServiceUserCredentialIdentifier];
+    return [AFOAuthCredential retrieveCredentialWithIdentifier:[self userCredentialIdentifier]];
 }
 
 @end
