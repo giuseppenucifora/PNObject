@@ -116,7 +116,7 @@ static bool isFirstAccess = YES;
     return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:[PNUser class] withoauthMode:OAuthModeClientCredential andStoreClientIdentifier:identifier];
 }
 
-+ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary *)endpointUrlsForEnvironments andUserSubclass:(Class)userSubClass  andStoreClientIdentifier:(NSString* _Nonnull) identifier {
++ (instancetype _Nonnull) initSharedInstanceForEnvironments:(NSDictionary * _Nonnull) endpointUrlsForEnvironments userSubclass:(Class _Nonnull) userSubClass andStoreClientIdentifier:(NSString* _Nonnull) identifier {
     return [self initSharedInstanceForEnvironments:endpointUrlsForEnvironments userSubclass:userSubClass withoauthMode:OAuthModeClientCredential andStoreClientIdentifier:identifier];
 }
 
