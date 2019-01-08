@@ -35,7 +35,7 @@
     [PNObjectConfig initSharedInstanceForEnvironments:@{EnvironmentDevelopment : @{BaseUrl:@"http://pnobject.local/",EndpointPath:@"api/v1/"},
                                                         EnvironmentStage : @{BaseUrl:@"https://pnobject.stage.it/",EndpointPath:@"api/v1/"},
                                                         EnvironmentProduction : @{BaseUrl:@"http://pnobject.prod.it/",EndpointPath:@"api/v1/"},
-                                                        } andUserSubclass:[PNUser class]];
+                                                        } userSubclass:[PNUser class] andStoreClientIdentifier:@"ftiuyvkbyfi789ptf78"];
     
     /** Can user special char %@ to autoset EndpointPath to Oauth endpointPath */
     [[PNObjectConfig sharedInstance] setClientID:@"******" clientSecret:@"******" oAuthEndpointAction:@"%@oauth-token" oauthMode:OAuthModeClientCredential refreshTokenEnabled:NO forEnv:EnvironmentStage];

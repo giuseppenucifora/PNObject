@@ -21,7 +21,7 @@ s.author           = { 'Giuseppe Nucifora' => 'me@giuseppenucifora.com' }
 s.source           = { :git => "https://github.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
 # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-s.ios.deployment_target = '8.0'
+s.ios.deployment_target = '9.0'
 
 s.source_files = 'PNObject/Classes/**/*'
 
@@ -38,6 +38,8 @@ s.dependency 'NSString-Helper'
 s.dependency 'CodFis-Helper'
 s.dependency 'StrongestPasswordValidator'
 s.dependency 'FacebookSDK'
+s.dependency 'FBSDKLoginKit'
+s.dependency 'FBSDKShareKit'
 s.dependency 'NSDataAES'
 s.dependency 'DDDKeychainWrapper'
 s.dependency 'DJLocalization'
