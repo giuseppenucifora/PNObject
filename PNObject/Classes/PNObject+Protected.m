@@ -35,7 +35,7 @@
     for(NSString *propertyName in properties) {
         
         if([propertyName isEqualToString:@"mappingError"])
-            continue;
+        continue;
         
         NSString *mappedJSONKey;
         NSString *mappedJSONType;
@@ -73,7 +73,7 @@
             continue;
         }
         
-        ((void (^)())@{
+        ((void (^)(void))@{
                        @"c" : ^{
             char val = [value charValue];
             [self setValue:@(val) forKey:propertyName];
@@ -140,21 +140,45 @@
         },
                        @"NSArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
-            for(id JSONObject in value) {
-                if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
-                    PNObject *val;
+            if ([value isKindOfClass:[NSDictionary class]]) {
+                
+                for(id key in value) {
+                    id JSONObject = value[key];
                     
-                    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
-                        val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
+                        PNObject *val;
+                        
+                        if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+                            val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                        }
+                        else {
+                            val = [[NSClassFromString(mappedJSONType) alloc] init];
+                        }
+                        //PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                        [arr addObject:val];
                     }
                     else {
-                        val = [[NSClassFromString(mappedJSONType) alloc] init];
+                        [arr addObject:JSONObject];
                     }
-                    
-                    [arr addObject:val];
                 }
-                else {
-                    [arr addObject:JSONObject];
+            }
+            else {
+                for(id JSONObject in value) {
+                    if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
+                        PNObject *val;
+                        
+                        if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+                            val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                        }
+                        else {
+                            val = [[NSClassFromString(mappedJSONType) alloc] init];
+                        }
+                        
+                        [arr addObject:val];
+                    }
+                    else {
+                        [arr addObject:JSONObject];
+                    }
                 }
             }
             
@@ -162,21 +186,45 @@
         },
                        @"NSMutableArray" : ^{
             NSMutableArray *arr = [NSMutableArray array];
-            for(id JSONObject in value) {
-                if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
-                    PNObject *val;
+            if ([value isKindOfClass:[NSDictionary class]]) {
+                
+                for(id key in value) {
+                    id JSONObject = value[key];
                     
-                    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
-                        val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                    if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
+                        PNObject *val;
+                        
+                        if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+                            val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                        }
+                        else {
+                            val = [[NSClassFromString(mappedJSONType) alloc] init];
+                        }
+                        //PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                        [arr addObject:val];
                     }
                     else {
-                        val = [[NSClassFromString(mappedJSONType) alloc] init];
+                        [arr addObject:JSONObject];
                     }
-                    //PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
-                    [arr addObject:val];
                 }
-                else {
-                    [arr addObject:JSONObject];
+            }
+            else {
+                for(id JSONObject in value) {
+                    if(fromLocal || [[JSONObject class] isSubclassOfClass:[PNObject class]] || [NSClassFromString(mappedJSONType) isSubclassOfClass:[PNObject class]]) {
+                        PNObject *val;
+                        
+                        if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+                            val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                        }
+                        else {
+                            val = [[NSClassFromString(mappedJSONType) alloc] init];
+                        }
+                        //PNObject *val = [[NSClassFromString(mappedJSONType) alloc] initWithJSON:JSONObject fromLocal:fromLocal];
+                        [arr addObject:val];
+                    }
+                    else {
+                        [arr addObject:JSONObject];
+                    }
                 }
             }
             
@@ -211,7 +259,7 @@
     for(NSString *propertyName in properties) {
         
         if([propertyName isEqualToString:@"mappingError"])
-            continue;
+        continue;
         
         NSString *mappedJSONKey;
         NSString *mappedJSONType;
@@ -236,7 +284,7 @@
         
         // Get JSON value for the mapped key
         
-        ((void (^)())@{
+        ((void (^)(void))@{
                        @"c" : ^{
             char val = '\0';
             [self setValue:@(val) forKey:propertyName];
@@ -334,68 +382,68 @@
                     mappedKey = formMappingKey;
                 }
                 
-                ((void (^)())@{
-                               @"c" : ^{
+                ((void (^)(void))@{
+                                   @"c" : ^{
                     char val = [property charValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               @"d" : ^{
+                                   @"d" : ^{
                     double val = [property doubleValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               @"f" : ^{
+                                   @"f" : ^{
                     float val = [property floatValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               @"i" : ^{
+                                   @"i" : ^{
                     int val = [property intValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               @"l" : ^{
+                                   @"l" : ^{
                     long val = [property longValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               @"s" : ^{
+                                   @"s" : ^{
                     short val = [property shortValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               @"B" : ^{
+                                   @"B" : ^{
                     BOOL val = [property boolValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               @"q" : ^{
+                                   @"q" : ^{
                     NSInteger val = [property integerValue];
                     [JSON setValue:@(val) forKey:mappedKey];
                 },
-                               
-                               @"UIImage" : ^{
+                                   
+                                   @"UIImage" : ^{
                     UIImage *image = [UIImage imageWithData:property];
                     [JSON setValue:image forKey:mappedKey];
                 },
-                               @"NSURL" : ^{
+                                   @"NSURL" : ^{
                     NSURL *url = property;
                     
                     if (![self isObjNull:url]) {
                         [JSON setValue:[url absoluteString] forKey:mappedKey];
                     }
                 },
-                               @"NSString" : ^{
+                                   @"NSString" : ^{
                     NSString *val = [NSString stringWithFormat:@"%@", property];
                     if (![self isObjNull:val]) {
                         [JSON setValue:val forKey:mappedKey];
                     }
                 },
-                               @"NSNumber" : ^{
+                                   @"NSNumber" : ^{
                     NSNumber *val =  [NSNumber numberWithDouble:[property doubleValue]];
                     [JSON setValue:val forKey:mappedKey];
                 },
-                               @"NSDate" : ^{
+                                   @"NSDate" : ^{
                     NSDate *val = [property toLocalTime];
                     if (![self isObjNull:val]) {
                         [JSON setValue:val forKey:mappedKey];
                     }
                 },
-                               @"NSArray" : ^{
+                                   @"NSArray" : ^{
                     NSMutableArray *arr = [NSMutableArray array];
                     for(id object in property) {
                         
@@ -412,7 +460,7 @@
                     
                     [JSON setValue:arr forKey:mappedKey];
                 },
-                               @"NSMutableArray" : ^{
+                                   @"NSMutableArray" : ^{
                     NSMutableArray *arr = [NSMutableArray array];
                     for(id object in property) {
                         
@@ -429,19 +477,19 @@
                     
                     [JSON setValue:arr forKey:mappedKey];
                 }
-                               }[[property class]] ?: ^{
-                                   BOOL isPNObjectSubclass = [[property class] isSubclassOfClass:[PNObject class]];
-                                   if(isPNObjectSubclass) {
-                                       
-                                       NSDictionary *objectDict = [(PNObject*)property getFormObject:dictionaryMappingSelector];
-                                       
-                                       [JSON setValue:objectDict forKey:mappedKey];
-                                   }
-                                   else {
-                                   
-                                       NSLogDebug(@"%@",[NSString stringWithFormat:@"Property '%@' could not be assigned any value.", property]);
-                                   }
-                               })();
+                                   }[[property class]] ?: ^{
+                                       BOOL isPNObjectSubclass = [[property class] isSubclassOfClass:[PNObject class]];
+                                       if(isPNObjectSubclass) {
+                                           
+                                           NSDictionary *objectDict = [(PNObject*)property getFormObject:dictionaryMappingSelector];
+                                           
+                                           [JSON setValue:objectDict forKey:mappedKey];
+                                       }
+                                       else {
+                                           
+                                           NSLogDebug(@"%@",[NSString stringWithFormat:@"Property '%@' could not be assigned any value.", property]);
+                                       }
+                                   })();
             }
         }
     }
@@ -451,20 +499,20 @@
 - (BOOL)isObjNull:(id _Nullable)obj
 {
     if(!obj || nil == obj || NSNull.null == obj || ([obj isKindOfClass:[NSString class]] && [obj isEqualToString:@"(null)"]) || [obj isEqual:[NSNull null]])
-        return YES;
+    return YES;
     else
-        return NO;
+    return NO;
 }
 
 static BOOL property_getTypeString( objc_property_t property, char *buffer )
 {
     const char * attrs = property_getAttributes( property );
     if ( attrs == NULL )
-        return NO;
+    return NO;
     
     const char * e = strchr( attrs, ',' );
     if ( e == NULL )
-        return NO;
+    return NO;
     
     int len = (int)(e - attrs);
     memcpy( buffer, attrs, len );
