@@ -16,12 +16,17 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-//! Project version number for FBSDKMarketingKit.
-FOUNDATION_EXPORT double FBSDKMarketingKitVersionNumber;
+NS_ASSUME_NONNULL_BEGIN
 
-//! Project version string for FBSDKMarketingKit.
-FOUNDATION_EXPORT const unsigned char FBSDKMarketingKitVersionString[];
+extern NSString *const FBSDKShareExtensionParamAppID; // application identifier string
+extern NSString *const FBSDKShareExtensionParamHashtags; // array of hashtag strings (max 1)
+extern NSString *const FBSDKShareExtensionParamQuotes; // array of quote strings (max 1)
+extern NSString *const FBSDKShareExtensionParamOGData; // dictionary of Open Graph data
 
-#import <FBSDKMarketingKit/FBSDKAutoLog.h>
+NSString *_Nullable FBSDKShareExtensionInitialText(NSString *_Nullable appID,
+                                                   NSString *_Nullable hashtag,
+                                                   NSString *_Nullable jsonString);
+
+NS_ASSUME_NONNULL_END

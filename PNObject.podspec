@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = 'PNObject'
-s.version          = '2.6.3'
+s.version          = '2.6.4'
 s.summary          = 'PNObject is a simple replica of the more complex ParseObject'
 
 
@@ -37,9 +37,10 @@ s.dependency 'nv-ios-http-status'
 s.dependency 'NSString-Helper'
 s.dependency 'CodFis-Helper'
 s.dependency 'StrongestPasswordValidator'
-s.dependency 'FacebookSDK'
+s.dependency 'FBSDKCoreKit'
 s.dependency 'FBSDKLoginKit'
 s.dependency 'FBSDKShareKit'
+s.dependency 'FBSDKPlacesKit'
 s.dependency 'NSDataAES'
 s.dependency 'DDDKeychainWrapper'
 s.dependency 'DJLocalization'

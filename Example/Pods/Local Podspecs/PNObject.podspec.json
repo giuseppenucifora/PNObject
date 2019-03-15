@@ -1,6 +1,6 @@
 {
   "name": "PNObject",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "summary": "PNObject is a simple replica of the more complex ParseObject",
   "homepage": "https://github.com/giuseppenucifora/PNObject",
   "license": {
@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "https://github.com/giuseppenucifora/PNObject.git",
-    "tag": "2.6.3"
+    "tag": "2.6.4"
   },
   "platforms": {
     "ios": "9.0"
@@ -43,13 +43,16 @@
     "StrongestPasswordValidator": [
 
     ],
-    "FacebookSDK": [
+    "FBSDKCoreKit": [
 
     ],
     "FBSDKLoginKit": [
 
     ],
     "FBSDKShareKit": [
+
+    ],
+    "FBSDKPlacesKit": [
 
     ],
     "NSDataAES": [

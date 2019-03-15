@@ -328,7 +328,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PNObject_Example/Pods-PNObject_Example-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PNObject_Example/Pods-PNObject_Example-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -337,7 +337,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PNObject_Example/Pods-PNObject_Example-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PNObject_Example/Pods-PNObject_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E4CE079F616C61EA34D08B8B /* [CP] Check Pods Manifest.lock */ = {
