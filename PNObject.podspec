@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = 'PNObject'
-s.version          = '2.6.4'
+s.version          = '2.6.5'
 s.summary          = 'PNObject is a simple replica of the more complex ParseObject'
 
 
@@ -21,7 +21,7 @@ s.author           = { 'Giuseppe Nucifora' => 'me@giuseppenucifora.com' }
 s.source           = { :git => "https://github.com/giuseppenucifora/PNObject.git", :tag => s.version.to_s }
 # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-s.ios.deployment_target = '9.0'
+s.ios.deployment_target = '10.0'
 
 s.source_files = 'PNObject/Classes/**/*'
 

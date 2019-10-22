@@ -264,7 +264,8 @@ static bool isFirstAccess = YES;
     }
     else {
         FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-        [login logInWithReadPermissions: @[@"public_profile",@"email",@"user_birthday"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        
+        [login logInWithPermissions: @[@"public_profile",@"email",@"user_birthday"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
                 NSLogDebug(@"Process error");
                 if (failure) {
@@ -333,7 +334,7 @@ static bool isFirstAccess = YES;
     }
     else {
         FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-        [login logInWithReadPermissions: @[@"public_profile",@"email",@"user_birthday"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+        [login logInWithPermissions: @[@"public_profile",@"email",@"user_birthday"] fromViewController:viewController handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             if (error) {
                 NSLogDebug(@"Process error");
                 if (failure) {
