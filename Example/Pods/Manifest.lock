@@ -42,15 +42,15 @@ PODS:
   - NSString-Helper (1.2.0)
   - nv-ios-http-status (0.0.1)
   - PEAR-FileManager-iOS (1.3.1)
-  - PNObject (2.6.5):
+  - PNObject (2.6.6):
     - AFNetworking
     - CodFis-Helper
     - DDDKeychainWrapper
     - DJLocalization
-    - FBSDKCoreKit
-    - FBSDKLoginKit
+    - FBSDKCoreKit (~> 5.8.0)
+    - FBSDKLoginKit (~> 5.8.0)
     - FBSDKPlacesKit
-    - FBSDKShareKit
+    - FBSDKShareKit (~> 5.8.0)
     - NSDataAES
     - NSDate_Utils
     - NSString-Helper
@@ -112,7 +112,7 @@ SPEC CHECKSUMS:
   NSString-Helper: 1c259caa6c845e79e0bb45ee25e34f95d86d2317
   nv-ios-http-status: b6c2b5fc8656cc19e0d3000dadce2080b99d0e2f
   PEAR-FileManager-iOS: 3bc403f68a53483f5629aa822f4649e40275c4d3
-  PNObject: 050cb74316db4833c551ae9732db81f6fb8c6416
+  PNObject: 52d656ef2027a90a4a49f8f2b2d6ecaabf3b63ce
   PureLayout: 9b4ad47b2f0388c84ff534af23d96e720c1b875a
   RZDataBinding: 289e2fbdce8b9585afef69def83425c5d380ffbd
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
