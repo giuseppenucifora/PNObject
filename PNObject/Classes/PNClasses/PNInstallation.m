@@ -87,10 +87,11 @@ static bool isFirstAccess = YES;
     
     self.deviceTokenData = deviceTokenData;
     
-    NSString *ptoken = [[[[deviceTokenData description]
-                          stringByReplacingOccurrencesOfString:@"<"withString:@""]
-                         stringByReplacingOccurrencesOfString:@">" withString:@""]
-                        stringByReplacingOccurrencesOfString: @" " withString: @""];
+    const unsigned *tokenBytes = [deviceTokenData bytes];
+    NSString *ptoken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
+                         ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+                         ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+                         ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
     
     if (!_deviceToken) {
         
