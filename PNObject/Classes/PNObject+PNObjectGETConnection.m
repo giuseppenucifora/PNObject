@@ -71,7 +71,11 @@
                        failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error))failure {
     
     if([[PNObjectConfig sharedInstance] setCredentialTokenForOauthMode:oauthMode]){
-        [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]  parameters:parameters progress:downloadProgress success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[[PNObjectConfig sharedInstance] manager] GET:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]
+                                            parameters:parameters
+                                               headers:@{} 
+                                              progress:downloadProgress
+                                               success:^(NSURLSessionDataTask *task, id responseObject) {
             
             if (success) {
                 success(task,responseObject);

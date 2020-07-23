@@ -71,6 +71,7 @@
         
         [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]
                                              parameters:parameters
+                                                headers:@{}
                                                progress:uploadProgress
                                                 success:^(NSURLSessionDataTask *task, id responseObject) {
             
@@ -177,6 +178,7 @@
         
         [[[PNObjectConfig sharedInstance] manager] POST:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]
                                              parameters:parameters
+                                                headers:@{} 
                               constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                                   if (postFormData) {
                                       for (PNObjectFormData *postData in postFormData) {

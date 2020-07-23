@@ -55,6 +55,7 @@
     
         [[[PNObjectConfig sharedInstance] manager] DELETE:[[[PNObjectConfig sharedInstance] endPointUrl] stringByAppendingFormat:@"%@",endPoint]
                                                parameters:parameters
+                                                  headers:@{} 
                                                   success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                                       if (success) {
                                                           success(task,responseObject);
