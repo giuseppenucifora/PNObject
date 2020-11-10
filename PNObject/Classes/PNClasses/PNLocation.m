@@ -1,6 +1,7 @@
 //
 //  PNLocation.m
 //  Pods
+//  Version 2.7.0
 //
 //  Created by Giuseppe Nucifora on 13/01/16.
 //

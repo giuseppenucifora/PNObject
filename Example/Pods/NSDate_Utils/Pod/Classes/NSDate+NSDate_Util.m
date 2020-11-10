@@ -6,7 +6,6 @@
 //
 
 #import "NSDate+NSDate_Util.h"
-#import <DJLocalization/DJLocalizationSystem.h>
 
 #define DATE_COMPONENTS (NSCalendarUnitEra | NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekOfMonth |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal)
 #define CURRENT_CALENDAR [NSCalendar currentCalendar]
@@ -264,45 +263,45 @@ static NSDateFormatter *_displayFormatter = nil;
         
         if (time < 60) {
             if (uppercaseString) {
-                return [DJLocalizedString(@"Poco fa", nil) uppercaseString];
+                return [NSLocalizedString(@"Poco fa", nil) uppercaseString];
             }
-            return DJLocalizedString(@"Poco fa", nil);
+            return NSLocalizedString(@"Poco fa", nil);
         } else if (time < 3600) {
             int diff = round(time / 60);
             
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"1 Minuto fa", nil) uppercaseString];
+                    return [NSLocalizedString(@"1 Minuto fa", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"1 Minuto fa", nil);
+                return NSLocalizedString(@"1 Minuto fa", nil);
             }
             
             if (uppercaseString) {
-                return [[NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Minuti fa", nil)] uppercaseString];
+                return [[NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Minuti fa", nil)] uppercaseString];
             }
-            return [NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Minuti fa", nil)];
+            return [NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Minuti fa", nil)];
             
         } else if (time < 86400) {
             int diff = round(time / 60 / 60);
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"1 Ora fa", nil) uppercaseString];
+                    return [NSLocalizedString(@"1 Ora fa", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"1 Ora fa", nil);
+                return NSLocalizedString(@"1 Ora fa", nil);
             }
             if (uppercaseString) {
-                return [[NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Ore fa", nil)] uppercaseString];
+                return [[NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Ore fa", nil)] uppercaseString];
             }
-            return [NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Ore fa", nil)];
+            return [NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Ore fa", nil)];
         } else {
             NSInteger diff = round(time / 60 / 60 / 24);
             switch (diff) {
                 case 1:{
                     if (uppercaseString) {
                         
-                        return [[NSString stringWithFormat:@"%@",DJLocalizedString(@"Ieri", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%@",NSLocalizedString(@"Ieri", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%@",DJLocalizedString(@"Ieri", nil)];
+                    return [NSString stringWithFormat:@"%@",NSLocalizedString(@"Ieri", nil)];
                 }
                     break;
                 case 2:
@@ -312,9 +311,9 @@ static NSDateFormatter *_displayFormatter = nil;
                 case 6: {
                     
                     if (uppercaseString) {
-                        return [[NSString stringWithFormat:@"%ld %@", (long)diff, DJLocalizedString(@"Giorni fa", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%ld %@", (long)diff, NSLocalizedString(@"Giorni fa", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%ld %@", (long)diff, DJLocalizedString(@"Giorni fa", nil)];
+                    return [NSString stringWithFormat:@"%ld %@", (long)diff, NSLocalizedString(@"Giorni fa", nil)];
                 }
                     break;
                 default:{
@@ -322,26 +321,26 @@ static NSDateFormatter *_displayFormatter = nil;
                     switch (diffWeeks) {
                         case 1:{
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimana fa", nil)] uppercaseString];
+                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimana fa", nil)] uppercaseString];
                             }
-                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimana fa", nil)];
+                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimana fa", nil)];
                         }
                             break;
                         case 2:
                         case 3:
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimane fa", nil)] uppercaseString];
+                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimane fa", nil)] uppercaseString];
                             }
-                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimane fa", nil)];
+                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimane fa", nil)];
                             break;
                         default:{
                             NSInteger diffMounth = round(time / 60 /60 / 24 / 30);
                             switch (diffMounth) {
                                 case 1: {
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mese fa", nil)] uppercaseString];
+                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mese fa", nil)] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mese fa", nil)];
+                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mese fa", nil)];
                                 }
                                     break;
                                 case 2:
@@ -355,9 +354,9 @@ static NSDateFormatter *_displayFormatter = nil;
                                 case 10:
                                 case 11:{
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mesi fa", nil)] uppercaseString];
+                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mesi fa", nil)] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mesi fa", nil)];
+                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mesi fa", nil)];
                                 }
                                     break;
                                     
@@ -366,15 +365,15 @@ static NSDateFormatter *_displayFormatter = nil;
                                     switch (diffYears) {
                                         case 1:
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anno fa", nil)] uppercaseString];
+                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anno fa", nil)] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anno fa", nil)];
+                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anno fa", nil)];
                                             break;
                                         default:{
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anni fa", nil)] uppercaseString];
+                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anni fa", nil)] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anni fa", nil)];
+                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anni fa", nil)];
                                         }
                                             break;
                                     }
@@ -392,45 +391,45 @@ static NSDateFormatter *_displayFormatter = nil;
     else {
         if (time < 60) {
             if (uppercaseString) {
-                return [DJLocalizedString(@"Tra poco", nil) uppercaseString];
+                return [NSLocalizedString(@"Tra poco", nil) uppercaseString];
             }
-            return DJLocalizedString(@"Tra poco", nil);
+            return NSLocalizedString(@"Tra poco", nil);
         } else if (time < 3600) {
             int diff = round(time / 60);
             
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"Tra 1 minuto", nil) uppercaseString];
+                    return [NSLocalizedString(@"Tra 1 minuto", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"Tra 1 minuto", nil);
+                return NSLocalizedString(@"Tra 1 minuto", nil);
             }
             
             if (uppercaseString) {
-                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d minuti", nil), diff] uppercaseString];
+                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %d minuti", nil), diff] uppercaseString];
             }
-            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d minuti", nil), diff];
+            return [NSString stringWithFormat:NSLocalizedString(@"Tra %d minuti", nil), diff];
             
         } else if (time < 86400) {
             int diff = round(time / 60 / 60);
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"Tra 1 ora", nil) uppercaseString];
+                    return [NSLocalizedString(@"Tra 1 ora", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"Tra 1 ora", nil);
+                return NSLocalizedString(@"Tra 1 ora", nil);
             }
             if (uppercaseString) {
-                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d ore", nil), diff] uppercaseString];
+                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %d ore", nil), diff] uppercaseString];
             }
-            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d ore", nil), diff];
+            return [NSString stringWithFormat:NSLocalizedString(@"Tra %d ore", nil), diff];
         } else {
             NSInteger diff = round(time / 60 / 60 / 24);
             switch (diff) {
                 case 1:{
                     if (uppercaseString) {
                         
-                        return [[NSString stringWithFormat:@"%@",DJLocalizedString(@"Domani", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%@",NSLocalizedString(@"Domani", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%@",DJLocalizedString(@"Domani", nil)];
+                    return [NSString stringWithFormat:@"%@",NSLocalizedString(@"Domani", nil)];
                 }
                     break;
                 case 2:
@@ -440,9 +439,9 @@ static NSDateFormatter *_displayFormatter = nil;
                 case 6: {
                     
                     if (uppercaseString) {
-                        return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d giorni", nil), diff] uppercaseString];
+                        return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld giorni", nil), (long)diff] uppercaseString];
                     }
-                    return [NSString stringWithFormat:DJLocalizedString(@"Tra %d giorni", nil), diff];
+                    return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld giorni", nil), (long)diff];
                 }
                     break;
                 default:{
@@ -450,26 +449,26 @@ static NSDateFormatter *_displayFormatter = nil;
                     switch (diffWeeks) {
                         case 1:{
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Tra 1 Settimana", nil)] uppercaseString];
+                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Tra 1 Settimana", nil)] uppercaseString];
                             }
-                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Tra 1 Settimana", nil)];
+                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Tra 1 Settimana", nil)];
                         }
                             break;
                         case 2:
                         case 3:
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d settimane", nil), diff] uppercaseString];
+                                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld settimane", nil), (long)diff] uppercaseString];
                             }
-                            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d settimane", nil), diff];
+                            return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld settimane", nil), (long)diff];
                             break;
                         default:{
                             NSInteger diffMounth = round(time / 60 /60 / 24 / 30);
                             switch (diffMounth) {
                                 case 1: {
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d mese", nil), diff] uppercaseString];
+                                        return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld mese", nil), (long)diff] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:DJLocalizedString(@"Tra %d mese", nil), diff];
+                                    return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld mese", nil), (long)diff];
                                 }
                                     break;
                                 case 2:
@@ -483,9 +482,9 @@ static NSDateFormatter *_displayFormatter = nil;
                                 case 10:
                                 case 11:{
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d mesi", nil), diff] uppercaseString];
+                                        return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld mesi", nil), (long)diff] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:DJLocalizedString(@"Tra %d mesi", nil), diff];
+                                    return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld mesi", nil), (long)diff];
                                 }
                                     break;
                                     
@@ -494,15 +493,15 @@ static NSDateFormatter *_displayFormatter = nil;
                                     switch (diffYears) {
                                         case 1:
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d anno", nil), diff] uppercaseString];
+                                                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld anno", nil), (long)diff] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d anno", nil), diff];
+                                            return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld anno", nil), (long)diff];
                                             break;
                                         default:{
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d anni", nil), diff] uppercaseString];
+                                                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld anni", nil), (long)diff] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d anni", nil), diff];
+                                            return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld anni", nil), (long)diff];
                                         }
                                             break;
                                     }
@@ -722,10 +721,10 @@ static NSDateFormatter *_displayFormatter = nil;
     NSString *text = nil;
     switch (daysAgo) {
         case 0:
-            text = DJLocalizedString(@"Today", nil);
+            text = NSLocalizedString(@"Today", nil);
             break;
         case 1:
-            text = DJLocalizedString(@"Yesterday", nil);
+            text = NSLocalizedString(@"Yesterday", nil);
             break;
         default:
             text = [NSString stringWithFormat:@"%ld days ago", (long)daysAgo];
@@ -882,45 +881,45 @@ static NSDateFormatter *_displayFormatter = nil;
         
         if (time < 60) {
             if (uppercaseString) {
-                return [DJLocalizedString(@"Poco fa", nil) uppercaseString];
+                return [NSLocalizedString(@"Poco fa", nil) uppercaseString];
             }
-            return DJLocalizedString(@"Poco fa", nil);
+            return NSLocalizedString(@"Poco fa", nil);
         } else if (time < 3600) {
             int diff = round(time / 60);
             
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"1 Minuto fa", nil) uppercaseString];
+                    return [NSLocalizedString(@"1 Minuto fa", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"1 Minuto fa", nil);
+                return NSLocalizedString(@"1 Minuto fa", nil);
             }
             
             if (uppercaseString) {
-                return [[NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Minuti fa", nil)] uppercaseString];
+                return [[NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Minuti fa", nil)] uppercaseString];
             }
-            return [NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Minuti fa", nil)];
+            return [NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Minuti fa", nil)];
             
         } else if (time < 86400) {
             int diff = round(time / 60 / 60);
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"1 Ora fa", nil) uppercaseString];
+                    return [NSLocalizedString(@"1 Ora fa", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"1 Ora fa", nil);
+                return NSLocalizedString(@"1 Ora fa", nil);
             }
             if (uppercaseString) {
-                return [[NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Ore fa", nil)] uppercaseString];
+                return [[NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Ore fa", nil)] uppercaseString];
             }
-            return [NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Ore fa", nil)];
+            return [NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Ore fa", nil)];
         } else {
             NSInteger diff = round(time / 60 / 60 / 24);
             switch (diff) {
                 case 1:{
                     if (uppercaseString) {
                         
-                        return [[NSString stringWithFormat:@"%@",DJLocalizedString(@"Ieri", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%@",NSLocalizedString(@"Ieri", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%@",DJLocalizedString(@"Ieri", nil)];
+                    return [NSString stringWithFormat:@"%@",NSLocalizedString(@"Ieri", nil)];
                 }
                     break;
                 case 2:
@@ -930,9 +929,9 @@ static NSDateFormatter *_displayFormatter = nil;
                 case 6: {
                     
                     if (uppercaseString) {
-                        return [[NSString stringWithFormat:@"%ld %@", (long)diff, DJLocalizedString(@"Giorni fa", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%ld %@", (long)diff, NSLocalizedString(@"Giorni fa", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%ld %@", (long)diff, DJLocalizedString(@"Giorni fa", nil)];
+                    return [NSString stringWithFormat:@"%ld %@", (long)diff, NSLocalizedString(@"Giorni fa", nil)];
                 }
                     break;
                 default:{
@@ -940,26 +939,26 @@ static NSDateFormatter *_displayFormatter = nil;
                     switch (diffWeeks) {
                         case 1:{
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimana fa", nil)] uppercaseString];
+                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimana fa", nil)] uppercaseString];
                             }
-                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimana fa", nil)];
+                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimana fa", nil)];
                         }
                             break;
                         case 2:
                         case 3:
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimane fa", nil)] uppercaseString];
+                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimane fa", nil)] uppercaseString];
                             }
-                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Settimane fa", nil)];
+                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Settimane fa", nil)];
                             break;
                         default:{
                             NSInteger diffMounth = round(time / 60 /60 / 24 / 30);
                             switch (diffMounth) {
                                 case 1: {
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mese fa", nil)] uppercaseString];
+                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mese fa", nil)] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mese fa", nil)];
+                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mese fa", nil)];
                                 }
                                     break;
                                 case 2:
@@ -973,9 +972,9 @@ static NSDateFormatter *_displayFormatter = nil;
                                 case 10:
                                 case 11:{
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mesi fa", nil)] uppercaseString];
+                                        return [[NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mesi fa", nil)] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,DJLocalizedString(@"Mesi fa", nil)];
+                                    return [NSString stringWithFormat:@"%ld %@",(long)diffMounth,NSLocalizedString(@"Mesi fa", nil)];
                                 }
                                     break;
                                     
@@ -984,15 +983,15 @@ static NSDateFormatter *_displayFormatter = nil;
                                     switch (diffYears) {
                                         case 1:
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anno fa", nil)] uppercaseString];
+                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anno fa", nil)] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anno fa", nil)];
+                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anno fa", nil)];
                                             break;
                                         default:{
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anni fa", nil)] uppercaseString];
+                                                return [[NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anni fa", nil)] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,DJLocalizedString(@"Anni fa", nil)];
+                                            return [NSString stringWithFormat:@"%ld %@",(long)diffYears,NSLocalizedString(@"Anni fa", nil)];
                                         }
                                             break;
                                     }
@@ -1010,45 +1009,45 @@ static NSDateFormatter *_displayFormatter = nil;
     else {
         if (time < 60) {
             if (uppercaseString) {
-                return [DJLocalizedString(@"Tra poco", nil) uppercaseString];
+                return [NSLocalizedString(@"Tra poco", nil) uppercaseString];
             }
-            return DJLocalizedString(@"Tra poco", nil);
+            return NSLocalizedString(@"Tra poco", nil);
         } else if (time < 3600) {
             int diff = round(time / 60);
             
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"Tra 1 minuto", nil) uppercaseString];
+                    return [NSLocalizedString(@"Tra 1 minuto", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"Tra 1 minuto", nil);
+                return NSLocalizedString(@"Tra 1 minuto", nil);
             }
             
             if (uppercaseString) {
-                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d minuti", nil), diff] uppercaseString];
+                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %d minuti", nil), diff] uppercaseString];
             }
-            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d minuti", nil), diff];
+            return [NSString stringWithFormat:NSLocalizedString(@"Tra %d minuti", nil), diff];
             
         } else if (time < 86400) {
             int diff = round(time / 60 / 60);
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"Tra 1 ora", nil) uppercaseString];
+                    return [NSLocalizedString(@"Tra 1 ora", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"Tra 1 ora", nil);
+                return NSLocalizedString(@"Tra 1 ora", nil);
             }
             if (uppercaseString) {
-                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d ore", nil), diff] uppercaseString];
+                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %d ore", nil), diff] uppercaseString];
             }
-            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d ore", nil), diff];
+            return [NSString stringWithFormat:NSLocalizedString(@"Tra %d ore", nil), diff];
         } else {
             NSInteger diff = round(time / 60 / 60 / 24);
             switch (diff) {
                 case 1:{
                     if (uppercaseString) {
                         
-                        return [[NSString stringWithFormat:@"%@",DJLocalizedString(@"Domani", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%@",NSLocalizedString(@"Domani", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%@",DJLocalizedString(@"Domani", nil)];
+                    return [NSString stringWithFormat:@"%@",NSLocalizedString(@"Domani", nil)];
                 }
                     break;
                 case 2:
@@ -1058,9 +1057,9 @@ static NSDateFormatter *_displayFormatter = nil;
                 case 6: {
                     
                     if (uppercaseString) {
-                        return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d giorni", nil), diff] uppercaseString];
+                        return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld giorni", nil), (long)diff] uppercaseString];
                     }
-                    return [NSString stringWithFormat:DJLocalizedString(@"Tra %d giorni", nil), diff];
+                    return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld giorni", nil), (long)diff];
                 }
                     break;
                 default:{
@@ -1068,26 +1067,26 @@ static NSDateFormatter *_displayFormatter = nil;
                     switch (diffWeeks) {
                         case 1:{
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Tra 1 Settimana", nil)] uppercaseString];
+                                return [[NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Tra 1 Settimana", nil)] uppercaseString];
                             }
-                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,DJLocalizedString(@"Tra 1 Settimana", nil)];
+                            return [NSString stringWithFormat:@"%ld %@",(long)diffWeeks,NSLocalizedString(@"Tra 1 Settimana", nil)];
                         }
                             break;
                         case 2:
                         case 3:
                             if (uppercaseString) {
-                                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d settimane", nil), diff] uppercaseString];
+                                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld settimane", nil), (long)diff] uppercaseString];
                             }
-                            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d settimane", nil), diff];
+                            return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld settimane", nil), (long)diff];
                             break;
                         default:{
                             NSInteger diffMounth = round(time / 60 /60 / 24 / 30);
                             switch (diffMounth) {
                                 case 1: {
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d mese", nil), diff] uppercaseString];
+                                        return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld mese", nil), (long)diff] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:DJLocalizedString(@"Tra %d mese", nil), diff];
+                                    return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld mese", nil), (long)diff];
                                 }
                                     break;
                                 case 2:
@@ -1101,9 +1100,9 @@ static NSDateFormatter *_displayFormatter = nil;
                                 case 10:
                                 case 11:{
                                     if (uppercaseString) {
-                                        return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d mesi", nil), diff] uppercaseString];
+                                        return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld mesi", nil), (long)diff] uppercaseString];
                                     }
-                                    return [NSString stringWithFormat:DJLocalizedString(@"Tra %d mesi", nil), diff];
+                                    return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld mesi", nil), (long)diff];
                                 }
                                     break;
                                     
@@ -1112,15 +1111,15 @@ static NSDateFormatter *_displayFormatter = nil;
                                     switch (diffYears) {
                                         case 1:
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d anno", nil), diff] uppercaseString];
+                                                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld anno", nil), (long)diff] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d anno", nil), diff];
+                                            return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld anno", nil), (long)diff];
                                             break;
                                         default:{
                                             if (uppercaseString) {
-                                                return [[NSString stringWithFormat:DJLocalizedString(@"Tra %d anni", nil), diff] uppercaseString];
+                                                return [[NSString stringWithFormat:NSLocalizedString(@"Tra %ld anni", nil), (long)diff] uppercaseString];
                                             }
-                                            return [NSString stringWithFormat:DJLocalizedString(@"Tra %d anni", nil), diff];
+                                            return [NSString stringWithFormat:NSLocalizedString(@"Tra %ld anni", nil), (long)diff];
                                         }
                                             break;
                                     }
@@ -1147,45 +1146,45 @@ static NSDateFormatter *_displayFormatter = nil;
         
         if (time < 60) {
             if (uppercaseString) {
-                return [DJLocalizedString(@"Poco fa", nil) uppercaseString];
+                return [NSLocalizedString(@"Poco fa", nil) uppercaseString];
             }
-            return DJLocalizedString(@"Poco fa", nil);
+            return NSLocalizedString(@"Poco fa", nil);
         } else if (time < 3600) {
             int diff = round(time / 60);
             
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"1 Minuto fa", nil) uppercaseString];
+                    return [NSLocalizedString(@"1 Minuto fa", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"1 Minuto fa", nil);
+                return NSLocalizedString(@"1 Minuto fa", nil);
             }
             
             if (uppercaseString) {
-                return [[NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Minuti fa", nil)] uppercaseString];
+                return [[NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Minuti fa", nil)] uppercaseString];
             }
-            return [NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Minuti fa", nil)];
+            return [NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Minuti fa", nil)];
             
         } else if (time < 86400) {
             int diff = round(time / 60 / 60);
             if (diff == 1) {
                 if (uppercaseString) {
-                    return [DJLocalizedString(@"1 Ora fa", nil) uppercaseString];
+                    return [NSLocalizedString(@"1 Ora fa", nil) uppercaseString];
                 }
-                return DJLocalizedString(@"1 Ora fa", nil);
+                return NSLocalizedString(@"1 Ora fa", nil);
             }
             if (uppercaseString) {
-                return [[NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Ore fa", nil)] uppercaseString];
+                return [[NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Ore fa", nil)] uppercaseString];
             }
-            return [NSString stringWithFormat:@"%d %@", diff, DJLocalizedString(@"Ore fa", nil)];
+            return [NSString stringWithFormat:@"%d %@", diff, NSLocalizedString(@"Ore fa", nil)];
         } else {
             NSInteger diff = round(time / 60 / 60 / 24);
             switch (diff) {
                 case 1:{
                     if (uppercaseString) {
                         
-                        return [[NSString stringWithFormat:@"%@",DJLocalizedString(@"Ieri", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%@",NSLocalizedString(@"Ieri", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%@",DJLocalizedString(@"Ieri", nil)];
+                    return [NSString stringWithFormat:@"%@",NSLocalizedString(@"Ieri", nil)];
                 }
                     break;
                 case 2:
@@ -1195,9 +1194,9 @@ static NSDateFormatter *_displayFormatter = nil;
                 case 6: {
                     
                     if (uppercaseString) {
-                        return [[NSString stringWithFormat:@"%ld %@", (long)diff, DJLocalizedString(@"Giorni fa", nil)] uppercaseString];
+                        return [[NSString stringWithFormat:@"%ld %@", (long)diff, NSLocalizedString(@"Giorni fa", nil)] uppercaseString];
                     }
-                    return [NSString stringWithFormat:@"%ld %@", (long)diff, DJLocalizedString(@"Giorni fa", nil)];
+                    return [NSString stringWithFormat:@"%ld %@", (long)diff, NSLocalizedString(@"Giorni fa", nil)];
                 }
                     break;
                 default:{
@@ -1218,13 +1217,13 @@ static NSDateFormatter *_displayFormatter = nil;
 + (NSString*) stringFromWeekday :(NSInteger) weekday
 {
     NSString *strings[] = {
-        DJLocalizedString(@"Sunday", @""),
-        DJLocalizedString(@"Monday", @""),
-        DJLocalizedString(@"Tuesday", @""),
-        DJLocalizedString(@"Wednesday", @""),
-        DJLocalizedString(@"Thursday", @""),
-        DJLocalizedString(@"Friday", @""),
-        DJLocalizedString(@"Saturday", @""),
+        NSLocalizedString(@"Sunday", @""),
+        NSLocalizedString(@"Monday", @""),
+        NSLocalizedString(@"Tuesday", @""),
+        NSLocalizedString(@"Wednesday", @""),
+        NSLocalizedString(@"Thursday", @""),
+        NSLocalizedString(@"Friday", @""),
+        NSLocalizedString(@"Saturday", @""),
     };
     
     return strings[weekday-1];
@@ -1233,18 +1232,18 @@ static NSDateFormatter *_displayFormatter = nil;
 + (NSString*) stringMonth :(NSInteger) month;
 {
     NSString *strings[] = {
-        DJLocalizedString(@"January", @""),
-        DJLocalizedString(@"February", @""),
-        DJLocalizedString(@"March", @""),
-        DJLocalizedString(@"April", @""),
-        DJLocalizedString(@"May", @""),
-        DJLocalizedString(@"June", @""),
-        DJLocalizedString(@"July", @""),
-        DJLocalizedString(@"August", @""),
-        DJLocalizedString(@"September", @""),
-        DJLocalizedString(@"October", @""),
-        DJLocalizedString(@"November", @""),
-        DJLocalizedString(@"December", @""),
+        NSLocalizedString(@"January", @""),
+        NSLocalizedString(@"February", @""),
+        NSLocalizedString(@"March", @""),
+        NSLocalizedString(@"April", @""),
+        NSLocalizedString(@"May", @""),
+        NSLocalizedString(@"June", @""),
+        NSLocalizedString(@"July", @""),
+        NSLocalizedString(@"August", @""),
+        NSLocalizedString(@"September", @""),
+        NSLocalizedString(@"October", @""),
+        NSLocalizedString(@"November", @""),
+        NSLocalizedString(@"December", @""),
     };
     
     return strings[month-1];

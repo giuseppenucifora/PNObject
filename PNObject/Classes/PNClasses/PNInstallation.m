@@ -1,13 +1,13 @@
 //
 //  PNInstallation.m
 //  Pods
+//  Version 2.7.0
 //
 //  Created by Giuseppe Nucifora on 27/01/16.
 //
 //
 
 #import "PNInstallation.h"
-#import "DJLocalization.h"
 #import "PNObjectConfig.h"
 #import "PNObject+PNObjectConnection.h"
 #import "NSDate+NSDate_Util.h"
@@ -180,7 +180,7 @@ static bool isFirstAccess = YES;
         _deviceModel = [[UIDevice currentDevice] model];
         _osVersion = [[UIDevice currentDevice] systemVersion];
         _deviceName = [[UIDevice currentDevice] name];
-        _localeIdentifier = [[DJLocalizationSystem shared] language];
+        _localeIdentifier = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
         
         
     }

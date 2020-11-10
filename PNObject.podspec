@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 s.name             = 'PNObject'
-s.version          = '2.6.8'
+s.version          = '2.7.0'
 s.summary          = 'PNObject is a simple replica of the more complex ParseObject'
 
 
@@ -43,7 +43,6 @@ s.dependency 'FBSDKShareKit', '~> 5.8.0'
 s.dependency 'FBSDKPlacesKit'
 s.dependency 'NSDataAES'
 s.dependency 'DDDKeychainWrapper'
-s.dependency 'DJLocalization'
 s.dependency 'RZDataBinding'
 
 end

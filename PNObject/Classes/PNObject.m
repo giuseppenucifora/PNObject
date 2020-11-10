@@ -1,6 +1,7 @@
 //
 //  PNObject.m
 //  Pods
+//  Version 2.7.0
 //
 //  Created by Giuseppe Nucifora on 28/12/15.
 //

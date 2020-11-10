@@ -1,6 +1,7 @@
 //
 //  PNObjectConnection.h
 //  Pods
+//  Version 2.7.0
 //
 //  Created by Giuseppe Nucifora on 18/01/16.
 //
